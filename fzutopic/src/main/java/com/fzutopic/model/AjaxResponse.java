@@ -1,5 +1,7 @@
 package com.fzutopic.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreType;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -13,6 +15,8 @@ public class AjaxResponse {
     private int code;
     private String message;
     private Object data;
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    private String token;
 
     private AjaxResponse() {
 
@@ -44,35 +48,25 @@ public class AjaxResponse {
         return resultBean;
     }
 
+    public static AjaxResponse success(Object data, String token) {
+        AjaxResponse resultBean = new AjaxResponse();
+        resultBean.setIsok(true);
+        resultBean.setCode(200);
+        resultBean.setMessage("success");
+        resultBean.setData(data);
+        resultBean.setToken(token);
+        return resultBean;
+    }
 
     //code是状态码，message描述信息
     public static AjaxResponse error(int code, String message){
         AjaxResponse resultBean = new AjaxResponse();
-        resultBean.setIsok(true);
+        resultBean.setIsok(false);
         resultBean.setCode(code);
         resultBean.setMessage(message);
         return resultBean;
     }
 
-    //登录界面账号不存在
-    public static AjaxResponse noAccount() {
-        AjaxResponse resultBean = new AjaxResponse();
-        resultBean.setIsok(true);
-        resultBean.setCode(400);
-        resultBean.setMessage("error");
-        return resultBean;
-    }
-
-
-
-    //登录界面密码错误
-    public static AjaxResponse errorPassword() {
-        AjaxResponse resultBean = new AjaxResponse();
-        resultBean.setIsok(true);
-        resultBean.setCode(401);
-        resultBean.setMessage("error");
-        return resultBean;
-    }
 
 
 
