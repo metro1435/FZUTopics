@@ -4,6 +4,8 @@ import com.fzutopic.model.Commentlikes;
 import com.fzutopic.model.CommentlikesExample;
 import com.fzutopic.model.CommentlikesKey;
 import java.util.List;
+
+import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Param;
 
 public interface CommentlikesDao {
@@ -14,6 +16,10 @@ public interface CommentlikesDao {
     int deleteByPrimaryKey(CommentlikesKey key);
 
     int insert(Commentlikes record);
+
+    @Insert({"insert into commentlikes (userID ,itemID, likedStatus)" +
+            "    values (#{userid},#{itemid}, #{likedstatus})"})
+    void insert1(Commentlikes record);
 
     int insertSelective(Commentlikes record);
 

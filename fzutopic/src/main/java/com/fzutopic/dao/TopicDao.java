@@ -4,6 +4,7 @@ import com.fzutopic.model.Topic;
 import com.fzutopic.model.TopicExample;
 import java.util.List;
 import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.Select;
 
 public interface TopicDao {
     long countByExample(TopicExample example);
@@ -19,6 +20,10 @@ public interface TopicDao {
     List<Topic> selectByExampleWithBLOBs(TopicExample example);
 
     List<Topic> selectByExample(TopicExample example);
+
+    //模糊搜索，221701401负责
+    @Select({"select * from topic where title like CONCAT('%',#{0},'%')"})
+    List<Topic> selectByTitleLike(String title);
 
     Topic selectByPrimaryKey(String topicid);
 

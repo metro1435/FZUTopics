@@ -4,6 +4,8 @@ import com.fzutopic.model.Topiclikes;
 import com.fzutopic.model.TopiclikesExample;
 import com.fzutopic.model.TopiclikesKey;
 import java.util.List;
+
+import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Param;
 
 public interface TopiclikesDao {
@@ -14,6 +16,10 @@ public interface TopiclikesDao {
     int deleteByPrimaryKey(TopiclikesKey key);
 
     int insert(Topiclikes record);
+
+    @Insert({"insert into topiclikes (userID, topicID, likedStatus)" +
+            "    values (#{userid},#{topicid}, #{likedstatus})"})
+    void insert1(Topiclikes record);
 
     int insertSelective(Topiclikes record);
 

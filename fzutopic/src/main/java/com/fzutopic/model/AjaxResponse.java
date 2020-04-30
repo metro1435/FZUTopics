@@ -67,7 +67,4 @@ public class AjaxResponse {
         return resultBean;
     }
 
-
-
-
 }
