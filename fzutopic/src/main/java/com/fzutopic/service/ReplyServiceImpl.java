@@ -1,6 +1,7 @@
 package com.fzutopic.service;
 
 import com.fzutopic.dao.ReplyDao;
+import com.fzutopic.model.AjaxResponse;
 import com.fzutopic.model.Reply;
 import com.fzutopic.model.ReplyExample;
 import com.github.pagehelper.PageHelper;
@@ -44,60 +45,81 @@ public class ReplyServiceImpl implements ReplyService{
         return replyDao.selectByExampleWithBLOBs(replyExample);
     }
 
-    //新增，对应赞、踩+1的情况,status：0为踩，1为赞，221701401负责
-    public boolean insertLikesById(String replyid, int status) {
-        int success=0;
-        List<Reply> replies= getReplyById(replyid);
-        for (Reply reply : replies) {
-            if (status == 1) reply.setLikes(reply.getLikes() + 1);
-            else if (status == 0) reply.setUnlikes(reply.getUnlikes() + 1);
-            success=replyDao.updateByPrimaryKey(reply);
-        }
-        if (success!=0) return true;
-        else return false;
-    }
-
-    //修改，对应一方+1一方-1的情况,status：0为修改为踩，1为修改为赞，221701401负责
-    public boolean updateLikesById(String replyid, int status) {
-        int success=0;
-        List<Reply> replies=getReplyById(replyid);
-        for (Reply reply : replies) {
-            int likes=reply.getLikes(),unlikes=reply.getUnlikes();
-            if (status == 1) {
-                if (unlikes == 0) return false;
-                reply.setLikes(likes + 1);
-                reply.setUnlikes(unlikes - 1);
-            }
-            else if (status == 0) {
-                if (likes == 0) return false;
-                reply.setUnlikes(unlikes + 1);
-                reply.setLikes(likes - 1);
-            }
-            success=replyDao.updateByPrimaryKey(reply);
-        }
-        if (success!=0) return true;
-        else return false;
+    /**
+     * 修改回复表点赞和踩的总数，用户首次点赞（踩）时调用此方法
+     * @Author 呼叫哆啦A梦
+     * @param replyid 回复ID主键
+     * @param status 0：用户点赞 1：用户踩
+     * @return AjaxResponse
+     */
+    public AjaxResponse insertLikesById(String replyid, int status) {
+        Reply reply=replyDao.selectByPrimaryKey(replyid);
+        if(reply==null)
+            return AjaxResponse.error(500, "不存在回复:"+replyid);
+        int likes,unlikes;
+        likes = reply.getLikes();
+        unlikes = reply.getUnlikes();
+        if(status==1)   likes+=1;
+        else unlikes+=1;
+        reply.setUnlikes(unlikes);
+        reply.setLikes(likes);
+        replyDao.updateByPrimaryKey(reply);
+        return AjaxResponse.success();
 
     }
 
-    //删除，对应赞、踩-1的情况,status：0为踩，1为赞，221701401负责
-    public boolean deleteLikesById(String topicid, int status) {
-        int success=0;
-        List<Reply> replies=getReplyById(topicid);
-        for (Reply reply : replies) {
-            int likes=reply.getLikes(),unlikes=reply.getUnlikes();
-            if (status == 1) {
-                if (likes == 0) return false;
-                reply.setLikes(likes - 1);
-            }
-            else if (status == 0) {
-                if (unlikes == 0) return false;
-                reply.setUnlikes(unlikes - 1);
-            }
-            success=replyDao.updateByPrimaryKey(reply);
+    /**
+     * 修改回复表点赞和踩的总数，用户修改态度时调用此方法
+     * @author 呼叫哆啦A梦
+     * @param replyid 评论ID主键
+     * @param status 0：表示要修改为踩，1：表示要修改为赞
+     * @return AjaxResponse
+     */
+    public AjaxResponse updateLikesById(String replyid, int status) {
+        Reply reply=replyDao.selectByPrimaryKey(replyid);
+        if(reply==null)
+            return AjaxResponse.error(500, "不存在回复:"+replyid);
+        int likes, unlikes;
+        likes = reply.getLikes();
+        unlikes = reply.getUnlikes();
+        if(status==0){
+            likes-=1;
+            unlikes+=1;
+        }else{
+            likes+=1;
+            unlikes-=1;
         }
-        if (success!=0) return true;
-        else return false;
+        if(likes<0||unlikes<0) return AjaxResponse.error(500,"修改点赞（踩）总数失败，出现小于0");
+        else{
+            reply.setLikes(likes);
+            reply.setUnlikes(unlikes);
+            replyDao.updateByPrimaryKey(reply);
+            return AjaxResponse.success();
+        }
 
+    }
+
+    /**
+     * 修改回复表点赞和踩的总数，用户取消点赞（踩）时调用此方法
+     * @param replyid 话题ID主键
+     * @param status 0：表示原来是踩，1：表示原来是赞
+     * @return AjaxResponse
+     */
+    public AjaxResponse deleteLikesById(String replyid, int status) {
+        Reply reply=replyDao.selectByPrimaryKey(replyid);
+        if(reply==null)
+            return AjaxResponse.error(500, "不存在回复:"+replyid);
+        int likes, unlikes;
+        likes = reply.getLikes();
+        unlikes = reply.getUnlikes();
+        if(status==1) likes-=1;
+        else unlikes-=1;
+        if(likes<0||unlikes<0) return AjaxResponse.error(500,"修改点赞（踩）总数失败，出现小于0");
+        else{
+            reply.setLikes(likes);
+            reply.setUnlikes(unlikes);
+            replyDao.updateByPrimaryKey(reply);
+            return AjaxResponse.success();
+        }
     }
 }

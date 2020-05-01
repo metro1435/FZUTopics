@@ -17,7 +17,7 @@ import java.util.List;
 @Slf4j
 @Service
 @RestController
-public class TopicServiceImpl implements TopicService{
+public class TopicServiceImpl implements TopicService {
     @Resource
     TopicDao topicDao;
 
@@ -26,17 +26,17 @@ public class TopicServiceImpl implements TopicService{
 
     //打印全部话题，一组16个,按热度降序，221701401负责
     public PageInfo<Topic> getTopics() {
-        TopicExample topicExample=new TopicExample();
+        TopicExample topicExample = new TopicExample();
         topicExample.setOrderByClause("heats desc");
-        PageHelper.startPage(1,16);
-        List<Topic> topics=topicDao.selectByExampleWithBLOBs(topicExample);
+        PageHelper.startPage(1, 16);
+        List<Topic> topics = topicDao.selectByExampleWithBLOBs(topicExample);
         return PageInfo.of(topics);
     }
 
     //根据topicid找话题，221701401负责
     public List<Topic> getTopicByID(String id) {
-        TopicExample topicExample=new TopicExample();
-        TopicExample.Criteria criteria=topicExample.createCriteria();
+        TopicExample topicExample = new TopicExample();
+        TopicExample.Criteria criteria = topicExample.createCriteria();
         criteria.andTopicidEqualTo(id);
         return topicDao.selectByExampleWithBLOBs(topicExample);
     }
@@ -44,17 +44,17 @@ public class TopicServiceImpl implements TopicService{
 
     //根据tagid找话题,一组16,按热度降序，221701401负责
     public PageInfo<Topic> getTopicsByTag(String tagid) {
-        TopicTagExample topicTagExample=new TopicTagExample();
-        TopicTagExample.Criteria criteria=topicTagExample.createCriteria();
+        TopicTagExample topicTagExample = new TopicTagExample();
+        TopicTagExample.Criteria criteria = topicTagExample.createCriteria();
         criteria.andTagidEqualTo(tagid);
-        PageHelper.startPage(1,16);
+        PageHelper.startPage(1, 16);
         List<TopicTagKey> topicsByTag = topicTagDao.selectByExample(topicTagExample);
         List<Topic> topicList = getTopicListByTagList(topicsByTag);
         return PageInfo.of(topicList);
     }
 
     //遍历TopicTag的list，找出每个topicid对应的topic信息，拼接成list返回，221701401负责
-    public List<Topic> getTopicListByTagList (List<TopicTagKey> topicTagKeys) {
+    public List<Topic> getTopicListByTagList(List<TopicTagKey> topicTagKeys) {
         List<Topic> resTopicList = new ArrayList<Topic>();
         for (TopicTagKey tmpTopicTagKey : topicTagKeys) {
             String tmpTopicId = tmpTopicTagKey.getTopicid();
@@ -72,13 +72,13 @@ public class TopicServiceImpl implements TopicService{
 
     //根据title找话题，模糊搜索使用sql的like，221701401负责
     public PageInfo<Topic> getTopicsByTitle(String title) {
-        TopicExample topicExample=new TopicExample();
+        TopicExample topicExample = new TopicExample();
         topicExample.setOrderByClause("heats desc");
-        TopicExample.Criteria criteria=topicExample.createCriteria();
+        TopicExample.Criteria criteria = topicExample.createCriteria();
         criteria.andTitleEqualTo(title);
-        PageHelper.startPage(1,16);
+        PageHelper.startPage(1, 16);
         //这里是模糊搜索
-        List<Topic> test=topicDao.selectByTitleLike(title);
+        List<Topic> test = topicDao.selectByTitleLike(title);
         return PageInfo.of(test);
         //这里是精确搜索
         //List<Topic> topics=topicDao.selectByExampleWithBLOBs(topicExample);
@@ -94,61 +94,91 @@ public class TopicServiceImpl implements TopicService{
         return topic;
     }
 
-    //新增，对应赞、踩+1的情况,status：0为踩，1为赞，221701401负责
-    public boolean insertLikesById(String topicid, int status) {
-        int success=0;
-        List<Topic> topics=getTopicByID(topicid);
-        for (Topic topic : topics) {
-            if (status == 1) topic.setLikes(topic.getLikes() + 1);
-            else if (status == 0) topic.setUnlikes(topic.getUnlikes() + 1);
-            success=topicDao.updateByPrimaryKey(topic);
-        }
-        if (success!=0) return true;
-        else return false;
-    }
-
-    //修改，对应一方+1一方-1的情况,status：0为修改为踩，1为修改为赞，221701401负责
-    public boolean updateLikesById(String topicid, int status) {
-        int success=0;
-        List<Topic> topics=getTopicByID(topicid);
-        for (Topic topic : topics) {
-            int likes=topic.getLikes(),unlikes=topic.getUnlikes();
-            if (status == 1) {
-                if (unlikes == 0) return false;
-                topic.setLikes(likes + 1);
-                topic.setUnlikes(unlikes - 1);
-            }
-            else if (status == 0) {
-                if (likes == 0) return false;
-                topic.setUnlikes(unlikes + 1);
-                topic.setLikes(likes - 1);
-            }
-            success=topicDao.updateByPrimaryKey(topic);
-        }
-        if (success!=0) return true;
-        else return false;
+    /**
+     * 修改话题表点赞和踩的总数以及热度，用户首次点赞（踩）时调用此方法
+     * @Author 呼叫哆啦A梦
+     * @param topicid 话题ID主键
+     * @param status 0：用户点赞 1：用户踩
+     * @return AjaxResponse
+     */
+    public AjaxResponse insertLikesById(String topicid, int status) {
+        Topic topic = topicDao.selectByPrimaryKey(topicid);
+        if (topic == null)
+            return AjaxResponse.error(500, "不存在话题:"+topicid);
+        int likes, unlikes;
+        likes = topic.getLikes();
+        unlikes = topic.getUnlikes();
+        if(status==1)   likes+=1;
+        else unlikes+=1;
+        topic.setUnlikes(unlikes);
+        topic.setLikes(likes);
+        //修改热度
+        int heats=(25*topic.getViews()+40*topic.getCommentcount()+25*likes-5*unlikes)/100;
+        topic.setHeats(heats);
+        topicDao.updateByPrimaryKey(topic);
+        return AjaxResponse.success();
 
     }
 
-    //删除，对应赞、踩-1的情况,status：0为踩，1为赞，221701401负责
-    public boolean deleteLikesById(String topicid, int status) {
-        int success=0;
-        List<Topic> topics=getTopicByID(topicid);
-        for (Topic topic : topics) {
-            int likes=topic.getLikes(),unlikes=topic.getUnlikes();
-            if (status == 1) {
-                if (likes == 0) return false;
-                topic.setLikes(likes - 1);
-            }
-            else if (status == 0) {
-                if (unlikes == 0) return false;
-                topic.setUnlikes(unlikes - 1);
-            }
-            success=topicDao.updateByPrimaryKey(topic);
-        }
-        if (success!=0) return true;
-        else return false;
 
+    /**
+     * 修改话题表点赞和踩的总数以及热度，用户修改态度时调用此方法
+     * @author 呼叫哆啦A梦
+     * @param topicid 话题ID主键
+     * @param status 0：表示要修改为踩，1：表示要修改为赞
+     * @return AjaxResponse
+     */
+    public AjaxResponse updateLikesById(String topicid, int status) {
+        Topic topic = topicDao.selectByPrimaryKey(topicid);
+        if (topic == null)
+            return AjaxResponse.error(500, "不存在话题:"+topicid);
+        int likes, unlikes;
+        likes = topic.getLikes();
+        unlikes = topic.getUnlikes();
+        if(status==0){
+            likes-=1;
+            unlikes+=1;
+        }else{
+            likes+=1;
+            unlikes-=1;
+        }
+        if(likes<0||unlikes<0) return AjaxResponse.error(500,"修改点赞（踩）总数失败，出现小于0");
+        else{
+            topic.setLikes(likes);
+            topic.setUnlikes(unlikes);
+            //修改热度
+            int heats=(25*topic.getViews()+40*topic.getCommentcount()+25*likes-5*unlikes)/100;
+            topic.setHeats(heats);
+            topicDao.updateByPrimaryKey(topic);
+            return AjaxResponse.success();
+        }
+    }
+
+    /**
+     * 修改话题表点赞和踩的总数以及热度，用户取消点赞（踩）时调用此方法
+     * @param topicid 话题ID主键
+     * @param status 0：表示原来是踩，1：表示原来是赞
+     * @return AjaxResponse
+     */
+    public AjaxResponse deleteLikesById(String topicid, int status) {
+        Topic topic = topicDao.selectByPrimaryKey(topicid);
+        if (topic == null)
+            return AjaxResponse.error(500, "不存在话题:"+topicid);
+        int likes, unlikes;
+        likes = topic.getLikes();
+        unlikes = topic.getUnlikes();
+        if(status==1) likes-=1;
+        else unlikes-=1;
+        if(likes<0||unlikes<0) return AjaxResponse.error(500,"修改点赞（踩）总数失败，出现小于0");
+        else{
+            topic.setLikes(likes);
+            topic.setUnlikes(unlikes);
+            //修改热度
+            int heats=(25*topic.getViews()+40*topic.getCommentcount()+25*likes-5*unlikes)/100;
+            topic.setHeats(heats);
+            topicDao.updateByPrimaryKey(topic);
+            return AjaxResponse.success();
+        }
     }
 
 }

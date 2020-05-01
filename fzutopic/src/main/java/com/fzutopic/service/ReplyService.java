@@ -1,5 +1,6 @@
 package com.fzutopic.service;
 
+import com.fzutopic.model.AjaxResponse;
 import com.fzutopic.model.Reply;
 import com.github.pagehelper.PageInfo;
 
@@ -18,12 +19,12 @@ public interface ReplyService {
     List<Reply> getReplyById(String replyid);
 
     //新增，对应赞、踩+1的情况,status：0为踩，1为赞，，221701401负责
-    boolean insertLikesById(String replyid, int status);
+    AjaxResponse insertLikesById(String replyid, int status);
 
     //修改，对应一方+1一方-1的情况,status：0为踩，1为赞，，221701401负责
-    boolean updateLikesById(String replyid, int status);
+    AjaxResponse updateLikesById(String replyid, int status);
 
     //删除，对应赞、踩-1的情况,status：0为踩，1为赞，，221701401负责
-    boolean deleteLikesById(String replyid, int status);
+    AjaxResponse deleteLikesById(String replyid, int status);
 
 }

@@ -1,6 +1,7 @@
 package com.fzutopic.service;
 
 import com.fzutopic.dao.CommentDao;
+import com.fzutopic.model.AjaxResponse;
 import com.fzutopic.model.Comment;
 import com.fzutopic.model.CommentExample;
 import com.github.pagehelper.PageHelper;
@@ -38,60 +39,81 @@ public class CommentServiceImpl implements CommentService{
         return commentDao.selectByExampleWithBLOBs(commentExample);
     }
 
-    //新增，对应赞、踩+1的情况,status：0为踩，1为赞，221701401负责
-    public boolean insertLikesById(String commentid, int status) {
-        int success=0;
-        List<Comment> comments=getCommentById(commentid);
-        for (Comment comment:comments) {
-            if (status == 1) comment.setLikes(comment.getLikes() + 1);
-            else if (status == 0) comment.setUnlikes(comment.getUnlikes() + 1);
-            success=commentDao.updateByPrimaryKey(comment);
-        }
-        if (success!=0) return true;
-        else return false;
+    /**
+     * 修改评论表点赞和踩的总数，用户首次点赞（踩）时调用此方法
+     * @Author 呼叫哆啦A梦
+     * @param commentid 评论ID主键
+     * @param status 0：用户点赞 1：用户踩
+     * @return AjaxResponse
+     */
+    public AjaxResponse insertLikesById(String commentid, int status) {
+        Comment comment=commentDao.selectByPrimaryKey(commentid);
+        if(comment==null)
+            return AjaxResponse.error(500, "不存在评论:"+commentid);
+        int likes, unlikes;
+        likes = comment.getLikes();
+        unlikes = comment.getUnlikes();
+        if(status==1)   likes+=1;
+        else unlikes+=1;
+        comment.setUnlikes(unlikes);
+        comment.setLikes(likes);
+        commentDao.updateByPrimaryKey(comment);
+        return AjaxResponse.success();
     }
 
-    //修改，对应一方+1一方-1的情况,status：0为修改为踩，1为修改为赞，221701401负责
-    public boolean updateLikesById(String commentid, int status) {
-        int success=0;
-        List<Comment> comments=getCommentById(commentid);
-        for (Comment comment:comments) {
-            int likes=comment.getLikes(),unlikes=comment.getUnlikes();
-            if (status == 1) {
-                if (unlikes == 0) return false;
-                comment.setLikes(likes + 1);
-                comment.setUnlikes(unlikes - 1);
-            }
-            else if (status == 0) {
-                if (likes == 0) return false;
-                comment.setUnlikes(unlikes + 1);
-                comment.setLikes(likes - 1);
-            }
-            success=commentDao.updateByPrimaryKey(comment);
+    /**
+     * 修改评论表点赞和踩的总数，用户修改态度时调用此方法
+     * @author 呼叫哆啦A梦
+     * @param commentid 评论ID主键
+     * @param status 0：表示要修改为踩，1：表示要修改为赞
+     * @return AjaxResponse
+     */
+    public AjaxResponse updateLikesById(String commentid, int status) {
+        Comment comment=commentDao.selectByPrimaryKey(commentid);
+        if(comment==null)
+            return AjaxResponse.error(500, "不存在评论:"+commentid);
+        int likes, unlikes;
+        likes = comment.getLikes();
+        unlikes = comment.getUnlikes();
+        if(status==0){
+            likes-=1;
+            unlikes+=1;
+        }else{
+            likes+=1;
+            unlikes-=1;
         }
-        if (success!=0) return true;
-        else return false;
+        if(likes<0||unlikes<0) return AjaxResponse.error(500,"修改点赞（踩）总数失败，出现小于0");
+        else{
+            comment.setLikes(likes);
+            comment.setUnlikes(unlikes);
+            commentDao.updateByPrimaryKey(comment);
+            return AjaxResponse.success();
+        }
 
     }
 
-    //删除，对应赞、踩-1的情况,status：0为踩，1为赞，221701401负责
-    public boolean deleteLikesById(String commentid, int status) {
-        int success=0;
-        List<Comment> comments=getCommentById(commentid);
-        for (Comment comment:comments) {
-            int likes=comment.getLikes(),unlikes=comment.getUnlikes();
-            if (status == 1) {
-                if (likes == 0) return false;
-                comment.setLikes(likes - 1);
-            }
-            else if (status == 0) {
-                if (unlikes == 0) return false;
-                comment.setUnlikes(unlikes - 1);
-            }
-            success=commentDao.updateByPrimaryKey(comment);
+    /**
+     * 修改评论表点赞和踩的总数，用户取消点赞（踩）时调用此方法
+     * @param commentid 话题ID主键
+     * @param status 0：表示原来是踩，1：表示原来是赞
+     * @return AjaxResponse
+     */
+    public AjaxResponse deleteLikesById(String commentid, int status) {
+        Comment comment=commentDao.selectByPrimaryKey(commentid);
+        if(comment==null)
+            return AjaxResponse.error(500, "不存在评论:"+commentid);
+        int likes, unlikes;
+        likes = comment.getLikes();
+        unlikes = comment.getUnlikes();
+        if(status==1) likes-=1;
+        else unlikes-=1;
+        if(likes<0||unlikes<0) return AjaxResponse.error(500,"修改点赞（踩）总数失败，出现小于0");
+        else{
+            comment.setLikes(likes);
+            comment.setUnlikes(unlikes);
+            commentDao.updateByPrimaryKey(comment);
+            return AjaxResponse.success();
         }
-        if (success!=0) return true;
-        else return false;
 
     }
 
