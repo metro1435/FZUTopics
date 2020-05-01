@@ -1,6 +1,4 @@
 package com.fzutopic.service;
-
-
 import com.fzutopic.model.User;
 
 import java.util.ArrayList;
