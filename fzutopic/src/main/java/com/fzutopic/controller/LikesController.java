@@ -49,10 +49,14 @@ public class LikesController {
         String userid = TokenUtil.getUserIdByRequest(httpServletRequest);
         String topicid = topiclikes.getTopicid();
         topiclikes.setUserid(userid);
+
         if (topiclikesDao.selectByPrimaryKey(topiclikes) != null)
             return AjaxResponse.error(500, "用户：" + userid + "非首次对话题：" + topicid + "点赞（踩）");
-        int status = topiclikes.getLikedstatus();
-        AjaxResponse ajaxResponse = topicService.insertLikesById(topicid, status);
+        int likes=topiclikes.getLikedstatus();
+        if (likes != 1 && likes != 0)
+            return AjaxResponse.error(500, "likes参数值非法要求为0或1");
+
+        AjaxResponse ajaxResponse = topicService.insertLikesById(topicid, likes);
         int code = ajaxResponse.getCode();
         if (code != 200) return ajaxResponse;
         likesService.postTopicLikes(topiclikes);
