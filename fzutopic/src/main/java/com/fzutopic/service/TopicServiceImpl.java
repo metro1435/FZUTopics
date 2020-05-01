@@ -83,11 +83,9 @@ public class TopicServiceImpl implements TopicService {
     }
 
     //浏览量+1，221701401负责
-    public List<Topic> updateViews(List<Topic> topic) {
-        for (Topic value : topic) {
-            value.setViews(value.getViews() + 1);
-            topicDao.updateByPrimaryKey(value);
-        }
+    public Topic updateViews(Topic topic) {
+        topic.setViews(topic.getViews() + 1);
+        topicDao.updateByPrimaryKey(topic);
         return topic;
     }
 

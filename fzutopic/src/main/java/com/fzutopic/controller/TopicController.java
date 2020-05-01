@@ -9,7 +9,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
-import java.util.List;
 
 @Slf4j
 @RestController
@@ -30,8 +29,8 @@ public class TopicController {
     @GetMapping("/topic/topicid/{topicid}")
     public  @ResponseBody AjaxResponse getTopicById(@PathVariable(name="topicid") String topicid) {
         if (topicid.isEmpty() || topicid.length()!=24) return AjaxResponse.error(400,"id为空或不合规");
-        List<Topic> topic = topicService.getTopicByID(topicid);
-        if (topic.isEmpty()) return AjaxResponse.error(404,"没有找到该id对应话题");
+        Topic topic = topicService.getTopicByID(topicid);
+        if (topic == null) return AjaxResponse.error(404,"没有找到该id对应话题");
         //else这一行是浏览量加1.不需要的话注释掉即可
         else topic=topicService.updateViews(topic);
         return AjaxResponse.success(topic);

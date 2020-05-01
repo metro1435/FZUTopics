@@ -25,7 +25,7 @@ public interface TopicService {
     PageInfo<Topic> getTopicsByTitle(String title);
 
     //浏览量+1，221701401负责
-    List<Topic> updateViews(List<Topic> topic);
+    Topic updateViews(Topic topic);
 
     //新增，对应赞、踩+1的情况,status：0为踩，1为赞，221701401负责
     AjaxResponse insertLikesById(String topicid, int status);
