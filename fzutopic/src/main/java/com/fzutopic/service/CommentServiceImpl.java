@@ -26,6 +26,7 @@ public class CommentServiceImpl implements CommentService{
         commentExample.setOrderByClause("time desc");
         CommentExample.Criteria criteria=commentExample.createCriteria();
         criteria.andTopicidEqualTo(topicid);
+        criteria.andAuditstatusEqualTo(1);
         PageHelper.startPage(1,20);
         List<Comment> comments=commentDao.selectByExampleWithBLOBs(commentExample);
         return PageInfo.of(comments);

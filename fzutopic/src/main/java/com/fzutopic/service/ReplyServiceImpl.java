@@ -27,6 +27,7 @@ public class ReplyServiceImpl implements ReplyService{
         replyExample.setOrderByClause("time desc");
         ReplyExample.Criteria criteria=replyExample.createCriteria();
         criteria.andCommentidEqualTo(commentid);
+        criteria.andAuditstatusEqualTo(1);
         PageHelper.startPage(1,10);
         List<Reply> replies=replyDao.selectByExampleWithBLOBs(replyExample);
         return PageInfo.of(replies);

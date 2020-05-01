@@ -28,14 +28,20 @@ public class TopicServiceImpl implements TopicService {
     public PageInfo<Topic> getTopics() {
         TopicExample topicExample = new TopicExample();
         topicExample.setOrderByClause("heats desc");
+        TopicExample.Criteria criteria=topicExample.createCriteria();
+        criteria.andAuditstatusEqualTo(1);
         PageHelper.startPage(1, 16);
         List<Topic> topics = topicDao.selectByExampleWithBLOBs(topicExample);
         return PageInfo.of(topics);
     }
 
     //根据topicid找话题，221701401负责
-    public Topic getTopicByID(String id) {
-        return topicDao.selectByPrimaryKey(id);
+    public List<Topic> getTopicByID(String id) {
+        TopicExample topicExample=new TopicExample();
+        TopicExample.Criteria criteria=topicExample.createCriteria();
+        criteria.andAuditstatusEqualTo(1);
+        criteria.andTopicidEqualTo(id);
+        return topicDao.selectByExampleWithBLOBs(topicExample);
     }
 
 
@@ -55,8 +61,8 @@ public class TopicServiceImpl implements TopicService {
         List<Topic> resTopicList = new ArrayList<Topic>();
         for (TopicTagKey tmpTopicTagKey : topicTagKeys) {
             String tmpTopicId = tmpTopicTagKey.getTopicid();
-            Topic tmpTopic = getTopicByID(tmpTopicId);
-            resTopicList.add(tmpTopic);
+            List<Topic> tmpTopic = getTopicByID(tmpTopicId);
+            resTopicList.addAll(tmpTopic);
         }
         resTopicList.sort(new Comparator<Topic>() {
             @Override
@@ -73,6 +79,7 @@ public class TopicServiceImpl implements TopicService {
         topicExample.setOrderByClause("heats desc");
         TopicExample.Criteria criteria = topicExample.createCriteria();
         criteria.andTitleEqualTo(title);
+        criteria.andAuditstatusEqualTo(1);
         PageHelper.startPage(1, 16);
         //这里是模糊搜索
         List<Topic> test = topicDao.selectByTitleLike(title);
@@ -83,10 +90,12 @@ public class TopicServiceImpl implements TopicService {
     }
 
     //浏览量+1，221701401负责
-    public Topic updateViews(Topic topic) {
-        topic.setViews(topic.getViews() + 1);
-        topicDao.updateByPrimaryKey(topic);
-        return topic;
+    public List<Topic> updateViews(List<Topic> topics) {
+        for (Topic topic:topics) {
+            topic.setViews(topic.getViews() + 1);
+            topicDao.updateByPrimaryKey(topic);
+        }
+        return topics;
     }
 
     /**
