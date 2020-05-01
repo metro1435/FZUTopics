@@ -31,14 +31,6 @@ public class CommentServiceImpl implements CommentService{
         return PageInfo.of(comments);
     }
 
-    //根据commentid找评论，221701401负责
-    public List<Comment> getCommentById(String commentid) {
-        CommentExample commentExample=new CommentExample();
-        CommentExample.Criteria criteria=commentExample.createCriteria();
-        criteria.andCommentidEqualTo(commentid);
-        return commentDao.selectByExampleWithBLOBs(commentExample);
-    }
-
     /**
      * 修改评论表点赞和踩的总数，用户首次点赞（踩）时调用此方法
      * @Author 呼叫哆啦A梦

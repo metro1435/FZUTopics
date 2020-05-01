@@ -15,9 +15,6 @@ public interface ReplyService {
     //插入reply,221701401负责
     boolean postReply(Reply reply);
 
-    //根据replyid找回复，221701401负责
-    List<Reply> getReplyById(String replyid);
-
     //新增，对应赞、踩+1的情况,status：0为踩，1为赞，，221701401负责
     AjaxResponse insertLikesById(String replyid, int status);
 

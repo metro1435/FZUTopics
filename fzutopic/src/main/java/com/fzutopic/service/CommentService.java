@@ -11,9 +11,6 @@ public interface CommentService {
     //根据topicid找出对应的评论列表
     PageInfo<Comment> getCommentsById(String topicid);
 
-    //根据commentid找评论（example返回的是列表=-=我也莫的法子），221701401负责
-    List<Comment> getCommentById(String commentid);
-
     //新增，对应赞、踩+1的情况,status：0为踩，1为赞，221701401负责
     AjaxResponse insertLikesById(String commentid, int status);
 

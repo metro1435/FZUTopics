@@ -37,14 +37,6 @@ public class ReplyServiceImpl implements ReplyService{
         return replyDao.insertReply(reply);
     }
 
-    //根据replyid找回复，221701401负责
-    public List<Reply> getReplyById(String replyid) {
-        ReplyExample replyExample=new ReplyExample();
-        ReplyExample.Criteria criteria=replyExample.createCriteria();
-        criteria.andReplyidEqualTo(replyid);
-        return replyDao.selectByExampleWithBLOBs(replyExample);
-    }
-
     /**
      * 修改回复表点赞和踩的总数，用户首次点赞（踩）时调用此方法
      * @Author 呼叫哆啦A梦

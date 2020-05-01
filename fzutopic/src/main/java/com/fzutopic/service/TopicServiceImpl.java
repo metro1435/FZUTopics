@@ -34,11 +34,8 @@ public class TopicServiceImpl implements TopicService {
     }
 
     //根据topicid找话题，221701401负责
-    public List<Topic> getTopicByID(String id) {
-        TopicExample topicExample = new TopicExample();
-        TopicExample.Criteria criteria = topicExample.createCriteria();
-        criteria.andTopicidEqualTo(id);
-        return topicDao.selectByExampleWithBLOBs(topicExample);
+    public Topic getTopicByID(String id) {
+        return topicDao.selectByPrimaryKey(id);
     }
 
 
@@ -58,8 +55,8 @@ public class TopicServiceImpl implements TopicService {
         List<Topic> resTopicList = new ArrayList<Topic>();
         for (TopicTagKey tmpTopicTagKey : topicTagKeys) {
             String tmpTopicId = tmpTopicTagKey.getTopicid();
-            List<Topic> tmpTopicList = getTopicByID(tmpTopicId);
-            resTopicList.addAll(tmpTopicList);
+            Topic tmpTopic = getTopicByID(tmpTopicId);
+            resTopicList.add(tmpTopic);
         }
         resTopicList.sort(new Comparator<Topic>() {
             @Override

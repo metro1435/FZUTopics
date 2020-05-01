@@ -13,7 +13,7 @@ public interface TopicService {
     PageInfo<Topic> getTopics();
 
     //根据topicid找话题，221701401负责
-    List<Topic> getTopicByID(String id);
+    Topic getTopicByID(String id);
 
     //根据tagid找话题,一组16,按热度降序，221701401负责
     PageInfo<Topic> getTopicsByTag(String tagid);
