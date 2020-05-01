@@ -75,11 +75,11 @@ public class TopicServiceImpl implements TopicService {
 
     //根据title找话题，模糊搜索使用sql的like，221701401负责
     public PageInfo<Topic> getTopicsByTitle(String title) {
-        TopicExample topicExample = new TopicExample();
+        /*TopicExample topicExample = new TopicExample();
         topicExample.setOrderByClause("heats desc");
         TopicExample.Criteria criteria = topicExample.createCriteria();
         criteria.andTitleEqualTo(title);
-        criteria.andAuditstatusEqualTo(1);
+        criteria.andAuditstatusEqualTo(1);*/
         PageHelper.startPage(1, 16);
         //这里是模糊搜索
         List<Topic> test = topicDao.selectByTitleLike(title);

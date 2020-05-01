@@ -22,7 +22,7 @@ public interface TopicDao {
     List<Topic> selectByExample(TopicExample example);
 
     //模糊搜索，221701401负责
-    @Select({"select * from topic where title like CONCAT('%',#{0},'%')"})
+    @Select({"select * from topic where title like CONCAT('%',#{0},'%') and auditstatus = '1'"})
     List<Topic> selectByTitleLike(String title);
 
     Topic selectByPrimaryKey(String topicid);
