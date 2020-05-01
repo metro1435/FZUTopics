@@ -92,7 +92,12 @@ public class TopicServiceImpl implements TopicService {
     //浏览量+1，221701401负责
     public List<Topic> updateViews(List<Topic> topics) {
         for (Topic topic:topics) {
-            topic.setViews(topic.getViews() + 1);
+            int view=topic.getViews() + 1;
+            topic.setViews(view);
+            //修改热度
+            int heats=(25*view+40*topic.getCommentcount()
+                    +25*topic.getLikes()-5*topic.getUnlikes())/100;
+            topic.setHeats(heats);
             topicDao.updateByPrimaryKey(topic);
         }
         return topics;
