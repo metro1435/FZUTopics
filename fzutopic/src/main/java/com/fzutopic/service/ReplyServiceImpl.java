@@ -1,9 +1,9 @@
 package com.fzutopic.service;
 
+import com.fzutopic.dao.CommentDao;
 import com.fzutopic.dao.ReplyDao;
-import com.fzutopic.model.AjaxResponse;
-import com.fzutopic.model.Reply;
-import com.fzutopic.model.ReplyExample;
+import com.fzutopic.dao.TopicDao;
+import com.fzutopic.model.*;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import lombok.extern.slf4j.Slf4j;
@@ -21,6 +21,13 @@ public class ReplyServiceImpl implements ReplyService{
     @Resource
     ReplyDao replyDao;
 
+    @Resource
+    CommentDao commentDao;
+
+    @Resource
+    TopicDao topicDao;
+
+
     //根据commentid找评论,221701401负责
     public PageInfo<Reply> getRepliesById(String commentid) {
         ReplyExample replyExample=new ReplyExample();
@@ -35,6 +42,29 @@ public class ReplyServiceImpl implements ReplyService{
 
     //插入reply,221701401负责
     public boolean postReply(Reply reply) {
+        if (reply.getAuditstatus()==1) {
+            int replyStatus=0;
+            Comment comment=commentDao.selectByPrimaryKey(reply.getCommentid());
+            if (comment==null) return false;
+            Topic topic=topicDao.selectByPrimaryKey(comment.getTopicid());
+            if (topic==null) return false;
+            if (comment.getIsreply()==0) {
+                replyStatus=1;
+                comment.setIsreply(1);
+            }
+            int cnt=topic.getCommentcount()+1;
+            topic.setCommentcount(cnt);
+            int heats=(25*topic.getViews()+40*cnt+25*topic.getLikes()
+                    -5*topic.getUnlikes())/100;
+            topic.setHeats(heats);
+            int topicStatus,commentStatus;
+            topicStatus=topicDao.updateByPrimaryKeyWithBLOBs(topic);
+            if (replyStatus!=0){
+                commentStatus=commentDao.updateByPrimaryKeyWithBLOBs(comment);
+                if (commentStatus==0) return false;
+            }
+            if (topicStatus==0) return false;
+        }
         return replyDao.insertReply(reply);
     }
 
