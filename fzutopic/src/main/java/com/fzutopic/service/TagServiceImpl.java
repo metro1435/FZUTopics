@@ -2,8 +2,10 @@ package com.fzutopic.service;
 
 
 import com.fzutopic.dao.TagDao;
+import com.fzutopic.dao.TopicTagDao;
 import com.fzutopic.model.Tag;
 import com.fzutopic.model.TagExample;
+import com.fzutopic.model.TopicTagKey;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RestController;
@@ -18,11 +20,45 @@ public class TagServiceImpl implements TagService{
     @Resource
     private TagDao tagDao;
 
+    @Resource
+    private TopicTagDao topicTagDao;
+
     //按热度降序获取tag的方法，限制8个，221701401负责
     public List<Tag> getTag(){
         TagExample tagExample=new TagExample();
         tagExample.setOrderByClause("times desc");
         tagExample.setLimit(8);
         return tagDao.selectByExample(tagExample);
+    }
+
+    //获取所有标签，221701401负责
+    public List<Tag> getAllTag(){
+        return tagDao.select();
+    }
+
+    //插入标签，221701401负责
+    public boolean insertTag(List<TopicTagKey> topicTagKeys) {
+        int cnt=0;
+        for (TopicTagKey topicTagKey:topicTagKeys) {
+            boolean times=updateTimes(topicTagKey.getTagid());
+            if (times) {
+                boolean insert=topicTagDao.insertTopicTag(topicTagKey);
+                if (!insert) return false;
+            }
+            else return false;
+            cnt++;
+        }
+        if (cnt!=topicTagKeys.size()) return false;
+        else return true;
+    }
+
+    //更新标签使用次数，221701401负责
+    public boolean updateTimes(String tagid) {
+        Tag tag=tagDao.selectByPrimaryKey(tagid);
+        int times=tag.getTimes()+1;
+        tag.setTimes(times);
+        int flag=tagDao.updateByPrimaryKeySelective(tag);
+        if (flag!=0) return true;
+        else return false;
     }
 }

@@ -1,5 +1,7 @@
 package com.fzutopic.model;
 
+import lombok.Data;
+
 import java.io.Serializable;
 
 /**

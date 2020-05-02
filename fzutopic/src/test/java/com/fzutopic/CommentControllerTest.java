@@ -22,6 +22,7 @@ public class CommentControllerTest {
     @Autowired
     private WebApplicationContext wac;
     private MockMvc mvc;
+    private String token;
 
     @Before
     public void setupMockMvc(){
@@ -40,6 +41,7 @@ public class CommentControllerTest {
         mvc.perform(MockMvcRequestBuilders.get("/topic/t12345678920200501121932/comment")
                 .contentType(MediaType.APPLICATION_JSON_UTF8)
                 .accept(MediaType.APPLICATION_JSON_UTF8)
+                .header("token",token)
         )
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.data.total").value("2"))

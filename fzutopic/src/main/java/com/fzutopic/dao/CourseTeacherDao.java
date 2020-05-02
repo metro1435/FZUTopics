@@ -4,6 +4,7 @@ import com.fzutopic.model.CourseTeacherExample;
 import com.fzutopic.model.CourseTeacherKey;
 import java.util.List;
 import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.Select;
 
 public interface CourseTeacherDao {
     long countByExample(CourseTeacherExample example);

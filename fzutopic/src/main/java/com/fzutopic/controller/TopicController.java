@@ -1,6 +1,7 @@
 package com.fzutopic.controller;
 
 
+import com.fzutopic.annotation.UserLoginToken;
 import com.fzutopic.model.AjaxResponse;
 import com.fzutopic.model.Topic;
 import com.fzutopic.service.TopicServiceImpl;
@@ -19,6 +20,7 @@ public class TopicController {
 
     //获取所有话题，1组16个，热度倒序，使用pagehelper分页，221701401负责
     //前端操作可参考 https://blog.csdn.net/ftlnnl/article/details/104972751
+    @UserLoginToken
     @GetMapping("/topic")
     public AjaxResponse getTopic() {
         PageInfo<Topic> topics = topicService.getTopics();
@@ -27,6 +29,7 @@ public class TopicController {
     }
 
     //获取指定id的话题，考虑到使用情况，内置了浏览量加1的操作，221701401负责
+    @UserLoginToken
     @GetMapping("/topic/topicid/{topicid}")
     public  @ResponseBody AjaxResponse getTopicById(@PathVariable(name="topicid") String topicid) {
         if (topicid.isEmpty() || topicid.length()!=24) return AjaxResponse.error(400,"id为空或不合规");
@@ -38,6 +41,7 @@ public class TopicController {
     }
 
     //获取指定tag的话题，1组16个，热度倒序，221701401负责
+    @UserLoginToken
     @GetMapping("/topic/{tagid}")
     public  @ResponseBody AjaxResponse getTopicByTag(@PathVariable(name="tagid") String tagid) {
         if (tagid.isEmpty() || tagid.length()>5) return AjaxResponse.error(400,"tagid为空或不合规定");
@@ -47,6 +51,7 @@ public class TopicController {
     }
 
     //获取指定title的话题,模糊搜索->sql like,221701401负责
+    @UserLoginToken
     @GetMapping("/topic/title/{title}")
     public  @ResponseBody AjaxResponse getTopicByTitle(@PathVariable(name="title") String title) {
         if (title.isEmpty()) return AjaxResponse.error(400,"输入搜索的值为空");

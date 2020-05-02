@@ -1,6 +1,7 @@
 package com.fzutopic.controller;
 
 
+import com.fzutopic.annotation.UserLoginToken;
 import com.fzutopic.model.AjaxResponse;
 import com.fzutopic.model.Comment;
 import com.fzutopic.service.CommentServiceImpl;
@@ -21,6 +22,7 @@ public class CommentController {
     CommentServiceImpl commentService;
 
     //根据topicid找对应评论，221701401负责
+    @UserLoginToken
     @GetMapping("/topic/{topicid}/comment")
     public  @ResponseBody AjaxResponse getCommentById(@PathVariable(name="topicid") String topicid) {
         if (topicid.isEmpty() || topicid.length()!=24) return AjaxResponse.error(400,"topicid为空或不合规定");

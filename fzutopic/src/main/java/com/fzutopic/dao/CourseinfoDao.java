@@ -3,7 +3,11 @@ package com.fzutopic.dao;
 import com.fzutopic.model.Courseinfo;
 import com.fzutopic.model.CourseinfoExample;
 import java.util.List;
-import org.apache.ibatis.annotations.Param;
+
+import com.fzutopic.model.Topic;
+import com.fzutopic.view.CourseTeacherInfo;
+import com.fzutopic.view.CourseVO;
+import org.apache.ibatis.annotations.*;
 
 public interface CourseinfoDao {
     long countByExample(CourseinfoExample example);
@@ -11,6 +15,10 @@ public interface CourseinfoDao {
     int deleteByExample(CourseinfoExample example);
 
     int deleteByPrimaryKey(String courseid);
+
+    //模糊搜索，221701401负责
+    @Select({"select * from courseinfo where coursename like CONCAT('%',#{0},'%')"})
+    List<Courseinfo> selectCourseNameByLike(String name);
 
     int insert(Courseinfo record);
 

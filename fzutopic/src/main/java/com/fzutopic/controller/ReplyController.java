@@ -20,6 +20,7 @@ public class ReplyController {
     ReplyServiceImpl replyService;
 
     //根据commentid找对应回复，，221701401负责
+    @UserLoginToken
     @GetMapping("/topic/{commentid}/reply")
     public  @ResponseBody AjaxResponse getCommentById(@PathVariable(name="commentid") String commentid) {
         if (commentid.isEmpty() || commentid.length()!=23) return AjaxResponse.error(400,"commentid为空或不合规定");

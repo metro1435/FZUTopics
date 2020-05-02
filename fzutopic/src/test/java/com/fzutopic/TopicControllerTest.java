@@ -1,5 +1,6 @@
 package com.fzutopic;
 
+import org.json.JSONObject;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -21,13 +22,28 @@ import org.springframework.web.context.WebApplicationContext;
 public class TopicControllerTest {
     @Autowired
     private WebApplicationContext wac;
-
     private MockMvc mvc;
+    private String token;
 
     @Before
     public void setupMockMvc() throws Exception {
         //初始化MockMvc对象
         mvc = MockMvcBuilders.webAppContextSetup(wac).build();
+        String json = "{\n" +
+                "\t\"userid\":\"123456789\",\n" +
+                "\t\"password\":\"123456\"\n" +
+                "}";
+        String result= mvc.perform(MockMvcRequestBuilders.get("/login")
+                .accept(MediaType.APPLICATION_JSON_UTF8)
+                .contentType(MediaType.APPLICATION_JSON_UTF8)
+                .content(json.getBytes())
+        )
+                .andReturn()
+                .getResponse()
+                .getContentAsString();
+        JSONObject jsonObject = new JSONObject(result);
+        //获取token
+        token=jsonObject.getString("token");
     }
 
 
@@ -43,6 +59,7 @@ public class TopicControllerTest {
         mvc.perform(MockMvcRequestBuilders.get("/topic")
                 .contentType(MediaType.APPLICATION_JSON_UTF8)
                 .accept(MediaType.APPLICATION_JSON_UTF8)
+                .header("token",token)
         )
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.data.total").value("3"))
@@ -64,6 +81,7 @@ public class TopicControllerTest {
         mvc.perform(MockMvcRequestBuilders.get("/topic/topicid/t12345678020200501121742")
                 .contentType(MediaType.APPLICATION_JSON_UTF8)
                 .accept(MediaType.APPLICATION_JSON_UTF8)
+                .header("token",token)
         )
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.data[0].views").value("146"))
@@ -84,6 +102,7 @@ public class TopicControllerTest {
         mvc.perform(MockMvcRequestBuilders.get("/topic/1")
                 .contentType(MediaType.APPLICATION_JSON_UTF8)
                 .accept(MediaType.APPLICATION_JSON_UTF8)
+                .header("token",token)
         )
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.total").value("2"))
@@ -104,6 +123,7 @@ public class TopicControllerTest {
         mvc.perform(MockMvcRequestBuilders.get("/topic/title/话")
                 .contentType(MediaType.APPLICATION_JSON_UTF8)
                 .accept(MediaType.APPLICATION_JSON_UTF8)
+                .header("token",token)
         )
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.data.total").value("3"))

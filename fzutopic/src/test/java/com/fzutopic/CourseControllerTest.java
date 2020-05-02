@@ -19,7 +19,7 @@ import org.springframework.web.context.WebApplicationContext;
 @RunWith(SpringRunner.class)
 @SpringBootTest
 @Transactional
-public class ReplyControllerTest {
+public class CourseControllerTest {
     @Autowired
     private WebApplicationContext wac;
     private MockMvc mvc;
@@ -46,53 +46,41 @@ public class ReplyControllerTest {
     }
 
     /**
-     * 根据commentid找回复
-     * 选取比对回复内容进行测试
+     * 根据课程名查询测试
      * 需满足数据库中有相关数据
      *  221701401负责
      * @throws Exception
      */
     @Test
-    public void selectReplyByCommentIdTest() throws Exception {
-        mvc.perform(MockMvcRequestBuilders.get("/topic/12345678920200501140127/reply")
+    public void getByCourseTest() throws Exception {
+        mvc.perform(MockMvcRequestBuilders.get("/course/1/sort/1")
                 .contentType(MediaType.APPLICATION_JSON_UTF8)
                 .accept(MediaType.APPLICATION_JSON_UTF8)
                 .header("token",token)
         )
                 .andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(MockMvcResultMatchers.jsonPath("$.data.total").value("1"))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.data.list[0].text").value("评论"))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.data[0].teacherid").value("h010101"))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.data[1].teacherid").value("h010102"))
                 .andDo(MockMvcResultHandlers.print());
     }
 
     /**
-     * 新增回复
-     * 由于auditstatus的状态不同返回的时候没区别就没做两次
+     * 根据教师名查询测试
+     * 需满足数据库中有相关数据
      *  221701401负责
      * @throws Exception
      */
     @Test
-    public void postReplyTest() throws Exception {
-        String json ="{\n" +
-                "    \"replyid\":\"12345678020200501141311\",\n" +
-                "    \"text\": \"测试\",\n" +
-                "    \"likes\": \"0\",\n" +
-                "    \"unlikes\": \"0\",\n" +
-                "    \"time\": \"2020-04-30 11:21:22\",\n" +
-                "    \"isanony\":\"0\",\n" +
-                "    \"commentid\":\"admin000120200501135930\",\n" +
-                "    \"auditstatus\":\"1\"\n" +
-                "}";
-        mvc.perform(MockMvcRequestBuilders.post("/user/topic/comment/reply")
-                .accept(MediaType.APPLICATION_JSON_UTF8)
+    public void getByTeacherTest() throws Exception {
+        mvc.perform(MockMvcRequestBuilders.get("/course/1/sort/2")
                 .contentType(MediaType.APPLICATION_JSON_UTF8)
-                .content(json.getBytes())
+                .accept(MediaType.APPLICATION_JSON_UTF8)
                 .header("token",token)
         )
                 .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.data[0].courseid").value("c010101"))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.data[1].courseid").value("c010103"))
                 .andDo(MockMvcResultHandlers.print());
     }
+
 }
-
-
-

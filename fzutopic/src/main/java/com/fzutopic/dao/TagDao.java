@@ -4,6 +4,7 @@ import com.fzutopic.model.Tag;
 import com.fzutopic.model.TagExample;
 import java.util.List;
 import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.Select;
 
 public interface TagDao {
     long countByExample(TagExample example);
@@ -15,6 +16,9 @@ public interface TagDao {
     int insert(Tag record);
 
     int insertSelective(Tag record);
+
+    @Select("select * from tag")
+    List<Tag> select();
 
     List<Tag> selectByExample(TagExample example);
 
