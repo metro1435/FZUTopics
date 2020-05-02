@@ -22,7 +22,7 @@ public interface NewsDao {
     List<News> selectByExampleWithBLOBs(NewsExample example);
 
     //模糊搜索
-    @Select({"select * from news where title like CONCAT('%',#{0},'%')"})
+    @Select({"select * from news where title like CONCAT('%',#{0},'%') ORDER BY time DESC"})
     List<News> selectByTitleLike(String name);
 
     List<News> selectByExample(NewsExample example);

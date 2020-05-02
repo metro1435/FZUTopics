@@ -6,11 +6,9 @@ import com.github.pagehelper.PageInfo;
 import java.util.List;
 
 public interface NewsService {
-    List<News> getNews();
+    PageInfo<News> getNews();
 
-    List<News> getNewsByID(String id);
-
-    List<News> getNewsFavStatusByID(String id);
+    News getNewsByID(String id);
 
     PageInfo<News> getNewsByName(String name);
 

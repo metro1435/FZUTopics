@@ -17,7 +17,7 @@ import javax.annotation.Resource;
 public class TopicController {
     @Resource(name = "topicServiceImpl")
     TopicServiceImpl topicService;
-    //新增话题(要加入一个userid参数)
+    //新增话题
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
     @PostMapping("/user/topic")
     public @ResponseBody

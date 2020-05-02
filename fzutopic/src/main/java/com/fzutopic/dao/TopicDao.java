@@ -39,4 +39,6 @@ public interface TopicDao {
     int updateByPrimaryKeyWithBLOBs(Topic record);
 
     int updateByPrimaryKey(Topic record);
+
+
 }
