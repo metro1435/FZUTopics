@@ -1,5 +1,6 @@
 package com.fzutopic.service;
 
+import com.fzutopic.dao.TagDao;
 import com.fzutopic.dao.TopicDao;
 import com.fzutopic.dao.TopicTagDao;
 import com.fzutopic.model.*;
@@ -101,6 +102,29 @@ public class TopicServiceImpl implements TopicService {
             topicDao.updateByPrimaryKey(topic);
         }
         return topics;
+    }
+
+    public Topic createTopic(Topic topic){
+        topicDao.insert1(topic);
+        /*String id = topic.getTopicid();
+
+        TopicTagExample topicTagExample=new TopicTagExample();
+        TopicTagExample.Criteria criteria=topicTagExample.createCriteria();
+        criteria.andTopicidEqualTo(id);
+        List<TopicTagKey> topicTag = topicTagDao.selectByExample(topicTagExample);
+
+        for(int i=0;i<topicTag.size();i++)
+        {
+            TopicTagKey tagitem = topicTag.get(i);
+            String tagid = tagitem.getTagid();
+            Tag tag = tagDao.selectByPrimaryKey(tagid);
+
+            int count =tag.getTimes()+1;
+            tag.setTimes(count);
+            tagDao.updateByPrimaryKey(tag);
+        }*/
+
+        return topic;
     }
 
     /**

@@ -2,6 +2,7 @@ package com.fzutopic.model;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 /**
  * favlist
@@ -17,6 +18,9 @@ public class Favlist implements Serializable {
     private Date time;
 
     private static final long serialVersionUID = 1L;
+
+    //403
+    private List<FavlistItemKey> favlistItemKeys;
 
     public String getFavlistid() {
         return favlistid;
@@ -92,5 +96,14 @@ public class Favlist implements Serializable {
         sb.append(", serialVersionUID=").append(serialVersionUID);
         sb.append("]");
         return sb.toString();
+    }
+
+    //403
+    public List<FavlistItemKey> getFavlistItemKeys() {
+        return favlistItemKeys;
+    }
+
+    public void setFavlistItemKeys(List<FavlistItemKey> favlistItemKeys) {
+        this.favlistItemKeys = favlistItemKeys;
     }
 }

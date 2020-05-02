@@ -1,10 +1,8 @@
 package com.fzutopic.service;
 
 import com.fzutopic.dao.CommentDao;
-import com.fzutopic.model.AjaxResponse;
-import com.fzutopic.model.Comment;
-import com.fzutopic.model.CommentExample;
-import com.fzutopic.model.Reply;
+import com.fzutopic.dao.TopicDao;
+import com.fzutopic.model.*;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import lombok.extern.slf4j.Slf4j;
@@ -21,6 +19,9 @@ public class CommentServiceImpl implements CommentService {
     @Resource
     CommentDao commentDao;
 
+    @Resource
+    private TopicDao topicDao;
+
     //根据topicid找出对应的评论列表，，221701401负责
     public PageInfo<Comment> getCommentsById(String topicid) {
         CommentExample commentExample = new CommentExample();
@@ -31,6 +32,32 @@ public class CommentServiceImpl implements CommentService {
         PageHelper.startPage(1, 20);
         List<Comment> comments = commentDao.selectByExampleWithBLOBs(commentExample);
         return PageInfo.of(comments);
+    }
+
+    //1309
+    public Comment createComment(Comment comment){
+        //Comment comment = new Comment();
+        //Topic topic = new Topic();
+        int status,heat,count;
+        String id;
+
+        commentDao.insert1(comment);
+
+        status = comment.getAuditstatus();
+        id = comment.getTopicid();
+
+        Topic topic_id = topicDao.selectByPrimaryKey(id);
+
+        if(status==1)
+        {
+            count =topic_id.getCommentcount()+1;
+            heat =(25*topic_id.getViews()+40*topic_id.getCommentcount()+25*topic_id.getLikes()-5*topic_id.getUnlikes())/100;
+            topic_id.setCommentcount(count);
+            topic_id.setHeats(heat);
+            topicDao.updateByPrimaryKeyWithBLOBs(topic_id);
+
+        }
+        return comment;
     }
 
     /**

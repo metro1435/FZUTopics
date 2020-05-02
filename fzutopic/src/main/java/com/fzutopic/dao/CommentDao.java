@@ -3,6 +3,9 @@ package com.fzutopic.dao;
 import com.fzutopic.model.Comment;
 import com.fzutopic.model.CommentExample;
 import java.util.List;
+
+import com.fzutopic.model.Topic;
+import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Param;
 
 public interface CommentDao {
@@ -13,6 +16,10 @@ public interface CommentDao {
     int deleteByPrimaryKey(String commentid);
 
     int insert(Comment record);
+
+    //1309
+    @Insert({ "insert into comment(commentid, text, likes, unlikes, time, isanony, posterid, topicid, isreply, auditstatus) values(#{commentid}, #{text}, #{likes}, #{unlikes}, #{time}, #{isanony}, #{posterid}, #{topicid}, #{isreply},#{auditstatus})" })
+    int insert1(Comment record);
 
     int insertSelective(Comment record);
 

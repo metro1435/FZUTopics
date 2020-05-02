@@ -1,14 +1,19 @@
 package com.fzutopic.controller;
 
 import com.fzutopic.annotation.PassToken;
+import com.fzutopic.annotation.UserLoginToken;
 import com.fzutopic.model.AjaxResponse;
+import com.fzutopic.model.FavlistItemKey;
 import com.fzutopic.model.User;
+import com.fzutopic.service.FavlistItemService;
 import com.fzutopic.service.TokenService;
 import com.fzutopic.service.UserService;
+import com.fzutopic.utils.TokenUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 
 @Slf4j
 @RestController
@@ -18,6 +23,8 @@ public class AccountController {
     private UserService userService;
     @Resource
     private TokenService tokenService;
+    @Resource
+    private FavlistItemService favlistItemService;
 
     @PassToken
     @GetMapping("/login")
@@ -36,11 +43,11 @@ public class AccountController {
         }
     }
 
-//   @UserLoginToken
-//   @GetMapping(value = "/logout")
-//   public AjaxResponse logout(HttpServletRequest httpServletRequest) {
-//       String userid = TokenUtil.getUserIdByRequest(httpServletRequest);
-//       User user = userService.getUser(userid);
-//       return AjaxResponse.success(user);
-//   }
+   @UserLoginToken
+   @GetMapping(value = "/logout")
+   public AjaxResponse logout(HttpServletRequest httpServletRequest) {
+       String userid = TokenUtil.getUserIdByRequest(httpServletRequest);
+       return AjaxResponse.success(userid);
+   }
+
 }

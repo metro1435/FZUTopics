@@ -1,13 +1,16 @@
 package com.fzutopic.controller;
 
+import com.fzutopic.annotation.UserLoginToken;
 import com.fzutopic.model.AjaxResponse;
 import com.fzutopic.model.User;
 import com.fzutopic.service.UserServiceImpl;
+import com.fzutopic.utils.TokenUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 
 @Slf4j
 @RestController
@@ -17,10 +20,23 @@ public class UserController {
     @Resource(name = "userServiceImpl")
     UserServiceImpl userService;
 
-    //获取一篇Article，使用GET方法，此为框架搭建时的测试代码
-    @GetMapping("/article/{id}")
-    public AjaxResponse getArticle(@PathVariable String id) {
-        User user = userService.getUser(id);
-        return AjaxResponse.success(user);
+    //221701426
+    //获得个人信息
+    @GetMapping("/user/setting")
+    @UserLoginToken
+    public User getInfo(HttpServletRequest httpServletRequest){
+        String userid = TokenUtil.getUserIdByRequest(httpServletRequest);
+        return userService.getUser(userid);
+    }
+
+    //221701426
+    //修改个人昵称
+    //修改个人头像（url）
+    @PutMapping("/user/setting")
+    @UserLoginToken
+    public void updateNicknameIcon(@RequestBody User user,HttpServletRequest httpServletRequest){
+        String userid = TokenUtil.getUserIdByRequest(httpServletRequest);
+        user.setUserid(userid);
+        userService.updateNicknameIcon(user);
     }
 }

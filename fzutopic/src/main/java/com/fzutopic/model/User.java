@@ -1,6 +1,7 @@
 package com.fzutopic.model;
 
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * user
@@ -24,6 +25,10 @@ public class User implements Serializable {
     private Integer level;
 
     private String icon;
+
+    private List<Favlist> favlists;
+
+    private List<Comment> comments;
 
     private static final long serialVersionUID = 1L;
 
@@ -156,5 +161,25 @@ public class User implements Serializable {
         sb.append(", serialVersionUID=").append(serialVersionUID);
         sb.append("]");
         return sb.toString();
+    }
+
+    //403
+    public List<Favlist> getFavlists() {
+        return favlists;
+    }
+
+    //403
+    public void setFavlists(List<Favlist> favlists) {
+        this.favlists = favlists;
+    }
+
+    //403
+    public List<Comment> getComments() {
+        return comments;
+    }
+
+    //403
+    public void setComments(List<Comment> comments) {
+        this.comments = comments;
     }
 }

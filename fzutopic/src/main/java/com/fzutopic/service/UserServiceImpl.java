@@ -16,9 +16,17 @@ public class UserServiceImpl implements UserService{
     @Resource
     private UserDao userDao;
 
-    //获取所有用户
-    public User getUser(String id){
-        return userDao.selectByPrimaryKey(id);
+    //221701426
+    @Override
+    public User getUser(String userid){
+        return userDao.selectByPrimaryKey(userid);
+    }
+
+    //221701426
+    @Override
+    public void updateNicknameIcon(User user)
+    {
+        userDao.updateByPrimaryKeySelective(user);
     }
 
     public User findByUser(User user){

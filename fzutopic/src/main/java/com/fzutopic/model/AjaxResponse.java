@@ -48,6 +48,9 @@ public class AjaxResponse {
         return resultBean;
     }
 
+
+
+
     public static AjaxResponse success(Object data, String token) {
         AjaxResponse resultBean = new AjaxResponse();
         resultBean.setIsok(true);
