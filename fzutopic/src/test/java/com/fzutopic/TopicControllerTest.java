@@ -105,7 +105,7 @@ public class TopicControllerTest {
                 .header("token",token)
         )
                 .andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(MockMvcResultMatchers.jsonPath("$.total").value("2"))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.data.total").value("2"))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.data.list[0].heats").value("40"))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.data.list[1].heats").value("34"))
                 .andDo(MockMvcResultHandlers.print());

@@ -1,5 +1,6 @@
 package com.fzutopic;
 
+import org.json.JSONObject;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -25,8 +26,24 @@ public class CommentControllerTest {
     private String token;
 
     @Before
-    public void setupMockMvc(){
+    public void setupMockMvc() throws Exception {
         mvc = MockMvcBuilders.webAppContextSetup(wac).build(); //初始化MockMvc对象
+        String json = "{\n" +
+                "\t\"userid\":\"123456789\",\n" +
+                "\t\"password\":\"123456\"\n" +
+                "}";
+        String result= mvc.perform(MockMvcRequestBuilders.get("/login")
+                .accept(MediaType.APPLICATION_JSON_UTF8)
+                .contentType(MediaType.APPLICATION_JSON_UTF8)
+                .content(json.getBytes())
+        )
+                .andReturn()
+                .getResponse()
+                .getContentAsString();
+        JSONObject jsonObject = new JSONObject(result);
+        //获取token
+        token=jsonObject.getString("token");
+
     }
 
     /**
