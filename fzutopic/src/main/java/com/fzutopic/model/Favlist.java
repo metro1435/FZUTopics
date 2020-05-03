@@ -1,5 +1,7 @@
 package com.fzutopic.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
@@ -15,6 +17,7 @@ public class Favlist implements Serializable {
 
     private String name;
 
+    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone="GMT+8")
     private Date time;
 
     private static final long serialVersionUID = 1L;
@@ -96,14 +99,5 @@ public class Favlist implements Serializable {
         sb.append(", serialVersionUID=").append(serialVersionUID);
         sb.append("]");
         return sb.toString();
-    }
-
-    //403
-    public List<FavlistItemKey> getFavlistItemKeys() {
-        return favlistItemKeys;
-    }
-
-    public void setFavlistItemKeys(List<FavlistItemKey> favlistItemKeys) {
-        this.favlistItemKeys = favlistItemKeys;
     }
 }

@@ -36,7 +36,7 @@ public interface FavlistDao {
 
     Favlist selectByPrimaryKey(String favlistid);
 
-    @Insert("insert into favlist(favlistID,userID,name,time) values(#{favlistid},#{userid},#{name},#{time})")
+    @Insert("insert into favlist(favlistID,userID,name,time) values (#{favlistid},#{userid},#{name},#{time})")
     int insertByFavlist(Favlist favlist);
 
     int updateByExampleSelective(@Param("record") Favlist record, @Param("example") FavlistExample example);
