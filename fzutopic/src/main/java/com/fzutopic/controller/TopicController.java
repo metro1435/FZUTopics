@@ -4,12 +4,15 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fzutopic.annotation.UserLoginToken;
 import com.fzutopic.model.AjaxResponse;
 import com.fzutopic.model.Topic;
+import com.fzutopic.service.FavlistItemService;
 import com.fzutopic.service.TopicServiceImpl;
+import com.fzutopic.utils.TokenUtil;
 import com.github.pagehelper.PageInfo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 @Slf4j
@@ -17,7 +20,8 @@ import java.util.List;
 public class TopicController {
     @Resource(name = "topicServiceImpl")
     TopicServiceImpl topicService;
-
+    @Resource
+    private FavlistItemService favlistItemService;
     //获取所有话题，1组16个，热度倒序，使用pagehelper分页，221701401负责
     //前端操作可参考 https://blog.csdn.net/ftlnnl/article/details/104972751
     @UserLoginToken
@@ -60,6 +64,21 @@ public class TopicController {
         return AjaxResponse.success(topic);
     }
 
+    //新增话题221701309负责
+    @UserLoginToken
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
+    @PostMapping("/user/topic")
+    public @ResponseBody AjaxResponse createTopic(@RequestBody Topic topic){
+        return AjaxResponse.success(topicService.createTopic(topic));
+    }
+
+    @UserLoginToken
+    @GetMapping(value = "/user/topic/favstatus/{topicid}")
+    public AjaxResponse gettopicfavstatus(HttpServletRequest httpServletRequest, @PathVariable String topicid) {
+        String userid = TokenUtil.getUserIdByRequest(httpServletRequest);
+        boolean favstatus  = favlistItemService.getfavstatus(topicid, userid);
+        return AjaxResponse.success(favstatus);
+    }
     /*//测试用的接口
     @GetMapping("/test/{topicid}")
     public  @ResponseBody AjaxResponse test(@PathVariable(name="topicid") String topicid) {

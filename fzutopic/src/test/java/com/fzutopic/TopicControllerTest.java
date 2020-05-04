@@ -132,4 +132,22 @@ public class TopicControllerTest {
                 .andExpect(MockMvcResultMatchers.jsonPath("$.data.list[2].heats").value("0"))
                 .andDo(MockMvcResultHandlers.print());
     }
+    /**
+     * 获取用户对topicid话题的收藏状态
+     * 选取比对是否收藏进行测试
+     * 需满足数据库中有相关数据
+     *  221701402负责
+     * @throws Exception
+     */
+    @Test
+    public void gettopicfavstatusTest() throws Exception {
+        mvc.perform(MockMvcRequestBuilders.get("/user/topic/favstatus/t12345678020200501121742")
+                .contentType(MediaType.APPLICATION_JSON_UTF8)
+                .accept(MediaType.APPLICATION_JSON_UTF8)
+                .header("token",token)
+        )
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.data").value(true))
+                .andDo(MockMvcResultHandlers.print());
+    }
 }

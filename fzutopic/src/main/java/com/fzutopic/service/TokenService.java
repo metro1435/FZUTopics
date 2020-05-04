@@ -2,6 +2,7 @@ package com.fzutopic.service;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
+import com.fzutopic.model.Adminuser;
 import com.fzutopic.model.User;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -21,5 +22,12 @@ public class TokenService {
         return JWT.create().withAudience(String.valueOf(user.getUserid()))
                 .withExpiresAt(expiresDate)
                 .sign(Algorithm.HMAC256(user.getPassword()));
+    }
+
+    public String getToken(Adminuser adminuser) {
+        Date expiresDate = new Date(System.currentTimeMillis() + EXPIRE_TIME);
+        return JWT.create().withAudience(String.valueOf(adminuser.getAdminid()))
+                .withExpiresAt(expiresDate)
+                .sign(Algorithm.HMAC256(adminuser.getPassword()));
     }
 }

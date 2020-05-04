@@ -7,7 +7,10 @@ import com.auth0.jwt.exceptions.JWTDecodeException;
 import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.fzutopic.annotation.PassToken;
 import com.fzutopic.annotation.UserLoginToken;
+import com.fzutopic.annotation.AdminLoginToken;
+import com.fzutopic.model.Adminuser;
 import com.fzutopic.model.User;
+import com.fzutopic.service.AdminuserService;
 import com.fzutopic.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.method.HandlerMethod;
@@ -21,6 +24,8 @@ import java.lang.reflect.Method;
 public class AuthenticationInterceptor implements HandlerInterceptor {
     @Autowired
     UserService userService;
+    @Autowired
+    AdminuserService adminuserService;
 
     @Override
     public boolean preHandle(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Object object) throws Exception {
@@ -59,6 +64,35 @@ public class AuthenticationInterceptor implements HandlerInterceptor {
                 }
                 // 验证 token
                 JWTVerifier jwtVerifier = JWT.require(Algorithm.HMAC256(user.getPassword())).build();
+                try {
+                    jwtVerifier.verify(token);
+                } catch (JWTVerificationException e) {
+                    throw new RuntimeException("token无效");
+                }
+                return true;
+            }
+        }
+        //检查有没有需要管理员权限的注解
+        if (method.isAnnotationPresent(AdminLoginToken.class)) {
+            AdminLoginToken adminLoginToken = method.getAnnotation(AdminLoginToken.class);
+            if (adminLoginToken.required()) {
+                // 执行认证
+                if (token == null) {
+                    throw new RuntimeException("无token，请重新登录");
+                }
+                // 获取 token 中的 user id
+                String adminId;
+                try {
+                    adminId = JWT.decode(token).getAudience().get(0);
+                } catch (JWTDecodeException j) {
+                    throw new RuntimeException("401");
+                }
+                Adminuser adminuser = adminuserService.getAdmin(adminId);
+                if (adminuser == null) {
+                    throw new RuntimeException("用户不存在，请重新登录");
+                }
+                // 验证 token
+                JWTVerifier jwtVerifier = JWT.require(Algorithm.HMAC256(adminuser.getPassword())).build();
                 try {
                     jwtVerifier.verify(token);
                 } catch (JWTVerificationException e) {
