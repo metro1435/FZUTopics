@@ -34,6 +34,36 @@ public class CommentServiceImpl implements CommentService {
         return PageInfo.of(comments);
     }
 
+    //获取待审核评论列表，一页16个，221701401负责
+    public PageInfo<Comment> getUnauditedComments() {
+        CommentExample commentExample = new CommentExample();
+        CommentExample.Criteria criteria = commentExample.createCriteria();
+        criteria.andAuditstatusEqualTo(0);
+        PageHelper.startPage(1, 16);
+        List<Comment> comments = commentDao.selectByExampleWithBLOBs(commentExample);
+        return PageInfo.of(comments);
+    }
+
+    public int deleteComment(String commentid) {
+        return commentDao.deleteByPrimaryKey(commentid);
+    }
+
+    //更新评论状态为已审核以及附带的操作（评论+1，计算热度），考虑后期加数据回滚，221701401
+    public boolean updateComment(String commentid) {
+        Comment comment=commentDao.selectByPrimaryKey(commentid);
+        Topic topic=topicDao.selectByPrimaryKey(comment.getTopicid());
+        int cnt=topic.getCommentcount()+1;
+        int heats = (25 * topic.getViews() + 40 * cnt + 25 * topic.getLikes()
+                - 5 * topic.getUnlikes()) / 100;
+        topic.setCommentcount(cnt);
+        topic.setHeats(heats);
+        int success=topicDao.updateByPrimaryKeyWithBLOBs(topic);
+        comment.setAuditstatus(1);
+        success+=commentDao.updateByPrimaryKeyWithBLOBs(comment);
+        if (success!=0) return true;
+        else return false;
+    }
+
     //1309
     public Comment createComment(Comment comment){
         //Comment comment = new Comment();
