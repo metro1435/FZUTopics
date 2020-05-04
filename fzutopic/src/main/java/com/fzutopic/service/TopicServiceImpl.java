@@ -208,4 +208,37 @@ public class TopicServiceImpl implements TopicService {
         return AjaxResponse.success(message);
     }
 
+    //管理员获取待审核话题列表，1403负责
+    //1页16条评论
+    public PageInfo<Topic> getunauditedTopics(){
+        TopicExample example=new TopicExample();
+        TopicExample.Criteria criteria=example.createCriteria();
+        criteria.andAuditstatusEqualTo(0);
+        example.setOrderByClause("topicid desc");
+        PageHelper.startPage(1,16);
+        List<Topic> topics1=topicDao.selectByExampleWithBLOBs(example);
+        return new PageInfo<>(topics1);
+    }
+
+    //管理员查看某个待审核话题，1403负责
+    public Topic checkunauditedTopic(String topicid){
+        TopicExample example1=new TopicExample();
+        TopicExample.Criteria criteria=example1.createCriteria();
+        criteria.andTopicidEqualTo(topicid);
+        int status;
+        Topic topic=topicDao.selectByPrimaryKey(topicid);
+        status=topic.getAuditstatus();
+        if(status==1)
+            return null;
+        else
+            return topic;
+    }
+
+    //管理员审核话题，1403负责
+    public Topic updateTopicstatus(String topicid,int status){
+        Topic topic=topicDao.selectByPrimaryKey(topicid);
+        topic.setAuditstatus(status);
+        topicDao.updateByPrimaryKey(topic);
+        return topic;
+    }
 }

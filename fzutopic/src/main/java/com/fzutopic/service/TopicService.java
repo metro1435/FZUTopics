@@ -39,4 +39,12 @@ public interface TopicService {
     //1309
     Topic createTopic(Topic topic);
 
+    //管理员获取待审核话题列表，1403负责
+    PageInfo<Topic> getunauditedTopics();
+
+    //管理员查看某个待审核话题，1403负责
+    Topic checkunauditedTopic(String topicid);
+
+    //管理员审核话题，1403负责
+    Topic updateTopicstatus(String topicid,int status);
 }

@@ -1,6 +1,7 @@
 package com.fzutopic.controller;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fzutopic.annotation.AdminLoginToken;
 import com.fzutopic.annotation.UserLoginToken;
 import com.fzutopic.model.AjaxResponse;
 import com.fzutopic.model.Topic;
@@ -86,4 +87,30 @@ public class TopicController {
         //return AjaxResponse.success(topicService.insertLikesById(topicid,1));
         return AjaxResponse.success(topicService.deleteLikesById(topicid,0));
     }*/
+
+    //管理员获取待审核话题列表，1403负责
+    @AdminLoginToken
+    @GetMapping("/admin/topic/unaudited")
+    public AjaxResponse getunauditedTopics(){
+        PageInfo<Topic> unauditedtopics=topicService.getunauditedTopics();
+        return AjaxResponse.success(unauditedtopics);
+    }
+
+    //管理员查看某个待审核话题，1403负责
+    @AdminLoginToken
+    @GetMapping("/admin/topic/unaudited/{topicid}")
+    public AjaxResponse checkunauditedTopic(@PathVariable String topicid){
+        if(topicService.checkunauditedTopic(topicid)==null)
+            return AjaxResponse.error(400,"该话题不在待审核列表");
+        else
+            return AjaxResponse.success(topicService.checkunauditedTopic(topicid));
+    }
+
+    //管理员审核话题，1403负责
+    @AdminLoginToken
+    @PutMapping("/admin/topic/unaudited")
+    public AjaxResponse updateTopicstatus(@RequestParam String topicid,
+                                          @RequestParam int status){
+        return AjaxResponse.success(topicService.updateTopicstatus(topicid,status));
+    }
 }
