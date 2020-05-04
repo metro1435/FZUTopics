@@ -100,4 +100,5 @@ public class Favlist implements Serializable {
         sb.append("]");
         return sb.toString();
     }
+
 }

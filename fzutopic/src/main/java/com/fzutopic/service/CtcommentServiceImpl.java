@@ -26,7 +26,7 @@ public class CtcommentServiceImpl {
         criteria.andCommentitemidEqualTo(commentitemid);
         example.setOrderByClause("commentid desc");
         example.setLimit(15);
-        return ctcommentDao.selectByExample(example);
+        return ctcommentDao.selectByExampleWithBLOBs(example);
     }
 
     //实现新增课程（教师）评论

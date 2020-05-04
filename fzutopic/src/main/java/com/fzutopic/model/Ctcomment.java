@@ -12,6 +12,8 @@ import java.util.Date;
 public class Ctcomment implements Serializable {
     private String commentid;
 
+    private String text;
+
     private Integer likes;
 
     private Integer unlikes;
@@ -27,8 +29,6 @@ public class Ctcomment implements Serializable {
 
     private Integer auditstatus;
 
-    private String text;
-
     private static final long serialVersionUID = 1L;
 
     public String getCommentid() {
@@ -37,6 +37,14 @@ public class Ctcomment implements Serializable {
 
     public void setCommentid(String commentid) {
         this.commentid = commentid;
+    }
+
+    public String getText() {
+        return text;
+    }
+
+    public void setText(String text) {
+        this.text = text;
     }
 
     public Integer getLikes() {
@@ -95,13 +103,6 @@ public class Ctcomment implements Serializable {
         this.auditstatus = auditstatus;
     }
 
-    public String getText() {
-        return text;
-    }
-
-    public void setText(String text) {
-        this.text = text;
-    }
 
     @Override
     public boolean equals(Object that) {
@@ -131,6 +132,7 @@ public class Ctcomment implements Serializable {
         final int prime = 31;
         int result = 1;
         result = prime * result + ((getCommentid() == null) ? 0 : getCommentid().hashCode());
+        result = prime * result + ((getText() == null) ? 0 : getText().hashCode());
         result = prime * result + ((getLikes() == null) ? 0 : getLikes().hashCode());
         result = prime * result + ((getUnlikes() == null) ? 0 : getUnlikes().hashCode());
         result = prime * result + ((getTime() == null) ? 0 : getTime().hashCode());
@@ -138,7 +140,6 @@ public class Ctcomment implements Serializable {
         result = prime * result + ((getUserid() == null) ? 0 : getUserid().hashCode());
         result = prime * result + ((getCommentitemid() == null) ? 0 : getCommentitemid().hashCode());
         result = prime * result + ((getAuditstatus() == null) ? 0 : getAuditstatus().hashCode());
-        result = prime * result + ((getText() == null) ? 0 : getText().hashCode());
         return result;
     }
 
@@ -149,6 +150,7 @@ public class Ctcomment implements Serializable {
         sb.append(" [");
         sb.append("Hash = ").append(hashCode());
         sb.append(", commentid=").append(commentid);
+        sb.append(", text=").append(text);
         sb.append(", likes=").append(likes);
         sb.append(", unlikes=").append(unlikes);
         sb.append(", time=").append(time);
@@ -156,7 +158,6 @@ public class Ctcomment implements Serializable {
         sb.append(", userid=").append(userid);
         sb.append(", commentitemid=").append(commentitemid);
         sb.append(", auditstatus=").append(auditstatus);
-        sb.append(", text=").append(text);
         sb.append(", serialVersionUID=").append(serialVersionUID);
         sb.append("]");
         return sb.toString();
