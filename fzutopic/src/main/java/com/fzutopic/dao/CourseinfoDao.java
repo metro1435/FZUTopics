@@ -4,9 +4,7 @@ import com.fzutopic.model.Courseinfo;
 import com.fzutopic.model.CourseinfoExample;
 import java.util.List;
 
-import com.fzutopic.model.Topic;
 import com.fzutopic.view.CourseTeacherInfo;
-import com.fzutopic.view.CourseVO;
 import org.apache.ibatis.annotations.*;
 
 public interface CourseinfoDao {
@@ -16,9 +14,12 @@ public interface CourseinfoDao {
 
     int deleteByPrimaryKey(String courseid);
 
-    //模糊搜索，221701401负责
-    @Select({"select * from courseinfo where coursename like CONCAT('%',#{0},'%')"})
-    List<Courseinfo> selectCourseNameByLike(String name);
+    //联表模糊搜索，221701401负责
+    @Select("select * from teacherinfo inner join courseinfo inner join " +
+            "course_teacher on teacherinfo.teacherID=course_teacher.teacherID " +
+            "and courseinfo.courseID=course_teacher.courseID " +
+            "where courseinfo.courseName like CONCAT('%',#{0},'%')")
+    List<CourseTeacherInfo> selectCourseNameByLike(String name);
 
     int insert(Courseinfo record);
 
