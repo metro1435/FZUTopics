@@ -44,6 +44,7 @@ public class LikesController {
 
     //用户首次对话题点赞（踩）
     @UserLoginToken
+    @CrossOrigin
     @PostMapping("/user/topic/topiclikes")
     public AjaxResponse postToplicLikes(@RequestBody Topiclikes topiclikes, HttpServletRequest httpServletRequest) {
         String userid = TokenUtil.getUserIdByRequest(httpServletRequest);
@@ -65,6 +66,7 @@ public class LikesController {
 
     //用户取消对话题的点赞或踩
     @UserLoginToken
+    @CrossOrigin
     @DeleteMapping("/user/topic/topiclikes")
     public AjaxResponse deleteTopicLikes(@RequestParam(name = "topicid") String id, HttpServletRequest httpServletRequest) {
         String userid = TokenUtil.getUserIdByRequest(httpServletRequest);
@@ -84,6 +86,7 @@ public class LikesController {
 
     //用户修改对话题的态度
     @UserLoginToken
+    @CrossOrigin
     @PutMapping("/user/topic/topiclikes")
     public AjaxResponse updateTopicLikes(@RequestParam(name = "topicid") String id, @RequestParam(name = "likes") int likes,
                                          HttpServletRequest httpServletRequest) {
@@ -115,6 +118,7 @@ public class LikesController {
      * @return AjaxResponse
      */
     @UserLoginToken
+    @CrossOrigin
     @PostMapping("/user/topic/comment/commentlikes")
     public AjaxResponse postCommentLikes(@RequestBody Commentlikes commentlikes,
                                          @RequestParam(name = "sort") int sort, HttpServletRequest httpServletRequest) {
@@ -165,6 +169,7 @@ public class LikesController {
      * @return AjaxResponse
      */
     @UserLoginToken
+    @CrossOrigin
     @PutMapping("/user/topic/comment/commentlikes")
     public AjaxResponse updateCommentLikes(@RequestParam(name = "itemid") String itemid, @RequestParam(name = "likes") int likes,
                                            @RequestParam(name = "sort") int sort, HttpServletRequest httpServletRequest) {
@@ -217,6 +222,7 @@ public class LikesController {
      * @return AjaxResponse
      */
     @UserLoginToken
+    @CrossOrigin
     @DeleteMapping("/user/topic/comment/commentlikes")
     public AjaxResponse deleteCommentLikes(@RequestParam(name = "itemid") String itemid,
                                            @RequestParam(name = "sort") int sort, HttpServletRequest httpServletRequest) {

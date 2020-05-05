@@ -3,10 +3,7 @@ package com.fzutopic.controller;
 import com.fzutopic.annotation.UserLoginToken;
 import com.fzutopic.service.AuditServiceImpl;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import java.util.Map;
@@ -19,6 +16,7 @@ public class AuditController {
 
     //文本检测，调用百度的api实现，221701401负责
     @UserLoginToken
+    @CrossOrigin
     @GetMapping("/audit/text/{text}")
     public @ResponseBody Map textAudit(@PathVariable(name="text") String text) {
         return auditService.textAudit(text);

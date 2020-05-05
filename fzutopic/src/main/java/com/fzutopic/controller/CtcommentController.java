@@ -19,6 +19,7 @@ public class CtcommentController {
 
     //通过课程（教师）id获取课程（教师）评论列表,1403
     @UserLoginToken
+    @CrossOrigin
     @GetMapping("/course/comment/{commentitemid}")
     public @ResponseBody AjaxResponse getctcomments(@PathVariable String commentitemid){
         PageInfo<Ctcomment> ctcomments=ctcommentService.getctcomments(commentitemid);
@@ -27,6 +28,7 @@ public class CtcommentController {
 
     //实现新增课程（教师）评论,1403
     @UserLoginToken
+    @CrossOrigin
     @PostMapping("/course/comment")
     public @ResponseBody AjaxResponse createctcomment(@RequestBody Ctcomment ctcomment){
         return AjaxResponse.success(ctcommentService.createctcomment(ctcomment));

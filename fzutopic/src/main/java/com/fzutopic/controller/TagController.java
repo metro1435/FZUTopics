@@ -24,6 +24,7 @@ public class TagController {
 
     //获取8个热度高的标签的接口，221701401负责
     @UserLoginToken
+    @CrossOrigin
     @GetMapping("/tag")
     public AjaxResponse getTag() {
         List<Tag> tag = tagService.getTag();
@@ -33,6 +34,7 @@ public class TagController {
 
     //提交标签，221701401负责
     @UserLoginToken
+    @CrossOrigin
     @PostMapping("/topic/tag")
     public @ResponseBody AjaxResponse insertTag(@RequestBody List<TopicTagKey> tags) {
         boolean flag=tagService.insertTag(tags);
@@ -41,6 +43,7 @@ public class TagController {
 
     //获取所有标签，无限制，221701401负责
     @UserLoginToken
+    @CrossOrigin
     @GetMapping("/allTag")
     public AjaxResponse getAllTag() {
         List<Tag> tag = tagService.getAllTag();

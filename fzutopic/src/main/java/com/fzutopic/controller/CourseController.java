@@ -7,10 +7,7 @@ import com.fzutopic.service.CourseService;
 import com.fzutopic.service.TeacherService;
 import com.fzutopic.view.CourseTeacherInfo;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import java.util.ArrayList;
@@ -35,6 +32,7 @@ public class CourseController {
 
     //按课程或教师查询课程教师信息，sort，1：课程，2：教师,221701401负责
     @UserLoginToken
+    @CrossOrigin
     @GetMapping("/course/{name}/sort/{sort}")
     public  @ResponseBody AjaxResponse getCommentById(@PathVariable(name="name") String name
             ,@PathVariable(name="sort") int sort) {

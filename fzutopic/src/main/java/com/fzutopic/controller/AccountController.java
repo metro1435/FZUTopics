@@ -31,6 +31,7 @@ public class AccountController {
     private TokenService tokenService;
 
     @PassToken
+    @CrossOrigin
     @GetMapping("/login")
     public @ResponseBody
     AjaxResponse getUser(@RequestBody User user) {
@@ -65,6 +66,7 @@ public class AccountController {
     }
 
     @AdminLoginToken
+    @CrossOrigin
     @GetMapping(value = "/logout")
     public AjaxResponse logout(HttpServletRequest httpServletRequest) {
         String userid = TokenUtil.getAdminIdByRequest(httpServletRequest);

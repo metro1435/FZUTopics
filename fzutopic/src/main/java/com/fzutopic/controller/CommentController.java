@@ -21,6 +21,7 @@ public class CommentController {
 
     //根据topicid找对应评论，221701401负责
     @UserLoginToken
+    @CrossOrigin
     @GetMapping("/topic/{topicid}/comment")
     public  @ResponseBody AjaxResponse getCommentById(@PathVariable(name="topicid") String topicid) {
         if (topicid.isEmpty() || topicid.length()!=24) return AjaxResponse.error(400,"topicid为空或不合规定");
@@ -31,6 +32,7 @@ public class CommentController {
 
     //获取待审核评论，221701401负责
     @AdminLoginToken
+    @CrossOrigin
     @GetMapping("/admin/comment/unaudited")
     public  @ResponseBody AjaxResponse getUnauditedComment() {
         PageInfo<Comment> pageInfo =commentService.getUnauditedComments();
@@ -40,6 +42,7 @@ public class CommentController {
 
     //审核评论（通过/不通过），221701401负责
     @AdminLoginToken
+    @CrossOrigin
     @PutMapping("/admin/comment/unaudited")
     public @ResponseBody AjaxResponse CommentAudit(@RequestParam String commmentid,
                                                    @RequestParam int auditstatus) {
@@ -60,6 +63,7 @@ public class CommentController {
     //新增用户对帖子进行评论 1309
     @UserLoginToken
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
+    @CrossOrigin
     @PostMapping("/user/topic/comment")
     public @ResponseBody
     AjaxResponse createComment(@RequestBody Comment comment){

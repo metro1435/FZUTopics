@@ -22,6 +22,7 @@ public class UserController {
 
     //221701426
     //获得个人信息
+    @CrossOrigin
     @GetMapping("/user/setting")
     @UserLoginToken
     public User getInfo(HttpServletRequest httpServletRequest){
@@ -32,6 +33,7 @@ public class UserController {
     //221701426
     //修改个人昵称
     //修改个人头像（url）
+    @CrossOrigin
     @PutMapping("/user/setting")
     @UserLoginToken
     public void updateNicknameIcon(@RequestBody User user,HttpServletRequest httpServletRequest){

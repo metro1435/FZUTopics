@@ -21,6 +21,7 @@ public class ReplyController {
 
     //根据commentid找对应回复，，221701401负责
     @UserLoginToken
+    @CrossOrigin
     @GetMapping("/topic/{commentid}/reply")
     public  @ResponseBody AjaxResponse getCommentById(@PathVariable(name="commentid") String commentid) {
         if (commentid.isEmpty() || commentid.length()!=23) return AjaxResponse.error(400,"commentid为空或不合规定");
@@ -31,6 +32,7 @@ public class ReplyController {
 
     //提交用户对评论的回复，221701401负责
     @UserLoginToken
+    @CrossOrigin
     @PostMapping("/user/topic/comment/reply")
     public @ResponseBody AjaxResponse postReply(@RequestBody Reply reply, HttpServletRequest httpServletRequest) {
         String userid = TokenUtil.getUserIdByRequest(httpServletRequest);

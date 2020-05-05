@@ -24,6 +24,7 @@ public class FavlistController {
 
     //根据userid获取收藏夹列表,1403
     @UserLoginToken
+    @CrossOrigin
     @GetMapping("/favlist/{userid}")
     public @ResponseBody AjaxResponse getFavlists(@PathVariable String userid){
         PageInfo<Favlist> favlists=favlistService.getFavlists(userid);
@@ -32,6 +33,7 @@ public class FavlistController {
 
     //根据favlistid获取收藏内容列表,1403
     @UserLoginToken
+    @CrossOrigin
     @GetMapping("/favlist/item/{favlistid}")
     public @ResponseBody AjaxResponse getFavlistItems(@PathVariable String favlistid){
         PageInfo<FavlistItemKey> favlistItemKeys=favlistService.getFavlistItems(favlistid);
@@ -40,6 +42,7 @@ public class FavlistController {
 
     //新建收藏夹,1403
     @UserLoginToken
+    @CrossOrigin
     @PostMapping("/favlist")
     public @ResponseBody AjaxResponse createFavlist(@RequestBody Favlist favlist, HttpServletRequest httpServletRequest){
         String userid = TokenUtil.getUserIdByRequest(httpServletRequest);
@@ -49,6 +52,7 @@ public class FavlistController {
 
     //添加某个收藏内容,1403
     @UserLoginToken
+    @CrossOrigin
     @PostMapping("/favlist/item")
     public @ResponseBody AjaxResponse createFavlistItem(@RequestBody FavlistItemKey favlistItemKey){
         return AjaxResponse.success(favlistService.createFavlistItem(favlistItemKey));
@@ -56,6 +60,7 @@ public class FavlistController {
 
     //删除某个收藏夹,1403
     @UserLoginToken
+    @CrossOrigin
     @DeleteMapping("/favlist")
     public @ResponseBody AjaxResponse deleteFavlist(@RequestParam String favlistid){
         favlistService.deleteFavlist(favlistid);
@@ -64,6 +69,7 @@ public class FavlistController {
 
     //取消收藏某个内容,1403
     @UserLoginToken
+    @CrossOrigin
     @DeleteMapping("/favlist/item")
     public @ResponseBody AjaxResponse pushFavlistItem(@RequestParam String favlistid,
                                                       @RequestParam String collectedid){

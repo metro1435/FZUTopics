@@ -9,10 +9,7 @@ import com.fzutopic.service.TokenService;
 import com.fzutopic.utils.TokenUtil;
 import com.github.pagehelper.PageInfo;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -34,6 +31,7 @@ public class NewsController {
 
     //获取已发布新闻（限制8个）
     @GetMapping("/news")
+    @CrossOrigin
     @UserLoginToken
     public AjaxResponse getNews() {
         //List<News> news = newsService.getNews();
@@ -44,6 +42,7 @@ public class NewsController {
 
     //获取某一新闻内容（指定id）
     @GetMapping("/news/{newsid}")
+    @CrossOrigin
     @UserLoginToken
     public  @ResponseBody AjaxResponse getNewsById(@PathVariable(name="newsid") String newsid) {
         if (newsid.isEmpty() || newsid.length()!=24) return AjaxResponse.error(400,"id为空或不合规");
@@ -54,6 +53,7 @@ public class NewsController {
 
     //搜索新闻（指定title，模糊搜索）
     @UserLoginToken
+    @CrossOrigin
     @GetMapping("/news/search/{name}")
     public  @ResponseBody AjaxResponse getNewsByName(@PathVariable(name="name") String name) {
         if (name.isEmpty()) return AjaxResponse.error(400,"输入搜索的值为空");
@@ -63,6 +63,7 @@ public class NewsController {
     }
 
     @UserLoginToken
+    @CrossOrigin
     @GetMapping(value = "/user/news/favstatus/{topicid}")
     public AjaxResponse gettopicfavstatus(HttpServletRequest httpServletRequest, @PathVariable String newsid) {
         String userid = TokenUtil.getUserIdByRequest(httpServletRequest);
