@@ -1,11 +1,10 @@
 package com.fzutopic.controller;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fzutopic.annotation.AdminLoginToken;
 import com.fzutopic.annotation.UserLoginToken;
 import com.fzutopic.dao.CommentDao;
-import com.fzutopic.model.AjaxResponse;
-import com.fzutopic.model.Comment;
-import com.fzutopic.model.Tag;
-import com.fzutopic.model.TopicTagKey;
+import com.fzutopic.model.*;
 import com.fzutopic.service.TagServiceImpl;
 import com.fzutopic.utils.TokenUtil;
 import lombok.extern.slf4j.Slf4j;
@@ -13,6 +12,7 @@ import org.apache.ibatis.annotations.Param;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import javax.annotation.Resources;
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
@@ -50,4 +50,37 @@ public class TagController {
         if (tag.isEmpty()) return AjaxResponse.error(404,"没有找到tag");
         return AjaxResponse.success(tag);
     }
+
+    //管理员获取标签列表（一次40个），221701309负责
+    @AdminLoginToken
+    @CrossOrigin
+    @GetMapping("/admin/tag")
+    public AjaxResponse getTagList() {
+        List<Tag> tag = tagService.getTagList();
+        if (tag.isEmpty()) return AjaxResponse.error(404,"没有找到tag");
+        return AjaxResponse.success(tag);
+    }
+
+    //管理员新增标签，221701309负责
+    @AdminLoginToken
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
+    @CrossOrigin
+    @PostMapping("/admin/new/tag")
+    public @ResponseBody AjaxResponse createTag(@RequestBody Tag tag){
+        return AjaxResponse.success(tagService.createTag(tag));
+    }
+
+
+    //管理员删除标签,221701309负责
+    @AdminLoginToken
+    @CrossOrigin
+    @DeleteMapping("/admin/tag/{tagid}")
+    public @ResponseBody AjaxResponse deleteTag(@PathVariable(name="tagid") String tagid){
+        tagService.deleteTag(tagid);
+        return AjaxResponse.success(tagid);
+    }
+
+
+
+
 }

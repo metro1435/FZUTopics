@@ -17,7 +17,7 @@ public interface TopicDao {
 
     int insert(Topic record);
 
-    //1309
+    //新增话题，221701309负责
     @Insert({ "insert into topic(topicid, title, text, likes, unlikes, userid, time, isanony, views, heats, commentcount, auditstatus) values(#{topicid}, #{title}, #{text}, #{likes}, #{unlikes}, #{userid}, #{time}, #{isanony}, #{views}, #{heats}, #{commentcount},#{auditstatus})" })
     int insert1(Topic record);
 

@@ -29,7 +29,7 @@ public class NewsController {
     @Resource
     private FavlistItemService favlistItemService;
 
-    //获取已发布新闻（限制8个）
+    //获取已发布新闻（限制8个),221701309负责
     @GetMapping("/news")
     @CrossOrigin
     @UserLoginToken
@@ -40,7 +40,7 @@ public class NewsController {
         return AjaxResponse.success(news);
     }
 
-    //获取某一新闻内容（指定id）
+    //获取某一新闻内容（指定id），221701309负责
     @GetMapping("/news/{newsid}")
     @CrossOrigin
     @UserLoginToken
@@ -51,7 +51,7 @@ public class NewsController {
         return AjaxResponse.success(news);
     }
 
-    //搜索新闻（指定title，模糊搜索）
+    //搜索新闻（指定title，模糊搜索），221701309负责
     @UserLoginToken
     @CrossOrigin
     @GetMapping("/news/search/{name}")

@@ -36,7 +36,7 @@ public interface TopicService {
     //删除，对应赞、踩-1的情况,status：0为踩，1为赞，221701401负责
     AjaxResponse deleteLikesById(String topicid, int status);
 
-    //1309
+    //新增话题，221701309负责
     Topic createTopic(Topic topic);
 
     //管理员获取待审核话题列表，1403负责

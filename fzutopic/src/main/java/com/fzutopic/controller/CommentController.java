@@ -60,7 +60,7 @@ public class CommentController {
     }
 
 
-    //新增用户对帖子进行评论 1309
+    //新增用户对帖子进行评论 ，221701309负责
     @UserLoginToken
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
     @CrossOrigin
