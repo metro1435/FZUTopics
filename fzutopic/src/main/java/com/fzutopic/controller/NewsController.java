@@ -63,9 +63,10 @@ public class NewsController {
         return AjaxResponse.success(news);
     }
 
+    //获取用户对newsid新闻的收藏状态402
     @UserLoginToken
     @CrossOrigin
-    @GetMapping(value = "/user/news/favstatus/{topicid}")
+    @GetMapping(value = "/user/news/favstatus/{newsid}")
     public AjaxResponse gettopicfavstatus(HttpServletRequest httpServletRequest, @PathVariable String newsid) {
         String userid = TokenUtil.getUserIdByRequest(httpServletRequest);
         boolean favstatus  = favlistItemService.getfavstatus(newsid, userid);

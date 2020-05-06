@@ -30,11 +30,12 @@ public class AccountController {
     @Resource
     private TokenService tokenService;
 
+    //登录402
     @PassToken
     @CrossOrigin
     @PostMapping("/login")
     public @ResponseBody
-    AjaxResponse getUser(@RequestBody User user) {
+    AjaxResponse login(@RequestBody User user) {
         if (!user.getUserid().substring(0, 5).equals("admin")) {
             User uservo = userService.findByUser(user);
             if (uservo == null) {
@@ -65,6 +66,7 @@ public class AccountController {
         }
     }
 
+    //退出402
     @AdminLoginToken
     @CrossOrigin
     @GetMapping(value = "/logout")
@@ -73,4 +75,12 @@ public class AccountController {
         return AjaxResponse.success(userid);
     }
 
+    //通过token获取userid402
+    @UserLoginToken
+    @CrossOrigin
+    @GetMapping(value = "/token")
+    public AjaxResponse getIdByToken(HttpServletRequest httpServletRequest) {
+        String userid = TokenUtil.getAdminIdByRequest(httpServletRequest);
+        return AjaxResponse.success(userid);
+    }
 }

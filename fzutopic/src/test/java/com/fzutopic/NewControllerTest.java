@@ -55,7 +55,7 @@ public class NewControllerTest {
      */
     @Test
     public void getnewsfavstatusTest() throws Exception {
-        mvc.perform(MockMvcRequestBuilders.get("/user/topic/favstatus/nadmin000120200427133109")
+        mvc.perform(MockMvcRequestBuilders.get("/user/news/favstatus/nadmin000120200427133109")
                 .contentType(MediaType.APPLICATION_JSON_UTF8)
                 .accept(MediaType.APPLICATION_JSON_UTF8)
                 .header("token",token)

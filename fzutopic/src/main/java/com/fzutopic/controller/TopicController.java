@@ -84,6 +84,7 @@ public class TopicController {
         return AjaxResponse.success(topicService.createTopic(topic));
     }
 
+    //获取用户对topicid话题的收藏状态402
     @UserLoginToken
     @CrossOrigin
     @GetMapping(value = "/user/topic/favstatus/{topicid}")
