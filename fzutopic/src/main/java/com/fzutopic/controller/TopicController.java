@@ -77,7 +77,10 @@ public class TopicController {
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
     @CrossOrigin
     @PostMapping("/user/topic")
-    public @ResponseBody AjaxResponse createTopic(@RequestBody Topic topic){
+    public @ResponseBody AjaxResponse createTopic(@RequestBody Topic topic,
+                                                  HttpServletRequest httpServletRequest){
+        String userid = TokenUtil.getUserIdByRequest(httpServletRequest);
+        topic.setUserid(userid);
         return AjaxResponse.success(topicService.createTopic(topic));
     }
 
