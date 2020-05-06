@@ -30,12 +30,12 @@ public class NewsController {
     private FavlistItemService favlistItemService;
 
     //获取已发布新闻（限制8个）
-    @GetMapping("/news")
+    @GetMapping("/news/page/{page}")
     @CrossOrigin
     @UserLoginToken
-    public AjaxResponse getNews() {
+    public AjaxResponse getNews(@PathVariable(name="page") int page) {
         //List<News> news = newsService.getNews();
-        PageInfo<News> news = newsService.getNews();
+        PageInfo<News> news = newsService.getNews(page);
         if (news.getList().isEmpty()) return AjaxResponse.error(404, "没有找到news");
         return AjaxResponse.success(news);
     }
@@ -54,10 +54,11 @@ public class NewsController {
     //搜索新闻（指定title，模糊搜索）
     @UserLoginToken
     @CrossOrigin
-    @GetMapping("/news/search/{name}")
-    public  @ResponseBody AjaxResponse getNewsByName(@PathVariable(name="name") String name) {
+    @GetMapping("/news/search/{name}/page/{page}")
+    public  @ResponseBody AjaxResponse getNewsByName(@PathVariable(name="name") String name,
+                                                     @PathVariable(name="page") int page) {
         if (name.isEmpty()) return AjaxResponse.error(400,"输入搜索的值为空");
-        PageInfo<News> news = newsService.getNewsByName(name);
+        PageInfo<News> news = newsService.getNewsByName(name,page);
         if (news.getList().isEmpty()) return AjaxResponse.error(404,"没有找到该name对应新闻");
         return AjaxResponse.success(news);
     }

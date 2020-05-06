@@ -9,17 +9,17 @@ import java.util.List;
 
 public interface TopicService {
 
-    //打印全部话题，一组16个,按热度降序,221701401负责
-    PageInfo<Topic> getTopics();
+    //打印全部话题，一组10个,按热度降序,221701401负责
+    PageInfo<Topic> getTopics(int page);
 
     //根据topicid找话题，221701401负责
     List<Topic> getTopicByID(String id);
 
     //根据tagid找话题,一组16,按热度降序，221701401负责
-    PageInfo<Topic> getTopicsByTag(String tagid);
+    PageInfo<Topic> getTopicsByTag(String tagid,int page);
 
     //根据title找话题，模糊搜索使用sql的like，221701401负责
-    PageInfo<Topic> getTopicsByTitle(String title);
+    PageInfo<Topic> getTopicsByTitle(String title,int page);
 
     //浏览量+1，221701401负责
     List<Topic> updateViews(List<Topic> topic);
@@ -37,7 +37,7 @@ public interface TopicService {
     Topic createTopic(Topic topic);
 
     //管理员获取待审核话题列表，1403负责
-    PageInfo<Topic> getunauditedTopics();
+    PageInfo<Topic> getunauditedTopics(int page);
 
     //管理员查看某个待审核话题，1403负责
     Topic checkunauditedTopic(String topicid);

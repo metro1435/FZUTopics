@@ -28,9 +28,9 @@ public class TopicController {
     //前端操作可参考 https://blog.csdn.net/ftlnnl/article/details/104972751
     @UserLoginToken
     @CrossOrigin
-    @GetMapping("/topic")
-    public AjaxResponse getTopic() {
-        PageInfo<Topic> topics = topicService.getTopics();
+    @GetMapping("/topic/page/{page}")
+    public AjaxResponse getTopic(@PathVariable(name="page") int page) {
+        PageInfo<Topic> topics = topicService.getTopics(page);
         if (topics.getList().isEmpty()) return AjaxResponse.error(404,"话题库没有话题");
         return AjaxResponse.success(topics);
     }
@@ -51,10 +51,11 @@ public class TopicController {
     //获取指定tag的话题，1组16个，热度倒序，221701401负责
     @UserLoginToken
     @CrossOrigin
-    @GetMapping("/topic/{tagid}")
-    public  @ResponseBody AjaxResponse getTopicByTag(@PathVariable(name="tagid") String tagid) {
+    @GetMapping("/topic/{tagid}/page/{page}")
+    public  @ResponseBody AjaxResponse getTopicByTag(@PathVariable(name="tagid") String tagid,
+                                                     @PathVariable(name="page") int page) {
         if (tagid.isEmpty() || tagid.length()>5) return AjaxResponse.error(400,"tagid为空或不合规定");
-        PageInfo<Topic> topics = topicService.getTopicsByTag(tagid);
+        PageInfo<Topic> topics = topicService.getTopicsByTag(tagid,page);
         if (topics.getList().isEmpty()) return AjaxResponse.error(404,"找不到tag对应的话题");
         return AjaxResponse.success(topics);
     }
@@ -62,10 +63,11 @@ public class TopicController {
     //获取指定title的话题,模糊搜索->sql like,221701401负责
     @UserLoginToken
     @CrossOrigin
-    @GetMapping("/topic/title/{title}")
-    public  @ResponseBody AjaxResponse getTopicByTitle(@PathVariable(name="title") String title) {
+    @GetMapping("/topic/title/{title}/page/{page}")
+    public  @ResponseBody AjaxResponse getTopicByTitle(@PathVariable(name="title") String title,
+                                                       @PathVariable(name="page") int page) {
         if (title.isEmpty()) return AjaxResponse.error(400,"输入搜索的值为空");
-        PageInfo<Topic> topic = topicService.getTopicsByTitle(title);
+        PageInfo<Topic> topic = topicService.getTopicsByTitle(title,page);
         if (topic.getList().isEmpty()) return AjaxResponse.error(404,"没有找到该title对应话题");
         return AjaxResponse.success(topic);
     }
@@ -82,7 +84,8 @@ public class TopicController {
     @UserLoginToken
     @CrossOrigin
     @GetMapping(value = "/user/topic/favstatus/{topicid}")
-    public AjaxResponse gettopicfavstatus(HttpServletRequest httpServletRequest, @PathVariable String topicid) {
+    public AjaxResponse gettopicfavstatus(HttpServletRequest httpServletRequest,
+                                          @PathVariable String topicid) {
         String userid = TokenUtil.getUserIdByRequest(httpServletRequest);
         boolean favstatus  = favlistItemService.getfavstatus(topicid, userid);
         return AjaxResponse.success(favstatus);
@@ -98,9 +101,9 @@ public class TopicController {
     //管理员获取待审核话题列表，1403负责
     @AdminLoginToken
     @CrossOrigin
-    @GetMapping("/admin/topic/unaudited")
-    public AjaxResponse getunauditedTopics(){
-        PageInfo<Topic> unauditedtopics=topicService.getunauditedTopics();
+    @GetMapping("/admin/topic/unaudited/page/{page}")
+    public AjaxResponse getunauditedTopics(@PathVariable(name="page") int page){
+        PageInfo<Topic> unauditedtopics=topicService.getunauditedTopics(page);
         return AjaxResponse.success(unauditedtopics);
     }
 
