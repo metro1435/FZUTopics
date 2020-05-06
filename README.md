@@ -1,2 +1,0 @@
-# FZUTopics
-Project of DeadlineGods
