@@ -3,6 +3,9 @@ package com.fzutopic.dao;
 import com.fzutopic.model.Tag;
 import com.fzutopic.model.TagExample;
 import java.util.List;
+
+import com.fzutopic.model.Topic;
+import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 
@@ -14,6 +17,10 @@ public interface TagDao {
     int deleteByPrimaryKey(String tagid);
 
     int insert(Tag record);
+
+    //管理员新增标签，221701309负责
+    @Insert({ "insert into tag(tagid, name, times) values(#{tagid}, #{name}, #{times})" })
+    int insert1(Tag record);
 
     int insertSelective(Tag record);
 

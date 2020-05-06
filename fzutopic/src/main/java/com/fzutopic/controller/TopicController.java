@@ -72,7 +72,7 @@ public class TopicController {
         return AjaxResponse.success(topic);
     }
 
-    //新增话题221701309负责
+    //新增话题，221701309负责
     @UserLoginToken
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
     @CrossOrigin
