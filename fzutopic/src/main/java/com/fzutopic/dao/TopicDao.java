@@ -18,8 +18,8 @@ public interface TopicDao {
     int insert(Topic record);
 
     //1309
-    @Insert({ "insert into topic(topicid, title, text, likes, unlikes, userid, time, isanony, views, heats, commentcount, auditstatus) " +
-            "values(#{topicid}, #{title}, #{text}, #{likes}, #{unlikes}, #{userid}, #{time}, #{isanony}, #{views}, #{heats}, #{commentcount},#{auditstatus})" })
+    @Insert({ "insert into topic(topicid, title, text, userid, time, isanony,auditstatus) " +
+            "values(#{topicid}, #{title}, #{text}, #{userid}, #{time}, #{isanony},#{auditstatus})" })
     int insert1(Topic record);
 
     int insertSelective(Topic record);
