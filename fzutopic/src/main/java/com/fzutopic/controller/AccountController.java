@@ -32,7 +32,7 @@ public class AccountController {
 
     @PassToken
     @CrossOrigin
-    @GetMapping("/login")
+    @PostMapping("/login")
     public @ResponseBody
     AjaxResponse getUser(@RequestBody User user) {
         if (!user.getUserid().substring(0, 5).equals("admin")) {

@@ -23,12 +23,12 @@ public class NewsServiceImpl implements NewsService {
     private NewsDao newsDao;
 
     //获取已发布新闻（按时间，限制8个）
-    public PageInfo<News> getNews(){
+    public PageInfo<News> getNews(int page){
         NewsExample newsExample=new NewsExample();
         newsExample.setOrderByClause("time desc");
         //newsExample.setLimit(8);
         //return newsDao.selectByExampleWithBLOBs(newsExample);
-        PageHelper.startPage(1,10);
+        PageHelper.startPage(page,10);
         List<News> test=newsDao.selectByExampleWithBLOBs(newsExample);
         return PageInfo.of(test);
     }
@@ -43,12 +43,12 @@ public class NewsServiceImpl implements NewsService {
     }
 
     //搜索新闻(按title，模糊搜索)
-    public PageInfo<News> getNewsByName(String name) {
+    public PageInfo<News> getNewsByName(String name,int page) {
         /*NewsExample newsExample=new NewsExample();
         newsExample.setOrderByClause("time desc");
         NewsExample.Criteria criteria=newsExample.createCriteria();
         criteria.andTitleEqualTo(name);*/
-        PageHelper.startPage(1,10);
+        PageHelper.startPage(page,10);
         List<News> test=newsDao.selectByTitleLike(name);
         return PageInfo.of(test);
         //List<Topic> topics=topicDao.selectByExampleWithBLOBs(topicExample);

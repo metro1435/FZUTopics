@@ -2,17 +2,20 @@ package com.fzutopic.controller;
 
 
 import com.fzutopic.annotation.UserLoginToken;
-import com.fzutopic.dao.CommentlikesDao;
-import com.fzutopic.dao.TopiclikesDao;
+import com.fzutopic.dao.*;
 import com.fzutopic.model.*;
 import com.fzutopic.service.*;
 import com.fzutopic.utils.TokenUtil;
+import com.fzutopic.view.LikesSort;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 
 @RestController
 @Slf4j
@@ -41,6 +44,15 @@ public class LikesController {
 
     @Resource
     CommentlikesDao commentlikesDao;
+
+    @Resource
+    ReplyDao replyDao;
+
+    @Resource
+    CommentDao commentDao;
+
+    @Resource
+    TopicDao topicDao;
 
     //用户首次对话题点赞（踩）
     @UserLoginToken
@@ -111,23 +123,26 @@ public class LikesController {
 
     /**
      * 用户首次对评论（回复）点踩赞
+     * sort  0：表示是对话题评论回复踩赞 1:表示是对话题评论踩赞 2：表示对课程（教师）评论踩赞
      *
-     * @param commentlikes       接收到的json数据
-     * @param sort               0：表示是对话题评论回复踩赞 1:表示是对话题评论踩赞 2：表示对课程（教师）评论踩赞
      * @param httpServletRequest
      * @return AjaxResponse
      */
     @UserLoginToken
     @CrossOrigin
     @PostMapping("/user/topic/comment/commentlikes")
-    public AjaxResponse postCommentLikes(@RequestBody Commentlikes commentlikes,
-                                         @RequestParam(name = "sort") int sort, HttpServletRequest httpServletRequest) {
+    public AjaxResponse postCommentLikes(@RequestBody LikesSort likesSort, HttpServletRequest httpServletRequest) {
+        int sort = likesSort.getSort();
+        int likes = likesSort.getLikes();
+        String itemid = likesSort.getItemid();
+
         if (sort != 0 && sort != 1 && sort != 2)
             return AjaxResponse.error(500, "sorts参数值非法，要求是0、1、2）");
 
+        Commentlikes commentlikes = new Commentlikes();
+        commentlikes.setItemid(itemid);
+        commentlikes.setLikedstatus(likes);
         String userid = TokenUtil.getUserIdByRequest(httpServletRequest);
-        String itemid = commentlikes.getItemid();
-        int likes = commentlikes.getLikedstatus();
         commentlikes.setUserid(userid);
         if (commentlikesDao.selectByPrimaryKey(commentlikes) != null)
             return AjaxResponse.error(500, "用户：" + userid + "非首次对此评论（回复）点赞（踩）");
@@ -262,4 +277,56 @@ public class LikesController {
         return AjaxResponse.success(message);
     }
 
+    /**
+     * 获取待审核的回复
+     * 一页十条
+     *
+     * @return AjaxResponse
+     */
+    @UserLoginToken
+    @GetMapping("/admin/reply/unaudited")
+    public AjaxResponse getUnaditedReply() {
+        ReplyExample replyExample = new ReplyExample();
+        replyExample.createCriteria().andAuditstatusEqualTo(0);
+        PageHelper.startPage(1, 16);
+        List<Reply> unauditedReplies = replyDao.selectByExample(replyExample);
+        PageInfo<Reply> replyPageInfo = PageInfo.of(unauditedReplies);
+        return AjaxResponse.success(replyPageInfo);
+    }
+
+
+    /**
+     * 审核回复（选择通过或不通过）
+     *
+     * @param replyid     回复的id
+     * @param auditstatus 0：审核不通过 1：审核通过
+     * @return
+     */
+    @PutMapping("/admin/reply/unaudited")
+    public AjaxResponse updateReplyStatus(@RequestParam(name = "replyid") String replyid,
+                                          @RequestParam(name = "auditstatus") int auditstatus) {
+        Reply reply = replyDao.selectByPrimaryKey(replyid);
+        if (reply == null || reply.getAuditstatus() == 1)
+            return AjaxResponse.error(500, "错误，待审核回复：" + replyid + " 不存在，或者已经审核通过");
+        if (auditstatus == 0) {
+            replyDao.deleteByPrimaryKey(replyid);
+            return AjaxResponse.success("审核不通过成功");
+        } else {
+            reply.setAuditstatus(1);
+            replyDao.updateByPrimaryKey(reply);
+            String commentid = reply.getCommentid();
+            Comment comment = commentDao.selectByPrimaryKey(commentid);
+            comment.setIsreply(1);
+
+            //设置被回复的评论中isreply=1
+            commentDao.updateByPrimaryKey(comment);
+            String topicid = comment.getTopicid();
+            Topic topic = topicDao.selectByPrimaryKey(topicid);
+            int commentCount = topic.getCommentcount();
+            topic.setCommentcount(commentCount + 1);
+            //更新话题评论数+1
+            topicDao.updateByPrimaryKey(topic);
+            return AjaxResponse.success("审核通过成功");
+        }
+    }
 }

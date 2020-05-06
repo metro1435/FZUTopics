@@ -37,8 +37,10 @@ public class TagController {
     @CrossOrigin
     @PostMapping("/topic/tag")
     public @ResponseBody AjaxResponse insertTag(@RequestBody List<TopicTagKey> tags) {
-        boolean flag=tagService.insertTag(tags);
-        return AjaxResponse.success(flag);
+        boolean isExist=tagService.TopicTagisExist(tags);
+        if (isExist) AjaxResponse.error(400,"该话题已存在该标签记录");
+        tagService.insertTag(tags);
+        return AjaxResponse.success("插入成功");
     }
 
     //获取所有标签，无限制，221701401负责

@@ -5,9 +5,10 @@ import com.fzutopic.dao.TagDao;
 import com.fzutopic.dao.TopicTagDao;
 import com.fzutopic.model.Tag;
 import com.fzutopic.model.TagExample;
-import com.fzutopic.model.Topic;
+import com.fzutopic.model.TopicTagExample;
 import com.fzutopic.model.TopicTagKey;
 import lombok.extern.slf4j.Slf4j;
+import net.sf.jsqlparser.statement.select.Top;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -37,6 +38,19 @@ public class TagServiceImpl implements TagService{
         return tagDao.select();
     }
 
+    //topic——tag是否存在，221701401
+    public boolean TopicTagisExist(List<TopicTagKey> topicTagKeys) {
+        TopicTagExample topicTagExample=new TopicTagExample();
+        TopicTagExample.Criteria criteria=topicTagExample.createCriteria();
+        for (TopicTagKey topicTagKey:topicTagKeys) {
+            criteria.andTagidEqualTo(topicTagKey.getTagid());
+            criteria.andTopicidEqualTo(topicTagKey.getTopicid());
+            List<TopicTagKey> res=topicTagDao.selectByExample(topicTagExample);
+            if (res.size()!=0) return true;
+        }
+        return false;
+    }
+
     //插入标签，221701401负责
     public boolean insertTag(List<TopicTagKey> topicTagKeys) {
         int cnt=0;
@@ -62,24 +76,4 @@ public class TagServiceImpl implements TagService{
         if (flag!=0) return true;
         else return false;
     }
-
-    //管理员获取标签列表（一次40个），221701309负责
-    public List<Tag> getTagList(){
-        TagExample tagExample=new TagExample();
-        //tagExample.setOrderByClause("times desc");
-        tagExample.setLimit(40);
-        return tagDao.selectByExample(tagExample);
-    }
-
-    //管理员新增标签，221701309负责
-    public Tag createTag(Tag tag){
-        tagDao.insert1(tag);
-        return tag;
-    }
-
-    //管理员删除标签（指定id）,221701309
-    public void deleteTag(String tagid){
-        tagDao.deleteByPrimaryKey(tagid);
-    }
-
 }

@@ -16,6 +16,8 @@ public interface TagService {
     //获取所有标签，221701401负责
     List<Tag> getAllTag();
 
+    boolean TopicTagisExist (List<TopicTagKey> topicTagKeys);
+
     //更新标签使用次数，221701401负责
     boolean updateTimes(String tagid);
 

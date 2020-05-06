@@ -9,11 +9,11 @@ import java.util.List;
  * @author 1309
  */
 public interface NewsService {
-    PageInfo<News> getNews();
+    PageInfo<News> getNews(int page);
 
     News getNewsByID(String id);
 
-    PageInfo<News> getNewsByName(String name);
+    PageInfo<News> getNewsByName(String name,int page);
 
     //News insertTag(News news);
 }
