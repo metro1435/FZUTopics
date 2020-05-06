@@ -6,6 +6,7 @@ import com.fzutopic.model.AjaxResponse;
 import com.fzutopic.service.CourseService;
 import com.fzutopic.service.TeacherService;
 import com.fzutopic.view.CourseTeacherInfo;
+import com.github.pagehelper.PageInfo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
@@ -33,14 +34,14 @@ public class CourseController {
     //按课程或教师查询课程教师信息，sort，1：课程，2：教师,221701401负责
     @UserLoginToken
     @CrossOrigin
-    @GetMapping("/course/{name}/sort/{sort}")
+    @GetMapping("/course/{name}/sort/{sort}/page/{page}")
     public  @ResponseBody AjaxResponse getCommentById(@PathVariable(name="name") String name
-            ,@PathVariable(name="sort") int sort) {
-        List<CourseTeacherInfo> res=new ArrayList<>();
-        if (sort==1) res = courseService.selectByCourse(name);
-        else if (sort==2) res = teacherService.selectByTeacher(name);
+            ,@PathVariable(name="sort") int sort,@PathVariable(name="page") int page) {
+        PageInfo<CourseTeacherInfo> res=new PageInfo<>();
+        if (sort==1) res = courseService.selectByCourse(name,page);
+        else if (sort==2) res = teacherService.selectByTeacher(name,page);
         else return AjaxResponse.error(400,"无法确定是按教师还是按课程查询");
-        if (res.size()==0) return AjaxResponse.error(404,"没有找到相关信息");
+        if (res.getList().size()==0) return AjaxResponse.error(404,"没有找到相关信息");
         return AjaxResponse.success(res);
     }
 }

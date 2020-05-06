@@ -45,7 +45,7 @@ public interface CtcommentDao {
     List<Comment> getCommentBycommentitemid(String commentitemid);
 
     //新增课程（教师）评论 403
-    @Insert("insert into ctcomment(commentID,text,likes,unlikes,time,isAnony,userID,commentItemID,auditStatus) " +
-            "values (#{commentid},#{text},#{likes},#{unlikes},#{time},#{isanony},#{userid},#{commentitemid},#{auditstatus})")
+    @Insert("insert into ctcomment(commentID,text,time,isAnony,userID,commentItemID,auditStatus) " +
+            "values (#{commentid},#{text},#{time},#{isanony},#{userid},#{commentitemid},#{auditstatus})")
     int insertByCtcomment(Ctcomment ctcomment);
 }

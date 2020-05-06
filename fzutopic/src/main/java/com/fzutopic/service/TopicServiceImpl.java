@@ -62,10 +62,7 @@ public class TopicServiceImpl implements TopicService {
         //这里是模糊搜索
         List<Topic> test = topicDao.selectByTitleLike(title);
         return PageInfo.of(test);
-        //这里是精确搜索
-        //List<Topic> topics=topicDao.selectByExampleWithBLOBs(topicExample);
-        //return PageInfo.of(topics);
-    }
+        }
 
     //浏览量+1，221701401负责
     public List<Topic> updateViews(List<Topic> topics) {

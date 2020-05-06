@@ -17,20 +17,17 @@ import java.util.List;
 @Slf4j
 @Service
 @RestController
-public class CtcommentServiceImpl {
+public class CtcommentServiceImpl implements CtcommentService{
     @Resource
     private CtcommentDao ctcommentDao;
 
     //实现通过课程（教师）id获取课程（教师）评论列表,1403
-    //1页显示20条评论
-    public PageInfo<Ctcomment> getctcomments(String commentitemid){
+    public List<Ctcomment> getctcomments(String commentitemid){
         CtcommentExample example=new CtcommentExample();
         CtcommentExample.Criteria criteria=example.createCriteria();
         criteria.andCommentitemidEqualTo(commentitemid);
         example.setOrderByClause("commentid desc");
-        PageHelper.startPage(1,20);
-        List<Ctcomment> ctcomments=ctcommentDao.selectByExampleWithBLOBs(example);
-        return new PageInfo<>(ctcomments);
+        return ctcommentDao.selectByExampleWithBLOBs(example);
     }
 
     //实现新增课程（教师）评论,1403

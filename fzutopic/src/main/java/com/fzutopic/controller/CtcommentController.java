@@ -9,6 +9,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 @Slf4j
 @RestController
@@ -22,7 +23,7 @@ public class CtcommentController {
     @CrossOrigin
     @GetMapping("/course/comment/{commentitemid}")
     public @ResponseBody AjaxResponse getctcomments(@PathVariable String commentitemid){
-        PageInfo<Ctcomment> ctcomments=ctcommentService.getctcomments(commentitemid);
+        List<Ctcomment> ctcomments=ctcommentService.getctcomments(commentitemid);
         return AjaxResponse.success(ctcomments);
     }
 
