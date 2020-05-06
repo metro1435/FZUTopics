@@ -1,0 +1,16 @@
+*{
+    padding: 0px;
+    margin: 0px;
+}
+.foot{
+    height: 100px;
+    line-height: 100px;
+    width: 90%;
+    max-width: 1000px;
+    text-align: center;
+    font-weight: 600px;
+    font-size: 12px;
+    margin: 0px auto;
+    margin-top: 30px;
+    color: #3b6978;
+}

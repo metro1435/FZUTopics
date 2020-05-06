@@ -1,0 +1,93 @@
+*{
+    padding: 0px;
+    margin: 0px;
+}
+a{
+    text-decoration: none;
+    color: rgba(0, 0, 0, 0.75);
+    background-color: transparent;
+}
+.content {
+    margin: 0 auto;
+    width: 90%;
+    max-width: 1000px;
+    padding-top: 50px;
+}
+.content .home{
+    width: 100%;
+}
+.content .home .post{
+    padding: 20px 0;
+    /*border-style: solid;
+    border-width: 5px;
+    border-color:#84a9ac;
+    border-radius: 30px;*/
+    width: 850px;
+    height: 100px;
+    margin: 5%;
+    border-color: #84a9ac;
+    box-shadow:  7px 7px 7px #84a9ac ;
+    
+}
+.content .home .post .post-header .post-title{
+    margin: 0px 0px 10px;
+    line-height: 1.4;
+    font-size: 1.3em;
+    font-weight: 600;
+    font-family: "Open Sans", "PingFang SC", "Hiragino Sans GB", "Microsoft Yahei", "Microsoft Jhenghei", sans-serif;
+    margin-left: 30px;
+    margin-top: 10px;
+    margin-bottom: 55px;
+}
+.content .home .post .post-header .post-time{
+    color: #aaa;
+    display: block;
+    font-size: 14px;
+    margin-left: 30px
+}
+.content .home .pagination {
+    padding-bottom: 1.2em;
+}
+.content .home .pagination::before,.pagination::after{
+    content: "";
+    display: table;
+}
+.content .home .pagination::after{
+    clear: both;
+}
+.content .home .pagination .prev{
+    float: left;
+}
+.content .home .pagination .next{
+    float: right;
+}
+.content .home .pagination .prev,.content .home .pagination .next{
+    font-weight: 400;
+    font-size: 16px;
+    font-family: "Open Sans", "PingFang SC", "Hiragino Sans GB", "Microsoft Yahei", "Microsoft Jhenghei", sans-serif;
+    transition-property: transform;
+    transition-timing-function: ease-out;
+    transition-duration: 0.3s;
+}
+.content .home .pagination .prev:hover{
+    color: rgba(144, 208, 238, 0.548);
+    transform: translateX(-7px);
+}
+.content .home .pagination .next:hover{
+    color: rgba(144, 208, 238, 0.548);
+    transform: translateX(7px);
+}
+.content .home .pagination .prev .iconfont{
+    font-family: "iconfont" !important;
+    font-style: normal;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    -webkit-text-stroke-width: 0.2px;
+    cursor: pointer;
+}
+.content .home .pagination .prev .icon-left::before{
+    content: "\e605";
+}
+.content .home .pagination .next .icon-left::before{
+    content: "\e605";
+}

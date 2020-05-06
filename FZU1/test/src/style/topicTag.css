@@ -1,0 +1,37 @@
+*{
+    padding: 0px;
+    margin: 0px;
+}
+a{
+    text-decoration: none;
+    color: rgba(0, 0, 0, 0.75);
+    background-color: transparent;
+}
+.secondary{
+    width: 19%;
+    float: right;
+    padding-top: 40px;
+    color: rgba(0, 0, 0, 1);
+}
+.secondary .widget-area{
+    font-size: 14px;
+}
+.secondary .widget-area .widget-title{
+    font-size: 16px;
+    letter-spacing: 1px;
+    padding-bottom: 5px;
+    margin-bottom: 1em;
+    font-weight: 500;
+    border-bottom: 1px solid #ddd;
+    font-family: "Open Sans", "PingFang SC", "Hiragino Sans GB", "Microsoft Yahei", "Microsoft Jhenghei", sans-serif;
+}
+.secondary .widget-area .tag-list{
+    list-style: none;
+}
+.secondary .widget-area .tag-list .tag-list-item{
+    padding: 0 10px 7px 0;
+    font-size: 14px;
+    text-transform: uppercase;
+    display: inline-block;
+    background-color: #fff;
+}

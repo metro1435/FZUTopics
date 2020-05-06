@@ -1,0 +1,20 @@
+*{
+    padding: 0px;
+    margin: 0px;
+}
+.search input{
+    font-size: 18px;
+    height:33.5px;
+    width: 70%;
+    border: black 1px soiled;
+}
+.index-search-btn{
+    float: right;
+    height:37.5px;
+    border: black 1px soiled;
+}
+button.search-btn{
+   text-align: center;
+   background-color: transparent;
+   cursor: pointer;
+}

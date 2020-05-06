@@ -1,0 +1,133 @@
+<template>
+  <div>
+    <TopicArticle :article="article"></TopicArticle>
+    <div class="col-md-9 rightBox comment">
+      <CommentBox :comment="comment" v-on:change="changCommmer"></CommentBox>
+      <CommentText
+        v-bind:type="type"
+        v-bind:name="oldComment"
+        v-on:submit="addComment"
+        v-on:canel="canelCommit"
+      ></CommentText>
+    </div>
+  </div>
+</template>
+
+<script>
+import TopicArticle from "./TopicArticle";
+import CommentBox from "./CommentBox";
+import CommentText from "./CommentText";
+export default {
+  name: "Topic",
+  components: {
+    TopicArticle,
+    CommentBox,
+    CommentText
+  },
+  data() {
+    return {
+      commenter: "session", //评论人
+      type: 0, //0为评论作者1为评论别人的评论2为评论别人的别人
+      oldComment: null,
+      chosedIndex: -1, //被选中的评论的index
+      article: {
+        title: "当归泡水喝的九大功效",
+        time: "2019-07-12",
+        read: 50,
+        content:
+          "<p><br>当2019年12月31日还剩下大约10分钟的时候，我洗完澡，躺在床上度过了21世纪第二个十年的最后的时刻，一切都显得那么魔幻，一个旧的时代悄然落幕，一个新的时代已经降临，而生活中的一切，都还没有来得及有任何变化。</p>\
+                        <p>从前的科幻小说经常将时间设定在2020，这仿佛成了一个永远不会到达的日期，特别适合用来做科幻的背景时间，这也给我造就了一种如果到2020，世界就会发生巨变的错觉，当时间嘀嗒一声指向0点0分，错觉烟消云散。</p>\
+                        <p>其实我们应该有这样的觉悟，每个时间都会到来，世界也不会因为到了某一个时间点就突然发生巨变，就如同我写东西经常会用的一个开头 <strong>「时间不紧不慢，随风而散」</strong>。</p>\
+                        <p>到了今天，已经是新的一年的第六天，我坐在桌前，去年没吃完的橘子依然还在那里，只是变得有些干瘪了，恍惚之间，过去的那个时代扛起一个老式的电影放映机，在我脑中开始回溯过去的点点滴滴。</p>\
+                        <p>这是我第一次感受到一个旧时代的落幕，尽管我其实已经有过两次这样的经历，甚至其中一次还是世纪之交，不过那时候只盼望着快点长大，怎么会有关于时间流逝的深刻体会，当这个十年，21世纪的第二个十年过去之后，我才是真切的感受到岁月如梭。</p>\
+                        <p>回想起10年前，我正在高中，日复一日的看着那些翻过许多遍的教材，憧憬着大学的美好时光，毕竟已经听过太多次<strong>「上大学就好了」</strong>，既然大家都这么说，那里总该是一个伊甸园吧。</p>\
+                        <p>终于，到了11年的9月，我开始了自己的大学生活，现在回忆起来，时间仿佛按了快进键，大学时光匆匆而过，没有太多的停留，那些时光当然留下了一些记忆，但是，都只是轻描淡写的勾勒在那里。</p>\
+                        <p>恍然间，时间就到了15年6月，这一次的毕业季我参与其中，因为之前找工作屡屡碰壁，我有点灰心丧气，答应接受一个之前的安排，去了一个国企。</p>\
+                        <p>这里的日子清闲而乏味，我从来不是一个自驱性很强的人，却也不是一个乐得安于现状的人，这里的生活对我来说一眼能望到头，而我，从来没有去看过外面的世界是什么模样，在我眼中，外面的世界看起来好精彩呀。</p>\
+                        <p>终于，我笃定了方向，开始新一轮的学习，我从来没有想象过，自己凭借着一个信念，能够坚持那么久的学习，大约三到四个月的时间，我完成了一次从零开始的转行，这对我来说，无疑是一个壮举，那时候的自己，眼中已经没有什么困难事。 </p>\
+                        <p>然而，似乎所有的故事都是如此，新鲜感过去，我才慢慢感受到，这里其实是另一群人的普通生活，我翻山越岭，爬过一个山头，不过是让生活换了一个背景，继续延续，对我而言，只是一切只是变得更忙碌了一些。</p>\
+                        <p>这种生活就这样延续着，换了几次工作，住处依然没变，几乎没什么波澜，下了很多次决心要做一些新的事情，可惜没有当时那么强烈的驱动力，都半途而废了。</p>\
+                        <p>18年，所幸，我终于有了自己的知心人，希望今年能和她一起组建自己的家庭，同年，我终于想通一个人总该买一个属于自己的房子，开始嘲笑和抱怨当年执着不愿买房的自己，每个月还着贷款。</p>\
+                        <p>我经常会以一些行为来标榜和暗示自己，我并没有一成不变，安于现状，比如我买书，看书，让自己写读书笔记，买一些课程，学习一些新东西，告诉自己，我的梦想是写作，虽然有时会文思泉涌地写上几句，又再次文思枯竭，留下只有开头的文稿，但是终归，那里还有梦想。</p>\
+                        <p>我喜欢二十一世纪的第二个十年，这里我有过奋斗，有过懈怠，遇到了生命中最重要的人，跨过了生命中的许多阶段，即使在这个阶段，我有许多值得改进的方面，该做更多的事情，但是过去的就是过去的，未来还在那里等待。</p>\
+                        <p>我也期待二十一世纪的第三个十年，不管未来怎样，满怀期待，认真对待。</p>"
+      },
+      comment: [
+        {
+          name: "墨黎",
+          time: "2019-12-17",
+          content: "好,讲得非常好，good",
+          reply: [
+            {
+              responder: "傲娇的",
+              reviewers: "墨黎",
+              time: "2019-12-17",
+              content: "很强"
+            },
+            {
+              responder: "墨黎",
+              reviewers: "傲娇的",
+              time: "2019-12-17",
+              content: "你说得对"
+            }
+          ]
+        },
+        {
+          name: "Freedom小黄",
+          time: "2019-08-17",
+          content: "好,讲得非常好，good",
+          reply: []
+        }
+      ]
+    };
+  },
+  methods: {
+    getTime() {
+      var now = new Date();
+      var year = now.getFullYear();
+      var month = now.getMonth() + 1;
+      var day = now.getDate();
+      month.length < 2 ? "0" + month : month;
+      day.length < 2 ? "0" + day : day;
+      return year + "-" + month + "-" + day;
+    },
+    addComment(data) {
+      if (this.type == 0) {
+        this.comment.push({
+          name: "session",
+          time: this.getTime(),
+          content: data,
+          reply: []
+        });
+        //服务器端变
+      } else if (this.type == 1) {
+        this.comment[this.chosedIndex].reply.push({
+          responder: "session",
+          reviewers: this.comment[this.chosedIndex].name,
+          time: this.getTime(),
+          content: data
+        });
+        this.type = 0;
+      }
+    },
+    changCommmer(name, index) {
+      this.oldComment = name;
+      this.chosedIndex = index;
+      this.type = 1;
+    },
+    canelCommit() {
+      this.type = 0;
+    },
+    readCount() {
+      this.article.read++;
+      console.log(this.article.read);
+    }
+  },
+  mounted() {
+    this.readCount();
+  }
+};
+</script>
+
+<style scoped src="../style/comment.css">
+</style>
