@@ -18,9 +18,6 @@ public interface TopicService {
     //根据tagid找话题,一组16,按热度降序，221701401负责
     PageInfo<Topic> getTopicsByTag(String tagid);
 
-    //遍历TopicTag的list，找出每个topicid对应的topic信息，拼接成list返回，221701401负责
-    List<Topic> getTopicListByTagList(List<TopicTagKey> topicTagKeys);
-
     //根据title找话题，模糊搜索使用sql的like，221701401负责
     PageInfo<Topic> getTopicsByTitle(String title);
 

@@ -5,8 +5,10 @@ import com.fzutopic.dao.TagDao;
 import com.fzutopic.dao.TopicTagDao;
 import com.fzutopic.model.Tag;
 import com.fzutopic.model.TagExample;
+import com.fzutopic.model.TopicTagExample;
 import com.fzutopic.model.TopicTagKey;
 import lombok.extern.slf4j.Slf4j;
+import net.sf.jsqlparser.statement.select.Top;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -34,6 +36,19 @@ public class TagServiceImpl implements TagService{
     //获取所有标签，221701401负责
     public List<Tag> getAllTag(){
         return tagDao.select();
+    }
+
+    //topic——tag是否存在，221701401
+    public boolean TopicTagisExist(List<TopicTagKey> topicTagKeys) {
+        TopicTagExample topicTagExample=new TopicTagExample();
+        TopicTagExample.Criteria criteria=topicTagExample.createCriteria();
+        for (TopicTagKey topicTagKey:topicTagKeys) {
+            criteria.andTagidEqualTo(topicTagKey.getTagid());
+            criteria.andTopicidEqualTo(topicTagKey.getTopicid());
+            List<TopicTagKey> res=topicTagDao.selectByExample(topicTagExample);
+            if (res.size()!=0) return true;
+        }
+        return false;
     }
 
     //插入标签，221701401负责

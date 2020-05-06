@@ -31,7 +31,7 @@ public class TopicServiceImpl implements TopicService {
         topicExample.setOrderByClause("heats desc");
         TopicExample.Criteria criteria = topicExample.createCriteria();
         criteria.andAuditstatusEqualTo(1);
-        PageHelper.startPage(1, 16);
+        PageHelper.startPage(1, 10);
         List<Topic> topics = topicDao.selectByExampleWithBLOBs(topicExample);
         return PageInfo.of(topics);
     }
@@ -46,42 +46,19 @@ public class TopicServiceImpl implements TopicService {
     }
 
 
-    //根据tagid找话题,一组16,按热度降序，221701401负责
+    //根据tagid找话题,一组10,按热度降序，221701401负责
     public PageInfo<Topic> getTopicsByTag(String tagid) {
         TopicTagExample topicTagExample = new TopicTagExample();
         TopicTagExample.Criteria criteria = topicTagExample.createCriteria();
         criteria.andTagidEqualTo(tagid);
-        PageHelper.startPage(1, 16);
-        List<TopicTagKey> topicsByTag = topicTagDao.selectByExample(topicTagExample);
-        List<Topic> topicList = getTopicListByTagList(topicsByTag);
+        PageHelper.startPage(1, 10);
+        List<Topic> topicList = topicDao.selectByTag(tagid);
         return PageInfo.of(topicList);
-    }
-
-    //遍历TopicTag的list，找出每个topicid对应的topic信息，拼接成list返回，221701401负责
-    public List<Topic> getTopicListByTagList(List<TopicTagKey> topicTagKeys) {
-        List<Topic> resTopicList = new ArrayList<Topic>();
-        for (TopicTagKey tmpTopicTagKey : topicTagKeys) {
-            String tmpTopicId = tmpTopicTagKey.getTopicid();
-            List<Topic> tmpTopic = getTopicByID(tmpTopicId);
-            resTopicList.addAll(tmpTopic);
-        }
-        resTopicList.sort(new Comparator<Topic>() {
-            @Override
-            public int compare(Topic o1, Topic o2) {
-                return o2.getHeats() - o1.getHeats();
-            }
-        });
-        return resTopicList;
     }
 
     //根据title找话题，模糊搜索使用sql的like，221701401负责
     public PageInfo<Topic> getTopicsByTitle(String title) {
-        /*TopicExample topicExample = new TopicExample();
-        topicExample.setOrderByClause("heats desc");
-        TopicExample.Criteria criteria = topicExample.createCriteria();
-        criteria.andTitleEqualTo(title);
-        criteria.andAuditstatusEqualTo(1);*/
-        PageHelper.startPage(1, 16);
+        PageHelper.startPage(1, 10);
         //这里是模糊搜索
         List<Topic> test = topicDao.selectByTitleLike(title);
         return PageInfo.of(test);
@@ -215,7 +192,7 @@ public class TopicServiceImpl implements TopicService {
         TopicExample.Criteria criteria=example.createCriteria();
         criteria.andAuditstatusEqualTo(0);
         example.setOrderByClause("topicid desc");
-        PageHelper.startPage(1,16);
+        PageHelper.startPage(1,10);
         List<Topic> topics1=topicDao.selectByExampleWithBLOBs(example);
         return new PageInfo<>(topics1);
     }
