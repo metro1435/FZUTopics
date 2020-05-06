@@ -229,10 +229,11 @@ public class LikesControllerTest {
     @Test
     public void a_addcommentLikes1() throws Exception {
         String json = "{\n" +
-                "    \"itemid\": \"12345678020200501141319\",\n" +
-                "    \"likedstatus\": 1\n" +
+                "\t\"itemid\":\"12345678020200501141319\",\n" +
+                "\t\"likes\":1,\n" +
+                "\t\"sort\":3\n" +
                 "}";
-        mvc.perform(MockMvcRequestBuilders.post("/user/topic/comment/commentlikes?sort=3")
+        mvc.perform(MockMvcRequestBuilders.post("/user/topic/comment/commentlikes")
                 .accept(MediaType.APPLICATION_JSON_UTF8)
                 .contentType(MediaType.APPLICATION_JSON_UTF8)
                 .content(json.getBytes())
@@ -244,17 +245,18 @@ public class LikesControllerTest {
 
     /**
      * 新增对评论回复踩赞用例
-     * 测试likeStatus参数值非法
+     * 测试likes参数值非法
      *
      * @throws Exception
      */
     @Test
     public void a_addcommentLikes2() throws Exception {
         String json = "{\n" +
-                "    \"itemid\": \"12345678020200501141319\",\n" +
-                "    \"likedstatus\": 3\n" +
+                "\t\"itemid\":\"12345678020200501141319\",\n" +
+                "\t\"likes\":3,\n" +
+                "\t\"sort\":0\n" +
                 "}";
-        mvc.perform(MockMvcRequestBuilders.post("/user/topic/comment/commentlikes?sort=0")
+        mvc.perform(MockMvcRequestBuilders.post("/user/topic/comment/commentlikes")
                 .accept(MediaType.APPLICATION_JSON_UTF8)
                 .contentType(MediaType.APPLICATION_JSON_UTF8)
                 .content(json.getBytes())
@@ -273,10 +275,11 @@ public class LikesControllerTest {
     @Test
     public void a_addcommentLikes3() throws Exception {
         String json = "{\n" +
-                "    \"itemid\": \"12345678020200501141319\",\n" +
-                "    \"likedstatus\": 1\n" +
+                "\t\"itemid\":\"12345678020200501141319\",\n" +
+                "\t\"likes\":1,\n" +
+                "\t\"sort\":0\n" +
                 "}";
-        mvc.perform(MockMvcRequestBuilders.post("/user/topic/comment/commentlikes?sort=0")
+        mvc.perform(MockMvcRequestBuilders.post("/user/topic/comment/commentlikes")
                 .accept(MediaType.APPLICATION_JSON_UTF8)
                 .contentType(MediaType.APPLICATION_JSON_UTF8)
                 .content(json.getBytes())
@@ -295,10 +298,11 @@ public class LikesControllerTest {
     @Test
     public void a_addcommentLikes4() throws Exception {
         String json = "{\n" +
-                "    \"itemid\": \"12345678120200501130809\",\n" +
-                "    \"likedstatus\": 0\n" +
+                "\t\"itemid\":\"12345678120200501130809\",\n" +
+                "\t\"likes\":0,\n" +
+                "\t\"sort\":1\n" +
                 "}";
-        mvc.perform(MockMvcRequestBuilders.post("/user/topic/comment/commentlikes?sort=1")
+        mvc.perform(MockMvcRequestBuilders.post("/user/topic/comment/commentlikes")
                 .accept(MediaType.APPLICATION_JSON_UTF8)
                 .contentType(MediaType.APPLICATION_JSON_UTF8)
                 .content(json.getBytes())
@@ -317,8 +321,9 @@ public class LikesControllerTest {
     @Test
     public void a_addcommentLikes5() throws Exception {
         String json = "{\n" +
-                "    \"itemid\": \"12345678020200501143117\",\n" +
-                "    \"likedstatus\": 0\n" +
+                "\t\"itemid\":\"12345678020200501143117\",\n" +
+                "\t\"likes\":0,\n" +
+                "\t\"sort\":2\n" +
                 "}";
         mvc.perform(MockMvcRequestBuilders.post("/user/topic/comment/commentlikes?sort=2")
                 .accept(MediaType.APPLICATION_JSON_UTF8)
@@ -452,4 +457,69 @@ public class LikesControllerTest {
                 .andExpect(MockMvcResultMatchers.jsonPath("$.code").value(200))
                 .andDo(MockMvcResultHandlers.print());
     }
+
+    /**
+     * 测试是否可以正确获取待审核评论
+     */
+    @Test
+    public void d_getUnauditedReplies() throws Exception {
+        mvc.perform(MockMvcRequestBuilders.get("/admin/reply/unaudited")
+                .accept(MediaType.APPLICATION_JSON_UTF8)
+                .contentType(MediaType.APPLICATION_JSON_UTF8)
+                .header("token", token)
+        )
+                .andExpect(MockMvcResultMatchers.jsonPath("$.code").value(200))
+                .andDo(MockMvcResultHandlers.print());
+    }
+
+    /**
+     * 修改回复待审核状态
+     * 测试对已经通过的回复进行修改审核状态
+     */
+    @Test
+    public void d_updateUnaduitedReply1() throws Exception {
+        mvc.perform(MockMvcRequestBuilders
+                .put("/admin/reply/unaudited?replyid=12345678020200501141319&auditstatus=0")
+                .accept(MediaType.APPLICATION_JSON_UTF8)
+                .contentType(MediaType.APPLICATION_JSON_UTF8)
+                .header("token", token)
+        )
+                .andExpect(MockMvcResultMatchers.jsonPath("$.code").value(500))
+                .andDo(MockMvcResultHandlers.print());
+    }
+
+    /**
+     * 修改回复待审核状态
+     * 测试审核通过
+     * 此条数据要自己添加
+     */
+    @Test
+    public void d_updateUnaduitedReply2() throws Exception {
+        mvc.perform(MockMvcRequestBuilders
+                .put("/admin/reply/unaudited?replyid=12345678920200506125244&auditstatus=1")
+                .accept(MediaType.APPLICATION_JSON_UTF8)
+                .contentType(MediaType.APPLICATION_JSON_UTF8)
+                .header("token", token)
+        )
+                .andExpect(MockMvcResultMatchers.jsonPath("$.code").value(200))
+                .andDo(MockMvcResultHandlers.print());
+    }
+
+    /**
+     * 修改回复待审核状态
+     * 测试审核不通过
+     * 此条数据要自己添加
+     */
+    @Test
+    public void d_updateUnaduitedReply3() throws Exception {
+        mvc.perform(MockMvcRequestBuilders
+                .put("/admin/reply/unaudited?replyid=12345678920200506125244&auditstatus=0")
+                .accept(MediaType.APPLICATION_JSON_UTF8)
+                .contentType(MediaType.APPLICATION_JSON_UTF8)
+                .header("token", token)
+        )
+                .andExpect(MockMvcResultMatchers.jsonPath("$.code").value(200))
+                .andDo(MockMvcResultHandlers.print());
+    }
+
 }
