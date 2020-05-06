@@ -76,4 +76,24 @@ public class TagServiceImpl implements TagService{
         if (flag!=0) return true;
         else return false;
     }
+
+
+    //管理员获取标签列表（一次40个），221701309负责
+    public List<Tag> getTagList(){
+        TagExample tagExample=new TagExample();
+        //tagExample.setOrderByClause("times desc");
+        tagExample.setLimit(40);
+        return tagDao.selectByExample(tagExample);
+    }
+
+    //管理员新增标签，221701309负责
+    public Tag createTag(Tag tag){
+        tagDao.insert1(tag);
+        return tag;
+    }
+
+    //管理员删除标签（指定id）,221701309
+    public void deleteTag(String tagid){
+        tagDao.deleteByPrimaryKey(tagid);
+    }
 }
