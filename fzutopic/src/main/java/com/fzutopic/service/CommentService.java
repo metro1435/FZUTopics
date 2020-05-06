@@ -9,7 +9,7 @@ import java.util.List;
 public interface CommentService {
 
     //根据topicid找出对应的评论列表，221701401负责
-    PageInfo<Comment> getCommentsById(String topicid);
+    List<Comment> getCommentsById(String topicid);
 
     //获取待审核评论列表，221701401负责
     PageInfo<Comment> getUnauditedComments();

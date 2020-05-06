@@ -6,11 +6,14 @@ import com.fzutopic.annotation.UserLoginToken;
 import com.fzutopic.model.AjaxResponse;
 import com.fzutopic.model.Comment;
 import com.fzutopic.service.CommentServiceImpl;
+import com.fzutopic.utils.TokenUtil;
 import com.github.pagehelper.PageInfo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 
 @Slf4j
 @RestController
@@ -25,9 +28,9 @@ public class CommentController {
     @GetMapping("/topic/{topicid}/comment")
     public  @ResponseBody AjaxResponse getCommentById(@PathVariable(name="topicid") String topicid) {
         if (topicid.isEmpty() || topicid.length()!=24) return AjaxResponse.error(400,"topicid为空或不合规定");
-        PageInfo<Comment> pageInfo =commentService.getCommentsById(topicid);
-        if (pageInfo.getList().isEmpty()) return AjaxResponse.error(404,"没有评论");
-        return AjaxResponse.success(pageInfo);
+        List<Comment> comments =commentService.getCommentsById(topicid);
+        if (comments.isEmpty()) return AjaxResponse.error(404,"没有评论");
+        return AjaxResponse.success(comments);
     }
 
     //获取待审核评论，221701401负责
@@ -66,11 +69,12 @@ public class CommentController {
     @CrossOrigin
     @PostMapping("/user/topic/comment")
     public @ResponseBody
-    AjaxResponse createComment(@RequestBody Comment comment){
+    AjaxResponse createComment(@RequestBody Comment comment,
+                               HttpServletRequest httpServletRequest){
+        String userid = TokenUtil.getUserIdByRequest(httpServletRequest);
+        comment.setPosterid(userid);
         return AjaxResponse.success(commentService.createComment(comment));
     }
-
-
 }
 
 

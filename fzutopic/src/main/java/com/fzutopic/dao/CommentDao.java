@@ -18,7 +18,8 @@ public interface CommentDao {
     int insert(Comment record);
 
     //1309
-    @Insert({ "insert into comment(commentid, text, likes, unlikes, time, isanony, posterid, topicid, isreply, auditstatus) values(#{commentid}, #{text}, #{likes}, #{unlikes}, #{time}, #{isanony}, #{posterid}, #{topicid}, #{isreply},#{auditstatus})" })
+    @Insert({ "insert into comment(commentid, text, time, isanony, posterid, topicid, isreply, auditstatus) " +
+            "values(#{commentid}, #{text}, #{time}, #{isanony}, #{posterid}, #{topicid}, #{isreply},#{auditstatus})" })
     int insert1(Comment record);
 
     int insertSelective(Comment record);

@@ -23,15 +23,13 @@ public class CommentServiceImpl implements CommentService {
     private TopicDao topicDao;
 
     //根据topicid找出对应的评论列表，，221701401负责
-    public PageInfo<Comment> getCommentsById(String topicid) {
+    public List<Comment> getCommentsById(String topicid) {
         CommentExample commentExample = new CommentExample();
         commentExample.setOrderByClause("time desc");
         CommentExample.Criteria criteria = commentExample.createCriteria();
         criteria.andTopicidEqualTo(topicid);
         criteria.andAuditstatusEqualTo(1);
-        PageHelper.startPage(1, 20);
-        List<Comment> comments = commentDao.selectByExampleWithBLOBs(commentExample);
-        return PageInfo.of(comments);
+        return  commentDao.selectByExampleWithBLOBs(commentExample);
     }
 
     //获取待审核评论列表，一页16个，221701401负责

@@ -29,15 +29,13 @@ public class ReplyServiceImpl implements ReplyService {
 
 
     //根据commentid找评论,221701401负责
-    public PageInfo<Reply> getRepliesById(String commentid) {
+    public List<Reply> getRepliesById(String commentid) {
         ReplyExample replyExample = new ReplyExample();
         replyExample.setOrderByClause("time desc");
         ReplyExample.Criteria criteria = replyExample.createCriteria();
         criteria.andCommentidEqualTo(commentid);
         criteria.andAuditstatusEqualTo(1);
-        PageHelper.startPage(1, 10);
-        List<Reply> replies = replyDao.selectByExampleWithBLOBs(replyExample);
-        return PageInfo.of(replies);
+        return replyDao.selectByExampleWithBLOBs(replyExample);
     }
 
     //插入reply,221701401负责

@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 
 @Slf4j
 @RestController
@@ -25,16 +26,17 @@ public class ReplyController {
     @GetMapping("/topic/{commentid}/reply")
     public  @ResponseBody AjaxResponse getCommentById(@PathVariable(name="commentid") String commentid) {
         if (commentid.isEmpty() || commentid.length()!=23) return AjaxResponse.error(400,"commentid为空或不合规定");
-        PageInfo<Reply> pageInfo =replyService.getRepliesById(commentid);
-        if (pageInfo.getList().isEmpty()) return AjaxResponse.error(404,"没有回复");
-        return AjaxResponse.success(pageInfo);
+        List<Reply> replies =replyService.getRepliesById(commentid);
+        if (replies.isEmpty()) return AjaxResponse.error(404,"没有回复");
+        return AjaxResponse.success(replies);
     }
 
     //提交用户对评论的回复，221701401负责
     @UserLoginToken
     @CrossOrigin
     @PostMapping("/user/topic/comment/reply")
-    public @ResponseBody AjaxResponse postReply(@RequestBody Reply reply, HttpServletRequest httpServletRequest) {
+    public @ResponseBody AjaxResponse postReply(@RequestBody Reply reply,
+                                                HttpServletRequest httpServletRequest) {
         String userid = TokenUtil.getUserIdByRequest(httpServletRequest);
         reply.setUserid(userid);
         boolean postsuccess=true;

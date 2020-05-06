@@ -10,7 +10,7 @@ import java.util.List;
 public interface ReplyService {
 
     //根据commentid找评论,221701401负责
-    PageInfo<Reply> getRepliesById(String commentid);
+    List<Reply> getRepliesById(String commentid);
 
     //插入reply,221701401负责
     boolean postReply(Reply reply);
