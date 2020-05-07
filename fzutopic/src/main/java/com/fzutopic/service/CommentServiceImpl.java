@@ -3,6 +3,7 @@ package com.fzutopic.service;
 import com.fzutopic.dao.CommentDao;
 import com.fzutopic.dao.ReplyDao;
 import com.fzutopic.dao.TopicDao;
+import com.fzutopic.dao.UserDao;
 import com.fzutopic.model.*;
 import com.fzutopic.view.CommentVO;
 import com.github.pagehelper.PageHelper;
@@ -21,6 +22,9 @@ import java.util.List;
 public class CommentServiceImpl implements CommentService {
     @Resource
     CommentDao commentDao;
+
+    @Resource
+    UserDao userDao;
 
     @Resource
     private TopicDao topicDao;
@@ -44,7 +48,8 @@ public class CommentServiceImpl implements CommentService {
         List<CommentVO> list=new ArrayList<>();
         for (Comment comment:comments) {
             List<Reply> replies=replyService.getRepliesById(comment.getCommentid());
-            CommentVO commentVO=CommentVO.changeToCommentVO(comment,replies);
+            User user=userDao.selectByPrimaryKey(comment.getPosterid());
+            CommentVO commentVO=CommentVO.changeToCommentVO(comment,user.getNickname(),replies);
             list.add(commentVO);
         }
         return list;

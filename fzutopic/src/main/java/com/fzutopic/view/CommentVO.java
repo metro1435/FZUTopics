@@ -16,12 +16,15 @@ import java.util.List;
 @NoArgsConstructor
 public class CommentVO {
     Comment comment;
+    String userName;
     List<Reply> replies;
 
-    public static CommentVO changeToCommentVO (Comment comment,List<Reply> replies) {
+    public static CommentVO changeToCommentVO (Comment comment,
+                                               String userName,List<Reply> replies) {
         CommentVO commentVO=new CommentVO();
         commentVO.setComment(comment);
         commentVO.setReplies(replies);
+        commentVO.setUserName(userName);
         return commentVO;
     }
 }
