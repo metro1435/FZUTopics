@@ -6,6 +6,7 @@ import com.fzutopic.dao.TopicDao;
 import com.fzutopic.dao.UserDao;
 import com.fzutopic.model.*;
 import com.fzutopic.view.CommentVO;
+import com.fzutopic.view.ReplyVO;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import lombok.extern.slf4j.Slf4j;
@@ -44,12 +45,23 @@ public class CommentServiceImpl implements CommentService {
         return list;
     }
 
+    public List<ReplyVO> addRUserName (List<Reply> replies) {
+        List<ReplyVO> list=new ArrayList<>();
+        for (Reply reply:replies) {
+            User ruser=userDao.selectByPrimaryKey(reply.getUserid());
+            ReplyVO replyVO=ReplyVO.changeToReplyVO(reply,ruser.getNickname());
+            list.add(replyVO);
+        }
+        return list;
+    }
+
     public List<CommentVO> searchReplyByComment(List<Comment> comments) {
         List<CommentVO> list=new ArrayList<>();
         for (Comment comment:comments) {
             List<Reply> replies=replyService.getRepliesById(comment.getCommentid());
+            List<ReplyVO> replyVOList=addRUserName(replies);
             User user=userDao.selectByPrimaryKey(comment.getPosterid());
-            CommentVO commentVO=CommentVO.changeToCommentVO(comment,user.getNickname(),replies);
+            CommentVO commentVO=CommentVO.changeToCommentVO(comment,user.getNickname(),replyVOList);
             list.add(commentVO);
         }
         return list;
