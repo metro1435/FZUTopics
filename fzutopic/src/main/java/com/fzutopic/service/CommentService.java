@@ -2,6 +2,7 @@ package com.fzutopic.service;
 
 import com.fzutopic.model.AjaxResponse;
 import com.fzutopic.model.Comment;
+import com.fzutopic.view.CommentVO;
 import com.github.pagehelper.PageInfo;
 
 import java.util.List;
@@ -9,10 +10,12 @@ import java.util.List;
 public interface CommentService {
 
     //根据topicid找出对应的评论列表，221701401负责
-    List<Comment> getCommentsById(String topicid);
+    List<CommentVO> getCommentsById(String topicid);
 
     //获取待审核评论列表，221701401负责
     PageInfo<Comment> getUnauditedComments();
+
+    List<CommentVO> searchReplyByComment(List<Comment> comments);
 
     //删除评论，221701401
     int deleteComment(String commentid);

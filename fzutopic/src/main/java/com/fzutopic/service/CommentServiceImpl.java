@@ -1,8 +1,10 @@
 package com.fzutopic.service;
 
 import com.fzutopic.dao.CommentDao;
+import com.fzutopic.dao.ReplyDao;
 import com.fzutopic.dao.TopicDao;
 import com.fzutopic.model.*;
+import com.fzutopic.view.CommentVO;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import lombok.extern.slf4j.Slf4j;
@@ -10,6 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
 import java.util.List;
 
 @Slf4j
@@ -22,14 +25,29 @@ public class CommentServiceImpl implements CommentService {
     @Resource
     private TopicDao topicDao;
 
+    @Resource(name = "replyServiceImpl")
+    ReplyServiceImpl replyService;
+
     //根据topicid找出对应的评论列表，，221701401负责
-    public List<Comment> getCommentsById(String topicid) {
+    public List<CommentVO> getCommentsById(String topicid) {
         CommentExample commentExample = new CommentExample();
         commentExample.setOrderByClause("time desc");
         CommentExample.Criteria criteria = commentExample.createCriteria();
         criteria.andTopicidEqualTo(topicid);
         criteria.andAuditstatusEqualTo(1);
-        return  commentDao.selectByExampleWithBLOBs(commentExample);
+        List<Comment> comments=commentDao.selectByExampleWithBLOBs(commentExample);
+        List<CommentVO> list=searchReplyByComment(comments);
+        return list;
+    }
+
+    public List<CommentVO> searchReplyByComment(List<Comment> comments) {
+        List<CommentVO> list=new ArrayList<>();
+        for (Comment comment:comments) {
+            List<Reply> replies=replyService.getRepliesById(comment.getCommentid());
+            CommentVO commentVO=CommentVO.changeToCommentVO(comment,replies);
+            list.add(commentVO);
+        }
+        return list;
     }
 
     //获取待审核评论列表，一页16个，221701401负责

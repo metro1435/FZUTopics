@@ -7,6 +7,7 @@ import com.fzutopic.model.AjaxResponse;
 import com.fzutopic.model.Comment;
 import com.fzutopic.service.CommentServiceImpl;
 import com.fzutopic.utils.TokenUtil;
+import com.fzutopic.view.CommentVO;
 import com.github.pagehelper.PageInfo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
@@ -28,7 +29,7 @@ public class CommentController {
     @GetMapping("/topic/{topicid}/comment")
     public  @ResponseBody AjaxResponse getCommentById(@PathVariable(name="topicid") String topicid) {
         if (topicid.isEmpty() || topicid.length()!=24) return AjaxResponse.error(400,"topicid为空或不合规定");
-        List<Comment> comments =commentService.getCommentsById(topicid);
+        List<CommentVO> comments =commentService.getCommentsById(topicid);
         if (comments.isEmpty()) return AjaxResponse.error(404,"没有评论");
         return AjaxResponse.success(comments);
     }
