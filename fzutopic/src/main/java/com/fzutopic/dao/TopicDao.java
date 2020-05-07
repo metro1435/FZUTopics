@@ -34,7 +34,7 @@ public interface TopicDao {
     List<Topic> selectByTitleLike(String title);
 
     @Select({"select * from topic_tag inner join topic on topic_tag.topicid=topic.topicid " +
-            "where topic_tag.tagid=#{tagid}"})
+            "where topic_tag.tagid=#{tagid} and topic.auditStatus=1"})
     List<Topic> selectByTag(String tagid);
 
     Topic selectByPrimaryKey(String topicid);
