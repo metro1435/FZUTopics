@@ -275,7 +275,7 @@ public class LikesControllerTest {
     @Test
     public void a_addcommentLikes3() throws Exception {
         String json = "{\n" +
-                "\t\"itemid\":\"12345678020200501141319\",\n" +
+                "\t\"itemid\":\"12345678320200501135953\",\n" +
                 "\t\"likes\":1,\n" +
                 "\t\"sort\":0\n" +
                 "}";
@@ -298,7 +298,7 @@ public class LikesControllerTest {
     @Test
     public void a_addcommentLikes4() throws Exception {
         String json = "{\n" +
-                "\t\"itemid\":\"12345678120200501130809\",\n" +
+                "\t\"itemid\":\"12345678020200501201138\",\n" +
                 "\t\"likes\":0,\n" +
                 "\t\"sort\":1\n" +
                 "}";
@@ -311,13 +311,13 @@ public class LikesControllerTest {
                 .andExpect(MockMvcResultMatchers.jsonPath("$.code").value(200))
                 .andDo(MockMvcResultHandlers.print());
     }
-
+/*
     /**
      * 新增对评论回复踩赞用例
      * 测试对课程（教师）评论踩赞
      *
      * @throws Exception
-     */
+
     @Test
     public void a_addcommentLikes5() throws Exception {
         String json = "{\n" +
@@ -334,7 +334,7 @@ public class LikesControllerTest {
                 .andExpect(MockMvcResultMatchers.jsonPath("$.code").value(200))
                 .andDo(MockMvcResultHandlers.print());
     }
-
+*/
     /**
      * 修改对评论踩赞测试用例
      * 测试未修改修改话题评论踩赞
@@ -344,7 +344,7 @@ public class LikesControllerTest {
     @Test
     public void b_updatecommentLikes1() throws Exception {
         mvc.perform(MockMvcRequestBuilders.
-                put("/user/topic/comment/commentlikes?itemid=12345678020200501141319&likes=1&sort=0")
+                put("/user/topic/comment/commentlikes?itemid=12345678320200501135953&likes=1&sort=0")
                 .accept(MediaType.APPLICATION_JSON_UTF8)
                 .contentType(MediaType.APPLICATION_JSON_UTF8)
                 .header("token", token)
@@ -362,7 +362,7 @@ public class LikesControllerTest {
     @Test
     public void b_updatecommentLikes2() throws Exception {
         mvc.perform(MockMvcRequestBuilders.
-                put("/user/topic/comment/commentlikes?itemid=12345678020200501141319&likes=0&sort=0")
+                put("/user/topic/comment/commentlikes?itemid=12345678320200501135953&likes=0&sort=0")
                 .accept(MediaType.APPLICATION_JSON_UTF8)
                 .contentType(MediaType.APPLICATION_JSON_UTF8)
                 .header("token", token)
@@ -380,7 +380,7 @@ public class LikesControllerTest {
     @Test
     public void b_updatecommentLikes3() throws Exception {
         mvc.perform(MockMvcRequestBuilders.
-                put("/user/topic/comment/commentlikes?itemid=12345678120200501130809&likes=1&sort=1")
+                put("/user/topic/comment/commentlikes?itemid=12345678020200501201138&likes=1&sort=1")
                 .accept(MediaType.APPLICATION_JSON_UTF8)
                 .contentType(MediaType.APPLICATION_JSON_UTF8)
                 .header("token", token)
@@ -388,13 +388,13 @@ public class LikesControllerTest {
                 .andExpect(MockMvcResultMatchers.jsonPath("$.code").value(200))
                 .andDo(MockMvcResultHandlers.print());
     }
-
+/*
     /**
      * 修改对评论踩赞测试用例
      * 测试修改课程（教师）评论踩赞
      *
      * @throws Exception
-     */
+
     @Test
     public void b_updatecommentLikes4() throws Exception {
         mvc.perform(MockMvcRequestBuilders.
@@ -406,7 +406,7 @@ public class LikesControllerTest {
                 .andExpect(MockMvcResultMatchers.jsonPath("$.code").value(200))
                 .andDo(MockMvcResultHandlers.print());
     }
-
+*/
     /**
      * 用户取消点赞（踩）测试用例
      * 取消对话题评论回复踩赞
@@ -415,7 +415,7 @@ public class LikesControllerTest {
      */
     @Test
     public void c_deletecommentLikeds1() throws Exception {
-        mvc.perform(MockMvcRequestBuilders.delete("/user/topic/comment/commentlikes?itemid=12345678020200501141319&sort=0")
+        mvc.perform(MockMvcRequestBuilders.delete("/user/topic/comment/commentlikes?itemid=12345678320200501135953&sort=0")
                 .accept(MediaType.APPLICATION_JSON_UTF8)
                 .contentType(MediaType.APPLICATION_JSON_UTF8)
                 .header("token", token)
@@ -432,7 +432,7 @@ public class LikesControllerTest {
      */
     @Test
     public void c_deletecommentLikeds2() throws Exception {
-        mvc.perform(MockMvcRequestBuilders.delete("/user/topic/comment/commentlikes?itemid=12345678120200501130809&sort=1")
+        mvc.perform(MockMvcRequestBuilders.delete("/user/topic/comment/commentlikes?itemid=12345678020200501201138&sort=1")
                 .accept(MediaType.APPLICATION_JSON_UTF8)
                 .contentType(MediaType.APPLICATION_JSON_UTF8)
                 .header("token", token)
@@ -440,13 +440,13 @@ public class LikesControllerTest {
                 .andExpect(MockMvcResultMatchers.jsonPath("$.code").value(200))
                 .andDo(MockMvcResultHandlers.print());
     }
-
+/*
     /**
      * 用户取消点赞（踩）测试用例
      * 取消对课程（教师）评论踩赞
      *
      * @throws Exception
-     */
+
     @Test
     public void c_deletecommentLikeds3() throws Exception {
         mvc.perform(MockMvcRequestBuilders.delete("/user/topic/comment/commentlikes?itemid=12345678020200501143117&sort=2")
@@ -457,7 +457,7 @@ public class LikesControllerTest {
                 .andExpect(MockMvcResultMatchers.jsonPath("$.code").value(200))
                 .andDo(MockMvcResultHandlers.print());
     }
-
+*/
     /**
      * 测试是否可以正确获取待审核评论
      */
@@ -494,9 +494,10 @@ public class LikesControllerTest {
      * 此条数据要自己添加
      */
     @Test
+    @Transactional
     public void d_updateUnaduitedReply2() throws Exception {
         mvc.perform(MockMvcRequestBuilders
-                .put("/admin/reply/unaudited?replyid=12345678920200506125244&auditstatus=1")
+                .put("/admin/reply/unaudited?replyid=12345678620200505184153&auditstatus=1")
                 .accept(MediaType.APPLICATION_JSON_UTF8)
                 .contentType(MediaType.APPLICATION_JSON_UTF8)
                 .header("token", token)
@@ -511,9 +512,10 @@ public class LikesControllerTest {
      * 此条数据要自己添加
      */
     @Test
+    @Transactional
     public void d_updateUnaduitedReply3() throws Exception {
         mvc.perform(MockMvcRequestBuilders
-                .put("/admin/reply/unaudited?replyid=12345678920200506125244&auditstatus=0")
+                .put("/admin/reply/unaudited?replyid=12345678620200505184153&auditstatus=0")
                 .accept(MediaType.APPLICATION_JSON_UTF8)
                 .contentType(MediaType.APPLICATION_JSON_UTF8)
                 .header("token", token)

@@ -36,10 +36,11 @@ public class UserController {
     @CrossOrigin
     @PutMapping("/user/setting")
     @UserLoginToken
-    public void updateNicknameIcon(@RequestBody User user,HttpServletRequest httpServletRequest){
+    public AjaxResponse updateNicknameIcon(@RequestBody User user,HttpServletRequest httpServletRequest){
         String userid = TokenUtil.getUserIdByRequest(httpServletRequest);
         user.setUserid(userid);
         userService.updateNicknameIcon(user);
+        return AjaxResponse.success("修改成功");
     }
 
     //通过userid获取nickname402
