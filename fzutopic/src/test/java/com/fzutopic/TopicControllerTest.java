@@ -33,7 +33,7 @@ public class TopicControllerTest {
                 "\t\"userid\":\"123456789\",\n" +
                 "\t\"password\":\"123456\"\n" +
                 "}";
-        String result= mvc.perform(MockMvcRequestBuilders.get("/login")
+        String result= mvc.perform(MockMvcRequestBuilders.post("/login")
                 .accept(MediaType.APPLICATION_JSON_UTF8)
                 .contentType(MediaType.APPLICATION_JSON_UTF8)
                 .content(json.getBytes())
@@ -56,7 +56,7 @@ public class TopicControllerTest {
      */
     @Test
     public void getTopicTest() throws Exception {
-        mvc.perform(MockMvcRequestBuilders.get("/topic")
+        mvc.perform(MockMvcRequestBuilders.get("/topic/page/1")
                 .contentType(MediaType.APPLICATION_JSON_UTF8)
                 .accept(MediaType.APPLICATION_JSON_UTF8)
                 .header("token",token)
@@ -91,7 +91,7 @@ public class TopicControllerTest {
     }
 
     /**
-     * 按指定topicid获取话题
+     * 按指定tagid获取话题
      * 选取比对热度进行测试
      * 需满足数据库中有相关数据
      *  221701401负责
@@ -99,7 +99,7 @@ public class TopicControllerTest {
      */
     @Test
     public void getTopicByTagIdTest() throws Exception {
-        mvc.perform(MockMvcRequestBuilders.get("/topic/1")
+        mvc.perform(MockMvcRequestBuilders.get("/topic/1/page/1")
                 .contentType(MediaType.APPLICATION_JSON_UTF8)
                 .accept(MediaType.APPLICATION_JSON_UTF8)
                 .header("token",token)
@@ -120,7 +120,7 @@ public class TopicControllerTest {
      */
     @Test
     public void getTopicByTitleTest() throws Exception {
-        mvc.perform(MockMvcRequestBuilders.get("/topic/title/话")
+        mvc.perform(MockMvcRequestBuilders.get("/topic/title/话/page/1")
                 .contentType(MediaType.APPLICATION_JSON_UTF8)
                 .accept(MediaType.APPLICATION_JSON_UTF8)
                 .header("token",token)

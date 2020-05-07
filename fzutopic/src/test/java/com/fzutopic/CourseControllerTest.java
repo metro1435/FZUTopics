@@ -32,7 +32,7 @@ public class CourseControllerTest {
                 "\t\"userid\":\"123456789\",\n" +
                 "\t\"password\":\"123456\"\n" +
                 "}";
-        String result= mvc.perform(MockMvcRequestBuilders.get("/login")
+        String result= mvc.perform(MockMvcRequestBuilders.post("/login")
                 .accept(MediaType.APPLICATION_JSON_UTF8)
                 .contentType(MediaType.APPLICATION_JSON_UTF8)
                 .content(json.getBytes())
@@ -53,7 +53,7 @@ public class CourseControllerTest {
      */
     @Test
     public void getByCourseTest() throws Exception {
-        mvc.perform(MockMvcRequestBuilders.get("/course/1/sort/1")
+        mvc.perform(MockMvcRequestBuilders.get("/course/1/sort/1/page/1")
                 .contentType(MediaType.APPLICATION_JSON_UTF8)
                 .accept(MediaType.APPLICATION_JSON_UTF8)
                 .header("token",token)
@@ -72,7 +72,7 @@ public class CourseControllerTest {
      */
     @Test
     public void getByTeacherTest() throws Exception {
-        mvc.perform(MockMvcRequestBuilders.get("/course/1/sort/2")
+        mvc.perform(MockMvcRequestBuilders.get("/course/1/sort/2/page/1")
                 .contentType(MediaType.APPLICATION_JSON_UTF8)
                 .accept(MediaType.APPLICATION_JSON_UTF8)
                 .header("token",token)

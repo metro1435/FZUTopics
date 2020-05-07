@@ -32,7 +32,7 @@ public class ReplyControllerTest {
                 "\t\"userid\":\"123456789\",\n" +
                 "\t\"password\":\"123456\"\n" +
                 "}";
-        String result= mvc.perform(MockMvcRequestBuilders.get("/login")
+        String result= mvc.perform(MockMvcRequestBuilders.post("/login")
                 .accept(MediaType.APPLICATION_JSON_UTF8)
                 .contentType(MediaType.APPLICATION_JSON_UTF8)
                 .content(json.getBytes())
@@ -76,8 +76,6 @@ public class ReplyControllerTest {
         String json ="{\n" +
                 "    \"replyid\":\"12345678020200501141311\",\n" +
                 "    \"text\": \"测试\",\n" +
-                "    \"likes\": \"0\",\n" +
-                "    \"unlikes\": \"0\",\n" +
                 "    \"time\": \"2020-04-30 11:21:22\",\n" +
                 "    \"isanony\":\"0\",\n" +
                 "    \"commentid\":\"admin000120200501135930\",\n" +
