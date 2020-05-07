@@ -83,4 +83,14 @@ public class AccountController {
         String userid = TokenUtil.getAdminIdByRequest(httpServletRequest);
         return AjaxResponse.success(userid);
     }
+
+    //通过token获取nickname402
+    @UserLoginToken
+    @CrossOrigin
+    @GetMapping(value = "/token/nickname")
+    public AjaxResponse getNameByToken(HttpServletRequest httpServletRequest) {
+        String userid = TokenUtil.getAdminIdByRequest(httpServletRequest);
+        User user = userService.getUser(userid);
+        return AjaxResponse.success(user.getNickname());
+    }
 }

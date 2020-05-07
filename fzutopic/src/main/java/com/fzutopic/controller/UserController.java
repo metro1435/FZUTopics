@@ -41,4 +41,13 @@ public class UserController {
         user.setUserid(userid);
         userService.updateNicknameIcon(user);
     }
+
+    //通过userid获取nickname402
+    @UserLoginToken
+    @CrossOrigin
+    @GetMapping(value = "/user/nickname/{userid}")
+    public AjaxResponse getNameByUserId(@PathVariable String userid) {
+        User user = userService.getUser(userid);
+        return AjaxResponse.success(user.getNickname());
+    }
 }
