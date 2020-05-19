@@ -3,6 +3,8 @@ package com.fzutopic.service;
 
 import com.fzutopic.model.User;
 
+import java.util.List;
+
 public interface UserService {
 
 
@@ -18,4 +20,7 @@ public interface UserService {
     //修改个人头像（url）
     public void updateNicknameIcon(User user);
 
+    //221701416
+    //通过College分类返回个人列表
+    public List<User> getUserListByCollege(String college);
 }

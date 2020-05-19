@@ -1,5 +1,9 @@
 package com.fzutopic;
 
+import com.fzutopic.dao.UserDao;
+import com.fzutopic.model.User;
+import com.fzutopic.service.UserService;
+import com.fzutopic.service.UserServiceImpl;
 import org.json.JSONObject;
 import org.junit.Before;
 import org.junit.Test;
@@ -16,6 +20,8 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.context.WebApplicationContext;
 
+import java.util.List;
+
 @RunWith(SpringRunner.class)
 @SpringBootTest
 @Transactional
@@ -24,6 +30,7 @@ public class UserControllerTest {
     private WebApplicationContext wac;
     private MockMvc mvc;
     private String token;
+    private UserDao userDao;
 
     @Before
     public void setupMockMvc() throws Exception {
@@ -90,6 +97,23 @@ public class UserControllerTest {
     @Test
     public void getNameByUserIdTest() throws Exception {
         mvc.perform(MockMvcRequestBuilders.get("/user/nickname/123456780")
+                .contentType(MediaType.APPLICATION_JSON_UTF8)
+                .accept(MediaType.APPLICATION_JSON_UTF8)
+                .header("token",token)
+        )
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.code").value(200))
+                .andDo(MockMvcResultHandlers.print());
+    }
+    /**
+     * 通过College获取用户列表
+     * 返回码200
+     *  221701416测试
+     * @throws Exception
+     */
+    @Test
+    public void getUserListByCollegeTest() throws Exception{
+        mvc.perform(MockMvcRequestBuilders.get("/user/list/数学与计算机科学学院")
                 .contentType(MediaType.APPLICATION_JSON_UTF8)
                 .accept(MediaType.APPLICATION_JSON_UTF8)
                 .header("token",token)

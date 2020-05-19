@@ -31,11 +31,16 @@ public interface UserDao {
      */
     @Results({
             @Result(property = "userid", column = "userID"),//加此行，否则id值为空
+            @Result(property = "college", column = "college"),
             @Result(property = "favlists", column = "favlistid",
                     many = @Many(select = "com.fzutopic.dao.FavlistDao.getFavlistByuserid"))
     })
 
     User selectByPrimaryKey(String userid);
+
+    //221701416
+    //根据学院搜学生列表
+    List<User> selectByCollege(String college);
 
     int updateByExampleSelective(@Param("record") User record, @Param("example") UserExample example);
 
@@ -48,4 +53,5 @@ public interface UserDao {
     int updateByPrimaryKeyWithBLOBs(User record);
 
     int updateByPrimaryKey(User record);
+
 }

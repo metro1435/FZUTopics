@@ -328,4 +328,9 @@
       `level` = #{level,jdbcType=INTEGER}
     where userID = #{userid,jdbcType=CHAR}
   </update>
+  <select id="selectByCollege" parameterType="java.lang.String" resultMap="ResultMapWithBLOBs">
+    select *
+    from user
+    where college = #{college,jdbcType=VARCHAR}
+  </select>
 </mapper>

@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 
 @Slf4j
 @RestController
@@ -51,4 +52,13 @@ public class UserController {
         User user = userService.getUser(userid);
         return AjaxResponse.success(user.getNickname());
     }
+    //通过College获取UserList
+    @UserLoginToken
+    @CrossOrigin
+    @GetMapping(value = "/user/list/{college}")
+    public AjaxResponse getUserListByCollege(@PathVariable String college) {
+        List<User> user = userService.getUserListByCollege(college);
+        return AjaxResponse.success(user);
+    }
+
 }

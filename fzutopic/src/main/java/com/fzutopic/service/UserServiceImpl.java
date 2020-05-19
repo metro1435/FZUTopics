@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 @Slf4j
 @Service
@@ -33,4 +34,9 @@ public class UserServiceImpl implements UserService{
         return userDao.selectByPrimaryKey(user.getUserid());
     }
 
+    @Override
+    public List<User> getUserListByCollege(String college) {
+        List<User> users = userDao.selectByCollege(college);
+        return users;
+    }
 }
