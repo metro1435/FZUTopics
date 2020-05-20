@@ -1,0 +1,76 @@
+*{
+    padding: 0px;
+    margin: 0px;
+}
+.bar{
+    position: relative;
+    max-width: 1000px;
+    margin: auto;
+    width: 90%;
+    top: 30px;
+    
+}
+.bar input {
+    outline:none;
+    width:50%;
+    height:42px;
+    position: relative;
+    left:200px;
+    margin: 15px 15px;
+    border:2px solid #0084FF;
+    border-radius:5px;
+    background:transparent;
+    top:0;
+    right:0;
+    display: inline-block;
+    font-size: 20px;
+    padding: 0px 5px;
+    letter-spacing: 2px;
+}
+.bar button{
+    height:44px;
+    width:15%;
+    cursor:pointer;
+    border: none;
+    position: relative;
+    left: 200px;
+    background:#0084FF;
+    border-radius: 10px ;
+    top:0;
+    right:0;
+}
+.bar button:before {
+
+    content:"搜索";
+    font-size:15px;
+    color:#fff;
+
+}
+.bar button:hover{
+    background: #29b6ee;
+}
+.selete{
+    position: absolute;
+    width: 15%;
+    top: 15px;
+    text-align: center;
+    height: 42px;
+    line-height: 42px;
+    background:url("../img/下拉.jpg") no-repeat right center transparent;
+    background-size:25% 100%;
+    border:#0084ff 2px solid;
+    border-radius: 5px;
+    display: inline-block;
+}
+.selete p{
+    width: 75%;
+    font-size: 22px;
+    
+}
+.selete .option{
+    width: 75%;
+    background-color: #fff7db;
+    border:#0084ff 2px solid;
+    font-size: 20px;
+    cursor: pointer;
+}

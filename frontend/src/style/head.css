@@ -1,0 +1,61 @@
+*{
+    padding: 0px;
+    margin: 0px;
+}
+body{
+    font-family: "Open Sans", "PingFang SC", "Hiragino Sans GB", "Microsoft Yahei", "Microsoft Jhenghei", sans-serif;
+    font-weight: 400;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    line-height: 1.5;
+    color: rgba(0, 0, 0, 0.75);
+    background: #ddd;
+    scroll-behavior: smooth;
+    vertical-align: baseline;
+    margin: 0px;
+}
+a{
+    text-decoration: none;
+    color: #204051;
+    background-color: transparent;
+
+}
+
+.head{
+    z-index:9;
+    top: 0px;
+    right: 0px;
+    left: 0px;
+    margin: 0;
+    width: 100vw;
+    box-shadow: 1px 3px 3px rgba(0, 0, 0, 0.30);
+    background-color: #cae8d5;
+}
+.head .header-inner{
+    height: 65px;
+    line-height: 65px;
+    max-width: 1000px;
+    margin: 0 auto;
+    width: 90%;
+}
+
+.head .header-inner .title-top{
+    text-align: left;
+    display: inline-block;
+    margin: 0 auto;
+    font-weight:bold;
+    font-size: 22px;
+    color: #3b6978;
+}
+
+.nav-top{
+    float: right;
+}
+.nav-top .nav-top-item{
+    list-style: none;
+}
+.nav-top .nav-top-item .menu-item{
+    font-size: 16px;
+    margin-left: 30px;
+    display: inline-block;
+}

@@ -1,0 +1,33 @@
+p {
+    margin: 0px;
+    text-align: justify;
+}
+.content{
+    max-width: 1000px;
+    margin: 50px auto;
+    padding: 5px 15px;
+    width: 95%;
+    border: #cae8d5 12px solid;
+    box-shadow: 5px 5px 5px #d8d8d8;
+   
+}
+.content::after{
+    content: "";
+    display: block;
+    height: 0;
+    clear:both;
+    visibility: hidden;
+}
+.content .teacherContent{
+    width: 50%;
+    max-width: 500px;
+    float: left;
+}
+.content .courseContent{
+    width: 50%;
+    max-width: 500px;
+    float: right;
+}
+.content p{
+    padding: 15px 0;
+}

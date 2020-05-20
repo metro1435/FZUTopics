@@ -1,0 +1,161 @@
+*{
+    padding: 0px;
+    margin: 0px;
+}
+.addTopic-main{
+    width: 90%;
+    margin: 50px auto;
+    max-width: 1000px;
+    opacity: 70%;
+}
+.addTopic-main .name{
+    width: 100%;
+    max-width: 1000px;
+    padding-bottom: 40px;
+}
+.addTopic-main .content{
+    width: 100%;
+    max-width: 1000px;
+    padding-bottom: 20px;
+}
+.addTopic-main .name,.content label{
+    font-size: 20px;
+    font-weight: bolder;
+    display: block;
+}
+.addTopic-main .name input{
+    margin-top: 10px;
+    display: block;
+    height: 50px;
+    width: 100%;
+    font-size: 20px;
+    font-weight: bolder;
+    border-radius: 7px;
+    outline: medium;
+    box-shadow: -4px 4px 0 0 black;
+}
+.addTopic-main .content textarea{
+    margin-top: 10px;
+    height: 300px;
+    width: 100%;
+    font-size: 20px;
+    border-radius: 7px;
+    outline: medium;
+    box-shadow: -4px 4px 0 0 black;
+}
+.addTopic-main .setTag{
+    width: 100%;
+    max-width: 1000px;
+    padding-bottom: 10px;
+}
+.addTopic-main .setTag::after{
+    height: 0px;
+    content: "";
+    clear: both;
+    display: block;
+    visibility: hidden;
+}
+.addTopic-main .setTag .buttonName{
+    float: right;
+    width: 200px;
+    height: 40px;
+    line-height: 40px;
+    background-color: #0084ff;
+    text-align: center;
+    border: hidden;
+    color: white;
+    font-weight: bold;
+}
+.addTopic-main .setTag .buttonName:hover{
+    background-color: gray;
+}
+.addTopic-main .cover{
+    position: fixed;
+    left: 0px;
+    top: 0px;
+    width: 100%;
+    height:100%;
+    overflow:hidden;
+    background-color: black;
+    opacity: 50%;
+    z-index: 1;
+}
+.addTopic-main .tags{
+    position: absolute;
+    left: 0px;
+    right: 0px;
+    margin: 0 auto ;
+    top:250px;
+    width: 30vw;
+    height: 30vh;
+    border-width: 3px;
+    border-style: solid;
+    z-index: 2;
+    background-color: rgb(226, 226, 226);
+}
+.addTopic-main .tags ul{
+    list-style: none;
+}
+.addTopic-main .tags ul li{
+    width: 7vw;
+    height: 4vh;
+    line-height: 4vh;
+    text-align: center;
+    color: white;
+    font-size: 20px;
+    font-weight: bolder;
+    border-radius: 1vh;
+    margin-top: 1vh;
+    margin-left: 2vh;
+    float: left;
+}
+.addTopic-main .tags ul li:hover{
+}
+.addTopic-main .tags ul::after{
+        content: "";
+        display: block;
+        height: 0;
+        clear:both;
+        visibility: hidden;
+}
+.addTopic-main .tags button{
+    position: absolute;
+    left: 0px;
+    right: 0px;
+    top: 23vh;
+    margin: 0 auto;
+    width: 10vw;
+    background-color: var(--theme-light);
+}
+.addTopic-main .addedTag{
+    position: relative;
+    width: 75vw;
+    height: 4vh;
+    margin-top: 1vh;
+}
+.addTopic-main .addedTag div{
+    height: 4vh;
+    width: 5vw;
+    color: white;
+    background-color: rgb(226, 49, 49);
+    line-height: 4vh;
+    padding-left: 1vw;
+    float: left;
+    margin-right: 2vw;
+}
+
+.topic-submit{
+    background-color: #0084ff;
+    color: #fff;
+    border: hidden;
+    border-radius: 10px;
+    padding: 8px 50px;
+    margin: 0 auto;
+    text-align: center;
+    font-size: 22px;
+    font-weight: bold;
+    float: right;
+}
+.topic-submit:hover{
+    background-color: #329cff;
+}
