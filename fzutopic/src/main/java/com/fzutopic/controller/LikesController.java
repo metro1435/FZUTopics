@@ -54,6 +54,39 @@ public class LikesController {
     @Resource
     TopicDao topicDao;
 
+    @Resource
+    CtcommentDao ctcommentDao;
+
+    /**
+     * 获取用户对话题的踩赞记录
+     * likes:-1未踩赞过 0：踩 1：赞
+     *
+     * @param topicid
+     * @param httpServletRequest
+     * @return
+     */
+    @UserLoginToken
+    @CrossOrigin
+    @GetMapping("/user/topic/topiclikes/{topicid}")
+    public AjaxResponse getTopicLikes(@PathVariable(name = "topicid") String topicid,
+                                      HttpServletRequest httpServletRequest) {
+        if (topicDao.selectByPrimaryKey(topicid) == null)
+            return AjaxResponse.error(500, "不存在话题：" + topicid);
+
+        String userid = TokenUtil.getUserIdByRequest(httpServletRequest);
+        TopiclikesKey key = new TopiclikesKey();
+        key.setTopicid(topicid);
+        key.setUserid(userid);
+        Topiclikes topiclikes = topiclikesDao.selectByPrimaryKey(key);
+        int likes;
+        if (topiclikes == null)
+            likes = -1;
+        else {
+            likes = topiclikes.getLikedstatus();
+        }
+        return AjaxResponse.success(likes);
+    }
+
     //用户首次对话题点赞（踩）
     @UserLoginToken
     @CrossOrigin
@@ -119,6 +152,46 @@ public class LikesController {
         if (code != 200) return ajaxResponse;
         likesService.updateTopicLikes(topiclikes);
         return AjaxResponse.success("成功修改点赞（踩）为踩（点赞）。" + ajaxResponse.getMessage());
+    }
+
+    /**
+     *获取用户对评论（回复）的踩赞记录
+     * likes:likes:-1未踩赞过 0：踩 1：赞
+     *
+     * @param id
+     * @param sort 0：表示是对话题评论回复踩赞 1:表示是对话题评论踩赞 2：表示对课程（教师）评论踩赞
+     * @param httpServletRequest
+     * @return AjaxResponse
+     */
+    @UserLoginToken
+    @CrossOrigin
+    @GetMapping("/user/topic/comment/commentlikes/{id}/{sort}")
+    public AjaxResponse getCommentLikes(@PathVariable(name = "id") String id, @PathVariable(name = "sort")
+            int sort, HttpServletRequest httpServletRequest) {
+        if (sort != 0 && sort != 1 && sort != 2)
+            return AjaxResponse.error(500, "sorts参数值非法，要求是0、1、2）");
+
+        int likes=-1;
+        if(sort==1){
+            if(commentDao.selectByPrimaryKey(id)==null)
+                return AjaxResponse.error(500,"不存在话题评论："+id);
+        }else if(sort==0){
+            if(replyDao.selectByPrimaryKey(id)==null)
+                return AjaxResponse.error(500,"不存在回复："+id);
+        }else{
+            if(ctcommentDao.selectByPrimaryKey(id)==null)
+                return AjaxResponse.error(500,"不存在课程评论："+id);
+        }
+
+        CommentlikesKey commentlikesKey =new CommentlikesKey();
+        commentlikesKey.setItemid(id);
+        String userid = TokenUtil.getUserIdByRequest(httpServletRequest);
+        commentlikesKey.setUserid(userid);
+
+        Commentlikes commentlikes=commentlikesDao.selectByPrimaryKey(commentlikesKey);
+        if(commentlikes!=null)
+            likes=commentlikes.getLikedstatus();
+        return AjaxResponse.success(likes);
     }
 
     /**
