@@ -24,4 +24,9 @@ public class CourseServiceImpl implements CourseService{
         List<CourseTeacherInfo> infos=courseinfoDao.selectCourseNameByLike(name);
         return PageInfo.of(infos);
     }
+
+    @Override
+    public CourseTeacherInfo selectInfoByID(String courseID, String teacherID) {
+        return courseinfoDao.selectInfoByID(courseID,teacherID);
+    }
 }

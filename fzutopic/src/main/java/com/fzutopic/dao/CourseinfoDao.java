@@ -21,6 +21,18 @@ public interface CourseinfoDao {
             "where courseinfo.courseName like CONCAT('%',#{0},'%')")
     List<CourseTeacherInfo> selectCourseNameByLike(String name);
 
+    /**
+     * @author 呼叫哆啦A梦
+     *
+     * 根据课程和教师id获取相应信息
+     */
+    @Select("select teacherinfo.* , courseinfo.* " +
+            "from teacherinfo , courseinfo " +
+            "where teacherinfo.teacherID=#{teacherID} and courseinfo.courseID=#{courseID}")
+    CourseTeacherInfo selectInfoByID(String courseID,String teacherID);
+
+
+
     int insert(Courseinfo record);
 
     int insertSelective(Courseinfo record);

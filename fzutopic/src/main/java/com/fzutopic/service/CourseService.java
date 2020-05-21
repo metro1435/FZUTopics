@@ -10,4 +10,12 @@ public interface CourseService {
 
     //根据课程名模糊搜索,221701401负责
     PageInfo<CourseTeacherInfo> selectByCourse(String name,int page);
+
+    /**
+     * 根据课程和教师ID获取相应信息
+     * @param courseID 课程ID
+     * @param teacherID 教师ID
+     * @author 呼叫哆啦A梦
+     */
+    CourseTeacherInfo selectInfoByID(String courseID,String teacherID);
 }
