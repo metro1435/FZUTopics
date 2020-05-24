@@ -63,6 +63,22 @@ public class LikesControllerTest {
 
 
     /**
+     * 测试获取话题踩赞记录
+     *
+     * @throws Exception
+     */
+    @Test
+    public void a_getTopiclikes1() throws Exception {
+        mvc.perform(MockMvcRequestBuilders.get("/user/topic/topiclikes/t12345678020200501121742")
+                .accept(MediaType.APPLICATION_JSON_UTF8)
+                .contentType(MediaType.APPLICATION_JSON_UTF8)
+                .header("token", token)
+        )
+                .andExpect(MockMvcResultMatchers.jsonPath("$.code").value(200))
+                .andDo(MockMvcResultHandlers.print());
+    }
+
+    /**
      * 新增对话题踩赞测试用例
      * 测试用户非首次踩赞
      *
@@ -221,6 +237,23 @@ public class LikesControllerTest {
     }
 
     /**
+     * 测试获取话题评论踩赞记录
+     * @throws Exception
+     */
+    @Test
+    public void a_getComentlikes1() throws Exception {
+        mvc.perform(MockMvcRequestBuilders.get("/user/topic/comment/commentlikes/12345678020200501134641/1")
+                .accept(MediaType.APPLICATION_JSON_UTF8)
+                .contentType(MediaType.APPLICATION_JSON_UTF8)
+                .header("token", token)
+        )
+                .andExpect(MockMvcResultMatchers.jsonPath("$.code").value(200))
+                .andDo(MockMvcResultHandlers.print());
+    }
+
+
+
+    /**
      * 新增对评论回复踩赞用例
      * 测试sort参数值非法
      *
@@ -335,6 +368,7 @@ public class LikesControllerTest {
                 .andDo(MockMvcResultHandlers.print());
     }
 */
+
     /**
      * 修改对评论踩赞测试用例
      * 测试未修改修改话题评论踩赞
@@ -407,6 +441,7 @@ public class LikesControllerTest {
                 .andDo(MockMvcResultHandlers.print());
     }
 */
+
     /**
      * 用户取消点赞（踩）测试用例
      * 取消对话题评论回复踩赞
@@ -458,6 +493,7 @@ public class LikesControllerTest {
                 .andDo(MockMvcResultHandlers.print());
     }
 */
+
     /**
      * 测试是否可以正确获取待审核评论
      */

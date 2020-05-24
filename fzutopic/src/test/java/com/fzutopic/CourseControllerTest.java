@@ -79,4 +79,37 @@ public class CourseControllerTest {
                 .andDo(MockMvcResultHandlers.print());
     }
 
+    /**
+     * 测试根据课程ID和教师ID获取信息
+     * @throws Exception
+     * @author 呼叫哆啦A梦
+     */
+    @Test
+    public void getInfoByCTID1() throws Exception{
+        mvc.perform(MockMvcRequestBuilders.get("/ctinfo/c010101/h010101")
+                .accept(MediaType.APPLICATION_JSON_UTF8)
+                .contentType(MediaType.APPLICATION_JSON_UTF8)
+                .header("token", token)
+        )
+                .andExpect(MockMvcResultMatchers.jsonPath("$.code").value(200))
+                .andDo(MockMvcResultHandlers.print());
+    }
+
+    /**
+     * 测试根据课程ID和教师ID获取信息
+     * 测试是否可用准确检测出教师与课程未存在教学关系
+     * @throws Exception
+     * @author 呼叫哆啦A梦
+     */
+    @Test
+    public void getInfoByCTID2() throws Exception{
+        mvc.perform(MockMvcRequestBuilders.get("/ctinfo/c010101/h110101")
+                .accept(MediaType.APPLICATION_JSON_UTF8)
+                .contentType(MediaType.APPLICATION_JSON_UTF8)
+                .header("token", token)
+        )
+                .andExpect(MockMvcResultMatchers.jsonPath("$.code").value(500))
+                .andDo(MockMvcResultHandlers.print());
+    }
+
 }
