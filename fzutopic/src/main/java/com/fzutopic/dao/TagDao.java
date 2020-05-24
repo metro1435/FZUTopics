@@ -39,4 +39,5 @@ public interface TagDao {
     int updateByPrimaryKeySelective(Tag record);
 
     int updateByPrimaryKey(Tag record);
+
 }

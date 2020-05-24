@@ -402,6 +402,7 @@ public class LikesController {
             Topic topic = topicDao.selectByPrimaryKey(topicid);
             int commentCount = topic.getCommentcount();
             topic.setCommentcount(commentCount + 1);
+
             //更新话题评论数+1
             topicDao.updateByPrimaryKey(topic);
             return AjaxResponse.success("审核通过成功");

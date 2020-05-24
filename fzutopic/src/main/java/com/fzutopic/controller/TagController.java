@@ -72,6 +72,15 @@ public class TagController {
         return AjaxResponse.success(tagService.createTag(tag));
     }
 
+    //管理员只通过name新增标签，221701416负责
+    @AdminLoginToken
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
+    @CrossOrigin
+    @PostMapping("/admin/tag")
+    public @ResponseBody AjaxResponse createTagByname(@RequestParam(name = "tagname") String tagname){
+        return AjaxResponse.success(tagService.createTagByname(tagname));
+    }
+
 
     //管理员删除标签,221701309负责
     @AdminLoginToken

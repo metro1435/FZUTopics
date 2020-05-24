@@ -92,6 +92,15 @@ public class TagServiceImpl implements TagService{
         return tag;
     }
 
+    @Override
+    public Tag createTagByname(String name) {
+        Tag tag=new Tag();
+        tag.setName(name);
+        tag.setTimes(0);
+        tagDao.insert1(tag);
+        return tag;
+    }
+
     //管理员删除标签（指定id）,221701309
     public void deleteTag(String tagid){
         tagDao.deleteByPrimaryKey(tagid);
