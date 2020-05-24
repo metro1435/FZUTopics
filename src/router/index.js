@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import List from "../components/topic/List"
+import Tags from "../components/tag/Tags"
 import Comment from '../components/comment/Comment'
 import Reply from '../components/reply/Reply'
 
@@ -23,6 +24,10 @@ export default new Router({
     {
       path: '/replys',
       component: Reply
+    },
+    {
+      path: '/tags',
+      component: Tags
     }
   ]
 })

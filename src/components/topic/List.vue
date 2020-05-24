@@ -17,7 +17,7 @@
               <span>{{ props.row.time }}</span>
             </el-form-item>
             <el-form-item label="话题内容">
-              <span>{{ props.row.text }}</span>
+              <span style="width:924px;display:inline-block">{{ props.row.text }}</span>
             </el-form-item>
           </el-form>
         </template>
@@ -27,8 +27,18 @@
       <el-table-column label="发布时间" prop="time"></el-table-column>
       <el-table-column label="审核">
         <template slot-scope="scope">
-          <el-button size="mini" type="primary" plain @click="handlePass(scope.$index, scope.row)">通过</el-button>
-          <el-button size="mini" type="danger" plain @click="handleFail(scope.$index, scope.row)">不通过</el-button>
+          <el-button
+            size="mini"
+            type="primary"
+            plain
+            @click="handlePass(scope.$index, scope.row)"
+          >通过</el-button>
+          <el-button
+            size="mini"
+            type="danger"
+            plain
+            @click="handleFail(scope.$index, scope.row)"
+          >不通过</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -36,10 +46,15 @@
 </template>
 
 <script>
+import { request } from "../../network/request";
 export default {
   name: "List",
   data() {
     return {
+      pages: 1,
+      pageNum: 1,
+      pre: false,
+      back: false,
       tableData: [
         {
           topicid: "t12345678020200501121742",
@@ -61,13 +76,35 @@ export default {
     };
   },
   methods: {
+    getTopics() {
+      request({
+        url: "/admin/topic/unaudited/page/" + this.pageNum,
+        method: "get",
+        headers: {
+          token: this.$store.state.token
+        }
+      }).then(res => {
+        console.log(123);
+        this.pages = res.data.data.pages;
+        for (let i = 0; i < res.data.data.size; i++) {
+          console.log(res.data.data.list[i]);
+          this.tableData.push(res.data.data.list[i]);
+        }
+      })
+      .catch(err =>{
+        console.log(err);
+      });
+    },
     handlePass(index, row) {
       console.log(index, row);
     },
     handleFail(index, row) {
       console.log(index, row);
     }
-  }
+  },
+  created() {
+    this.getTopics();
+  },
 };
 </script>
 <style scoped>

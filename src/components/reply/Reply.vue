@@ -1,4 +1,5 @@
 <template>
+<div>
   <el-table
     :data="tableData"
     style="width: 100%"
@@ -48,6 +49,18 @@
         </template>
     </el-table-column>
   </el-table>
+  
+  <br />
+  <br />
+  <el-pagination
+    background
+    @current-change="handleCurrentChange"
+    :current-page="currentPage"
+    :page-size="16"
+    layout="total, prev, pager, next, jumper"
+    :total="commentsNum">
+  </el-pagination>
+</div>
 </template>
 
 <style>
@@ -70,19 +83,7 @@
     name: "Reply",
     data() {
       return {
-        tableData: [{
-          replyid: '12345678220200501135809',
-          commentid: '12345678020200501134641',
-          posterid: '123456782',
-          time: '2020-05-01 13:58:09',
-          text: '真的是高！'
-        }, {
-          replyid: '12345678020200501201138',
-          commentid: 't12345678020200501121742',
-          posterid: '123456780',
-          time: '2020-04-01 20:11:38',
-          text: '曾经我以为我的普通话是可以上新闻联播的，直到我上了大学'
-        }]
+        tableData: []
       }
     },
 
