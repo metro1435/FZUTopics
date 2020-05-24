@@ -208,11 +208,16 @@ public class TopicServiceImpl implements TopicService {
             return topic;
     }
 
-    //管理员审核话题，1403负责
-    public Topic updateTopicstatus(String topicid,int status){
+    //管理员审核话题通过，1403负责
+    public Topic updateTopicstatus(String topicid){
         Topic topic=topicDao.selectByPrimaryKey(topicid);
-        topic.setAuditstatus(status);
+        topic.setAuditstatus(1);
         topicDao.updateByPrimaryKey(topic);
         return topic;
+    }
+
+    //管理员审核话题不通过直接删除，1403负责
+    public int deleteunauditedTopic(String topicid){
+        return topicDao.deleteByPrimaryKey(topicid);
     }
 }

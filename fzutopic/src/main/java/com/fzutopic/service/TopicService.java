@@ -42,6 +42,9 @@ public interface TopicService {
     //管理员查看某个待审核话题，1403负责
     Topic checkunauditedTopic(String topicid);
 
-    //管理员审核话题，1403负责
-    Topic updateTopicstatus(String topicid,int status);
+    //管理员审核话题通过，1403负责
+    Topic updateTopicstatus(String topicid);
+
+    //管理员审核话题不通过直接删除，1403负责
+    int deleteunauditedTopic(String topicid);
 }

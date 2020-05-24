@@ -3,6 +3,7 @@ package com.fzutopic.service;
 import com.fzutopic.model.AjaxResponse;
 import com.fzutopic.model.Comment;
 import com.fzutopic.view.CommentVO;
+import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 
 import java.util.List;
@@ -13,7 +14,7 @@ public interface CommentService {
     List<CommentVO> getCommentsById(String topicid);
 
     //获取待审核评论列表，221701401负责
-    PageInfo<Comment> getUnauditedComments();
+    PageInfo<Comment> getUnauditedComments(int page);
 
     List<CommentVO> searchReplyByComment(List<Comment> comments);
 

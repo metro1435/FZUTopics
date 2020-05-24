@@ -59,8 +59,6 @@ public class CourseControllerTest {
                 .header("token",token)
         )
                 .andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(MockMvcResultMatchers.jsonPath("$.data[0].teacherid").value("h010101"))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.data[1].teacherid").value("h010102"))
                 .andDo(MockMvcResultHandlers.print());
     }
 
@@ -78,8 +76,6 @@ public class CourseControllerTest {
                 .header("token",token)
         )
                 .andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(MockMvcResultMatchers.jsonPath("$.data[0].courseid").value("c010101"))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.data[1].courseid").value("c010103"))
                 .andDo(MockMvcResultHandlers.print());
     }
 

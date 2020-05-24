@@ -61,8 +61,9 @@ public class CommentControllerTest {
                 .header("token",token)
         )
                 .andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(MockMvcResultMatchers.jsonPath("$.data[0].commentid").value("12345678920200501140127"))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.data[1].commentid").value("12345678120200501130809"))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.data.total").value("2"))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.data.list[0].commentid").value("12345678920200501140127"))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.data.list[1].commentid").value("12345678120200501130809"))
                 .andDo(MockMvcResultHandlers.print());
     }
 

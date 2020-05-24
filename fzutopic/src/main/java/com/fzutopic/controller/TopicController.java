@@ -126,8 +126,14 @@ public class TopicController {
     @AdminLoginToken
     @CrossOrigin
     @PutMapping("/admin/topic/unaudited")
-    public AjaxResponse updateTopicstatus(@RequestParam String topicid,
-                                          @RequestParam int status){
-        return AjaxResponse.success(topicService.updateTopicstatus(topicid,status));
+    public AjaxResponse TopicAudit(@RequestParam String topicid,
+                                          @RequestParam int status) {
+        if (status == 1)
+            return AjaxResponse.success(topicService.updateTopicstatus(topicid));
+        else if (status==0)
+            return AjaxResponse.success(topicService.deleteunauditedTopic(topicid));
+        else
+            return AjaxResponse.error(400,"审核状态异常");
     }
+
 }

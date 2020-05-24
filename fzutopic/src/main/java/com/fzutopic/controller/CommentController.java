@@ -8,6 +8,7 @@ import com.fzutopic.model.Comment;
 import com.fzutopic.service.CommentServiceImpl;
 import com.fzutopic.utils.TokenUtil;
 import com.fzutopic.view.CommentVO;
+import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
@@ -35,13 +36,13 @@ public class CommentController {
     }
 
     //获取待审核评论，221701401负责
-    @AdminLoginToken
+    //@AdminLoginToken
     @CrossOrigin
-    @GetMapping("/admin/comment/unaudited")
-    public  @ResponseBody AjaxResponse getUnauditedComment() {
-        PageInfo<Comment> pageInfo =commentService.getUnauditedComments();
-        if (pageInfo.getList().isEmpty()) return AjaxResponse.error(404,"没有待审核评论");
-        return AjaxResponse.success(pageInfo);
+    @GetMapping("/admin/comment/unaudited/page/{page}")
+    public  @ResponseBody AjaxResponse getUnauditedComment(@PathVariable(name="page") int page) {
+        PageInfo<Comment> comments =commentService.getUnauditedComments(page);
+        if (comments.getList().isEmpty()) return AjaxResponse.error(404,"没有待审核评论");
+        return AjaxResponse.success(comments);
     }
 
     //审核评论（通过/不通过），221701401负责

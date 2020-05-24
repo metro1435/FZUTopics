@@ -68,13 +68,13 @@ public class CommentServiceImpl implements CommentService {
     }
 
     //获取待审核评论列表，一页16个，221701401负责
-    public PageInfo<Comment> getUnauditedComments() {
+    public PageInfo<Comment> getUnauditedComments(int page) {
         CommentExample commentExample = new CommentExample();
         CommentExample.Criteria criteria = commentExample.createCriteria();
         criteria.andAuditstatusEqualTo(0);
-        PageHelper.startPage(1, 16);
+        PageHelper.startPage(page,16);
         List<Comment> comments = commentDao.selectByExampleWithBLOBs(commentExample);
-        return PageInfo.of(comments);
+        return new PageInfo<>(comments);
     }
 
     public int deleteComment(String commentid) {
