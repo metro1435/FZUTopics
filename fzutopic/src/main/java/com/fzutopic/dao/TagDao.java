@@ -24,6 +24,7 @@ public interface TagDao {
 
     int insertSelective(Tag record);
 
+    long selectmaxid();
     //1401
     @Select("select * from tag")
     List<Tag> select();

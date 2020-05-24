@@ -7,6 +7,7 @@ import com.fzutopic.model.Tag;
 import com.fzutopic.model.TagExample;
 import com.fzutopic.model.TopicTagExample;
 import com.fzutopic.model.TopicTagKey;
+import io.swagger.models.auth.In;
 import lombok.extern.slf4j.Slf4j;
 import net.sf.jsqlparser.statement.select.Top;
 import org.springframework.stereotype.Service;
@@ -91,12 +92,16 @@ public class TagServiceImpl implements TagService{
         tagDao.insert1(tag);
         return tag;
     }
-
+    //管理员通过名字新增标签 221701416增
     @Override
     public Tag createTagByname(String name) {
         Tag tag=new Tag();
         tag.setName(name);
         tag.setTimes(0);
+        long maxx=tagDao.selectmaxid();
+        //tag.setTagid("1234");
+        tag.setTagid(String.valueOf(maxx+1));
+        //tag.setTagid(String.valueOf(Integer.parseInt(maxx)+Integer.valueOf(0)));
         tagDao.insert1(tag);
         return tag;
     }

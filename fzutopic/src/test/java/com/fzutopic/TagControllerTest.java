@@ -30,7 +30,7 @@ public class TagControllerTest {
     public void setupMockMvc() throws Exception {
         mvc = MockMvcBuilders.webAppContextSetup(wac).build(); //初始化MockMvc对象
         String json = "{\n" +
-                "\t\"userid\":\"123456789\",\n" +
+                "\t\"userid\":\"admin0001\",\n" +
                 "\t\"password\":\"123456\"\n" +
                 "}";
         String result= mvc.perform(MockMvcRequestBuilders.post("/login")
@@ -118,6 +118,22 @@ public class TagControllerTest {
                 .andDo(MockMvcResultHandlers.print());
     }
 
+    /**
+     * 新增标签
+     *  221701416负责
+     * @throws Exception
+     */
+    @Test
+    public void adminTagBynameTest() throws Exception {
+        mvc.perform(MockMvcRequestBuilders
+                .put("/admin/tag/name?tagname=12")
+                .accept(MediaType.APPLICATION_JSON_UTF8)
+                .contentType(MediaType.APPLICATION_JSON_UTF8)
+                .header("token", token)
+        )
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andDo(MockMvcResultHandlers.print());
+    }
 }
 
 

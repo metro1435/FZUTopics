@@ -178,4 +178,8 @@
       times = #{times,jdbcType=INTEGER}
     where tagID = #{tagid,jdbcType=CHAR}
   </update>
+<!--  221701416新增-->
+  <select id="selectmaxid" parameterType="com.fzutopic.model.Tag" resultType="java.lang.Long">
+    select count(*) from tag
+  </select>
 </mapper>

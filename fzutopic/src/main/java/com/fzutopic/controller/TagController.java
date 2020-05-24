@@ -76,7 +76,7 @@ public class TagController {
     @AdminLoginToken
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
     @CrossOrigin
-    @PostMapping("/admin/tag")
+    @PutMapping("/admin/tag/name")
     public @ResponseBody AjaxResponse createTagByname(@RequestParam(name = "tagname") String tagname){
         return AjaxResponse.success(tagService.createTagByname(tagname));
     }
@@ -85,7 +85,7 @@ public class TagController {
     //管理员删除标签,221701309负责
     @AdminLoginToken
     @CrossOrigin
-    @DeleteMapping("/admin/tag")
+    @DeleteMapping("/admin/tag/delete")
     public @ResponseBody AjaxResponse deleteTag(@RequestParam String tagid){
         tagService.deleteTag(tagid);
         return AjaxResponse.success(tagid);
