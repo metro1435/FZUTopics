@@ -85,8 +85,8 @@ public class TagController {
     //管理员删除标签,221701309负责
     @AdminLoginToken
     @CrossOrigin
-    @DeleteMapping("/admin/tag/{tagid}")
-    public @ResponseBody AjaxResponse deleteTag(@PathVariable(name="tagid") String tagid){
+    @DeleteMapping("/admin/tag")
+    public @ResponseBody AjaxResponse deleteTag(@RequestParam String tagid){
         tagService.deleteTag(tagid);
         return AjaxResponse.success(tagid);
     }
