@@ -22,7 +22,7 @@
           </el-form>
         </template>
       </el-table-column>
-      <el-table-column label="话题标题" prop="title"></el-table-column>
+      <el-table-column label="话题标题" prop="title" show-overflow-tooltip width="320"></el-table-column>
       <el-table-column label="发布者" prop="userid"></el-table-column>
       <el-table-column label="发布时间" prop="time"></el-table-column>
       <el-table-column label="审核">
@@ -42,6 +42,16 @@
         </template>
       </el-table-column>
     </el-table>
+    <br />
+    <br />
+    <el-pagination
+      background
+      @current-change="handleCurrentChange"
+      :current-page="currentPage"
+      :page-size="6"
+      layout="total, prev, pager, next, jumper"
+      :total="topicNum"
+    ></el-pagination>
   </div>
 </template>
 
@@ -51,8 +61,8 @@ export default {
   name: "List",
   data() {
     return {
-      pages: 1,
-      pageNum: 1,
+      currentPage: 1, //当前页
+      topicNum: 1, //总条数
       pre: false,
       back: false,
       tableData: [
@@ -78,25 +88,34 @@ export default {
   methods: {
     getTopics() {
       request({
-        url: "/admin/topic/unaudited/page/" + this.pageNum,
+        url: "/admin/topic/unaudited/page/" + this.currentPage,
         method: "get",
         headers: {
           token: this.$store.state.token
         }
-      }).then(res => {
-        console.log(123);
-        this.pages = res.data.data.pages;
-        for (let i = 0; i < res.data.data.size; i++) {
-          console.log(res.data.data.list[i]);
-          this.tableData.push(res.data.data.list[i]);
-        }
       })
-      .catch(err =>{
-        console.log(err);
-      });
+        .then(res => {
+          this.tableData = [];
+          // console.log(123);
+          this.topicNum = res.data.data.total;
+          // console.log(res.data.date.total);
+          this.pages = res.data.data.pages;
+          for (let i = 0; i < res.data.data.size; i++) {
+            // console.log(res.data.data.list[i]);
+            this.tableData.push(res.data.data.list[i]);
+          }
+        })
+        .catch(err => {
+          console.log(err);
+        });
+    },
+    handleCurrentChange(val){
+      this.currentPage = val;
+      this.getTopics();
+      console.log(`当前页: ${val}`);
     },
     handlePass(index, row) {
-      console.log(index, row);
+      console.log(row.topicid);
     },
     handleFail(index, row) {
       console.log(index, row);
@@ -104,7 +123,7 @@ export default {
   },
   created() {
     this.getTopics();
-  },
+  }
 };
 </script>
 <style scoped>
