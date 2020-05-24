@@ -379,8 +379,13 @@ public class LikesController {
     public AjaxResponse updateReplyStatus(@RequestParam(name = "replyid") String replyid,
                                           @RequestParam(name = "auditstatus") int auditstatus) {
         Reply reply = replyDao.selectByPrimaryKey(replyid);
-        if (reply == null || reply.getAuditstatus() == 1)
-            return AjaxResponse.error(500, "错误，待审核回复：" + replyid + " 不存在，或者已经审核通过");
+        if (reply == null)
+            return AjaxResponse.error(500, "错误，待审核回复：" +
+                    replyid + " 不存在");
+        else if(reply.getAuditstatus() == 1)
+            return AjaxResponse.error(500, "错误" +
+                    replyid + " 已经审核通过");
+
         if (auditstatus == 0) {
             replyDao.deleteByPrimaryKey(replyid);
             return AjaxResponse.success("审核不通过成功");
