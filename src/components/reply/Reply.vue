@@ -58,7 +58,7 @@
     :current-page="currentPage"
     :page-size="16"
     layout="total, prev, pager, next, jumper"
-    :total="commentsNum">
+    :total="replysNum">
   </el-pagination>
 </div>
 </template>
@@ -83,7 +83,10 @@
     name: "Reply",
     data() {
       return {
-        tableData: []
+        tableData: [],
+        replysNum: 0,
+        currentPage: 1,
+        search: ''
       }
     },
 
@@ -94,6 +97,20 @@
       handleFail(index, row) {
         console.log(index, row);
       }
+
+      findAllTableData(){
+        this.$http.get("http://localhost:8686/admin/reply/unaudited/page/"+ this.currentPage,{
+          headers: {
+          token: this.$store.state.token
+        }
+        }).then(res=>{
+          this.tableData=res.data.data.list;
+          this.replysNum=res.data.data.total;
+          console.log(res.data.data);
+        },
+        res => console.log(res)
+        );
+      },
     }
   }
 </script>

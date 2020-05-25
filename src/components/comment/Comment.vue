@@ -97,7 +97,11 @@
     methods: {
       handlePass(index, row) {
         console.log(index, row);
-        this.$http.put("http://localhost:8686/admin/comment/unaudited/1/"+row.commentid).then(res=>{
+        this.$http.get("http://localhost:8686/admin/comment/unaudited/1/"+row.commentid,{
+          headers: {
+          token: this.$store.state.token
+          }
+        }).then(res=>{
           this.$message({
           showClose: true,
           message: '该评论已成功通过'
@@ -107,7 +111,11 @@
       },
       handleFail(index, row) {
         console.log(index, row);
-        this.$http.put("http://localhost:8686/admin/comment/unaudited/0/"+row.commentid).then(res=>{
+        this.$http.get("http://localhost:8686/admin/comment/unaudited/0/"+row.commentid,{
+          headers: {
+          token: this.$store.state.token
+          }
+        }).then(res=>{
           this.$message({
           showClose: true,
           message: '该评论已删除'
@@ -117,7 +125,11 @@
       },
 
       findAllTableData(){
-        this.$http.get("http://localhost:8686/admin/comment/unaudited/page/"+ this.currentPage).then(res=>{
+        this.$http.get("http://localhost:8686/admin/comment/unaudited/page/"+ this.currentPage,{
+          headers: {
+          token: this.$store.state.token
+        }
+        }).then(res=>{
           this.tableData=res.data.data.list;
           this.commentsNum=res.data.data.total;
           console.log(res.data.data);
@@ -128,7 +140,11 @@
 
       handleCurrentChange: function(val) {
         this.currentPage = val;
-        this.$http.get("http://localhost:8686/admin/comment/unaudited/page/"+ this.currentPage).then(res=>{
+        this.$http.get("http://localhost:8686/admin/comment/unaudited/page/"+ this.currentPage,{
+          headers: {
+          token: this.$store.state.token
+        }
+        }).then(res=>{
           this.tableData=res.data.data.list;
           this.commentsNum=res.data.data.total;
           console.log(res.data.data);
