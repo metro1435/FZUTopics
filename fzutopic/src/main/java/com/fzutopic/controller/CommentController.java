@@ -36,7 +36,7 @@ public class CommentController {
     }
 
     //获取待审核评论，221701401负责
-    //@AdminLoginToken
+    @AdminLoginToken
     @CrossOrigin
     @GetMapping("/admin/comment/unaudited/page/{page}")
     public  @ResponseBody AjaxResponse getUnauditedComment(@PathVariable(name="page") int page) {
@@ -48,16 +48,16 @@ public class CommentController {
     //审核评论（通过/不通过），221701401负责
     @AdminLoginToken
     @CrossOrigin
-    @PutMapping("/admin/comment/unaudited")
-    public @ResponseBody AjaxResponse CommentAudit(@RequestParam String commmentid,
-                                                   @RequestParam int auditstatus) {
+    @GetMapping("/admin/comment/unaudited/{auditstatus}/{commentid}")
+    public @ResponseBody AjaxResponse CommentAudit(@PathVariable String commentid,
+                                                   @PathVariable int auditstatus) {
         if (auditstatus==1) {
-            boolean success=commentService.updateComment(commmentid);
+            boolean success=commentService.updateComment(commentid);
             if (success) return AjaxResponse.success("操作成功");
             else return AjaxResponse.error(500,"操作失败");
         }
         else if (auditstatus==0) {
-            int success=commentService.deleteComment(commmentid);
+            int success=commentService.deleteComment(commentid);
             if (success==0) return AjaxResponse.error(500,"删除失败");
             else return AjaxResponse.success("删除成功");
         }
