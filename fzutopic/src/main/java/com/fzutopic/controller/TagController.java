@@ -76,10 +76,11 @@ public class TagController {
     @AdminLoginToken
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
     @CrossOrigin
-    @PutMapping("/admin/tag/name")
+    @PutMapping("/admin/tag")
     public @ResponseBody AjaxResponse createTagByname(@RequestParam(name = "tagname") String tagname){
         return AjaxResponse.success(tagService.createTagByname(tagname));
     }
+
 
 
     //管理员删除标签,221701309负责

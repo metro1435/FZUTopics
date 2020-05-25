@@ -126,7 +126,7 @@ public class TagControllerTest {
     @Test
     public void adminTagBynameTest() throws Exception {
         mvc.perform(MockMvcRequestBuilders
-                .put("/admin/tag/name?tagname=12")
+                .put("/admin/tag/name?tagname=天文学")
                 .accept(MediaType.APPLICATION_JSON_UTF8)
                 .contentType(MediaType.APPLICATION_JSON_UTF8)
                 .header("token", token)
