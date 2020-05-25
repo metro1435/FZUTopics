@@ -57,6 +57,18 @@
     </el-table-column>
   </el-table>
 
+<br/>
+<div class="page-bar">
+  <el-pagination
+     background
+     @current-change="handleCurrentChange"
+      :current-page="currentPage"
+    layout="total, prev, pager, next, jumper"
+    :total="topicNum"
+    :page-size="3">
+  </el-pagination>
+</div>
+
   <!--新增课程-->
   <div id="newCourse">
     <h1>新增课程</h1>
@@ -78,6 +90,8 @@
 </el-form>
   </div>
 
+  
+
 </div>
 </template>
 
@@ -86,6 +100,10 @@ export default {
   name: "Course",
   data() {  //这里的teacher其实是teacherID
       return {
+
+         currentPage: 1, //当前页
+         topicNum: 5, //总条数
+
         tableData: [{
           courseID: 'c123123',
           name: '程序设计',
@@ -97,6 +115,31 @@ export default {
           credit: '3',
           teacher: 't01345',
         }, {
+          courseID: 'c120001',
+          name: '界面设计',
+          credit: '3',
+          teacher: 't79680',
+          }, {
+          courseID: 'c120001',
+          name: '界面设计',
+          credit: '3',
+          teacher: 't79680',
+          }, {
+          courseID: 'c120001',
+          name: '界面设计',
+          credit: '3',
+          teacher: 't79680',
+          }, {
+          courseID: 'c120001',
+          name: '界面设计',
+          credit: '3',
+          teacher: 't79680',
+          }, {
+          courseID: 'c120001',
+          name: '界面设计',
+          credit: '3',
+          teacher: 't79680',
+          }, {
           courseID: 'c120001',
           name: '界面设计',
           credit: '3',
@@ -149,7 +192,13 @@ export default {
             message: '已取消删除'
           });          
         });
-      }
+      },
+
+       handleCurrentChange(val){
+      this.currentPage = val;
+     
+      console.log(`当前页: ${val}`);
+    },
     
 
   }
@@ -157,7 +206,7 @@ export default {
 </script>
 <style scoped>
 .page-title{
-  margin-bottom: 60px;
+  margin-bottom: 50px;
   font-family: sans-serif;
   letter-spacing: 2px;
   font-size: 26px;
@@ -176,5 +225,9 @@ export default {
   letter-spacing: 2px;
   font-size: 26px;
   color: #545c64;
+}
+.page-bar{
+  margin: 10px auto;
+  text-align: center;
 }
 </style>

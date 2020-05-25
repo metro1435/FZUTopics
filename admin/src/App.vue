@@ -63,7 +63,7 @@ body{
   padding: 0;
 }
 .el-menu-vertical-demo{
-  height: 100vh;
+  height: 100%;
   margin: auto;
   
 }
