@@ -96,6 +96,7 @@
 </template>
 
 <script>
+import { request } from "../../network/request";
 export default {
   name: "Course",
   data() {  //这里的teacher其实是teacherID
