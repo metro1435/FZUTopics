@@ -45,7 +45,25 @@ export default {
   },
   methods: {
     handleClose(tag) {
-      this.dynamicTags.splice(this.dynamicTags.indexOf(tag), 1);
+      request({
+        url: "/admin/tag?tagid=" + tag.tagid,
+        method: "delete",
+        headers: {
+          token: this.$store.state.token
+        }
+      })
+        .then(res => {
+          // console.log(123);
+          // console.log(res);
+          this.dynamicTags.splice(this.dynamicTags.indexOf(tag), 1);
+          this.$message({
+            showClose: true,
+            message: "标签已删除"
+          });
+        })
+        .catch(err => {
+          console.log(err);
+        });
     },
     showInput() {
       this.inputVisible = true;
@@ -56,10 +74,26 @@ export default {
     handleInputConfirm() {
       let inputValue = this.inputValue;
       if (inputValue) {
-        this.dynamicTags.push(inputValue);
+        request({
+          url: "/admin/tag",
+          method: "post",
+          headers: {
+            token: this.$store.state.token
+          },
+          data: {
+            name: inputValue
+          }
+        })
+          .then(res => {
+            console.log(res.data.data);
+            this.dynamicTags.push(res.data.data);
+            this.inputVisible = false;
+            this.inputValue = "";
+          })
+          .catch(err => {
+            console.log(err);
+          });
       }
-      this.inputVisible = false;
-      this.inputValue = "";
     },
     getTags() {
       request({
@@ -70,9 +104,9 @@ export default {
         }
       })
         .then(res => {
-          console.log(123);
-          console.log(res);
-          // this.dynamicTags = [];
+          // console.log(123);
+          // console.log(res);
+          this.dynamicTags = [];
           for (let i = 0; i < res.data.data.length; i++) {
             this.dynamicTags.push(res.data.data[i]);
           }
