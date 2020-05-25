@@ -24,7 +24,12 @@ public interface TagDao {
 
     int insertSelective(Tag record);
 
+    //221701416新增，获取总数
+    long selectnum();
+
+    //221701416新增，获取tagid最大值
     long selectmaxid();
+
     //1401
     @Select("select * from tag")
     List<Tag> select();

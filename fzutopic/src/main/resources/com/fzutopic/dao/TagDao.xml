@@ -179,7 +179,12 @@
     where tagID = #{tagid,jdbcType=CHAR}
   </update>
 <!--  221701416新增-->
-  <select id="selectmaxid" parameterType="com.fzutopic.model.Tag" resultType="java.lang.Long">
+  <select id="selectnum" parameterType="com.fzutopic.model.Tag" resultType="java.lang.Long">
     select count(*) from tag
+  </select>
+  <!--  221701416新增-->
+  <select id="selectmaxid" resultType="java.lang.Long">
+    select max(CAST(tagID as SIGNED))
+    from tag
   </select>
 </mapper>
