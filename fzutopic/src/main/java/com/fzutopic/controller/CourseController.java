@@ -1,15 +1,15 @@
 package com.fzutopic.controller;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fzutopic.annotation.AdminLoginToken;
 import com.fzutopic.annotation.UserLoginToken;
 import com.fzutopic.dao.CourseTeacherDao;
 import com.fzutopic.dao.CourseinfoDao;
 import com.fzutopic.dao.TeacherinfoDao;
-import com.fzutopic.model.AjaxResponse;
-import com.fzutopic.model.CourseTeacherExample;
-import com.fzutopic.model.Courseinfo;
-import com.fzutopic.model.Teacherinfo;
+import com.fzutopic.model.*;
 import com.fzutopic.service.CourseService;
+import com.fzutopic.service.CourseTeacherService;
+import com.fzutopic.service.TagServiceImpl;
 import com.fzutopic.service.TeacherService;
 import com.fzutopic.view.CourseTeacherInfo;
 import com.fzutopic.view.CourseTeacherid;
@@ -30,6 +30,12 @@ public class CourseController {
     @Resource(name = "teacherServiceImpl")
     TeacherService teacherService;
 
+    @Resource(name = "courseTeacherServiceImpl")
+    CourseTeacherService courseTeacherService;
+
+    @Resource(name = "tagServiceImpl")
+    TagServiceImpl tagService;
+
     @Resource
     CourseinfoDao courseinfoDao;
 
@@ -38,7 +44,6 @@ public class CourseController {
 
     @Resource
     CourseTeacherDao courseTeacherDao;
-
 
     /*//测试用接口
     @GetMapping("/test")
@@ -89,11 +94,31 @@ public class CourseController {
         courseTeacherInfo = courseService.selectInfoByID(courseid, teacherid);
         return AjaxResponse.success(courseTeacherInfo);
     }
+
+    //221701416管理员获取所有课程
     @AdminLoginToken
     @CrossOrigin
     @GetMapping("/admin/getcourse")
     public AjaxResponse getAllCourse(){
         return AjaxResponse.success(courseService.selectAllCourseAndTeacherid());
+    }
+
+    //221701416管理员新增课程
+    @AdminLoginToken
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
+    @CrossOrigin
+    @PostMapping("/admin/addcourse")
+    public AjaxResponse insertcourse(@RequestBody CourseTeacherid courseTeacherid){
+        Courseinfo courseinfo=new Courseinfo();
+        courseinfo.setCourseid(courseTeacherid.getCourseid());
+        courseinfo.setCoursename(courseTeacherid.getCoursename());
+        courseinfo.setCredits(courseTeacherid.getCredits());
+        String courseid=courseService.insertcourse(courseinfo);
+        CourseTeacherKey courseTeacherKey=new CourseTeacherKey();
+        courseTeacherKey.setCourseid(courseid);
+        courseTeacherKey.setTeacherid(courseTeacherid.getTeacherid());
+        courseTeacherService.insertcourseTearche(courseTeacherKey);
+        return AjaxResponse.success("新增课程成功");
     }
 
 }

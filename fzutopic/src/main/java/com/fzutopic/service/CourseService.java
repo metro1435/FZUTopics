@@ -1,6 +1,7 @@
 package com.fzutopic.service;
 
 
+import com.fzutopic.model.Courseinfo;
 import com.fzutopic.view.CourseTeacherInfo;
 import com.fzutopic.view.CourseTeacherid;
 import com.github.pagehelper.PageInfo;
@@ -22,4 +23,7 @@ public interface CourseService {
 
     //221701416增
     List<CourseTeacherid> selectAllCourseAndTeacherid();
+
+    //221701416增
+    String  insertcourse(Courseinfo courseinfo);
 }

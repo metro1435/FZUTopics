@@ -1,6 +1,7 @@
 package com.fzutopic.service;
 
 import com.fzutopic.dao.CourseinfoDao;
+import com.fzutopic.model.Courseinfo;
 import com.fzutopic.view.CourseTeacherInfo;
 import com.fzutopic.view.CourseTeacherid;
 import com.github.pagehelper.PageHelper;
@@ -34,5 +35,15 @@ public class CourseServiceImpl implements CourseService{
     @Override
     public List<CourseTeacherid> selectAllCourseAndTeacherid() {
         return courseinfoDao.selectAllCourseAndTeacherid();
+    }
+
+    @Override
+    public String insertcourse(Courseinfo courseinfo) {
+        long cid=courseinfoDao.selectmaxid()+1;
+        String courseid=String.valueOf(cid);
+        courseid="c"+courseid;
+        courseinfo.setCourseid(courseid);
+        courseinfoDao.insert1(courseinfo);
+        return courseid;
     }
 }

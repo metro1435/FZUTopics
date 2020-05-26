@@ -99,9 +99,9 @@
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
-  <insert id="insert" keyColumn="courseID" keyProperty="courseid" parameterType="com.fzutopic.model.CourseTeacherKey" useGeneratedKeys="true">
-    insert into course_teacher (teacherID)
-    values (#{teacherid,jdbcType=CHAR})
+  <insert id="insert" parameterType="com.fzutopic.model.CourseTeacherKey">
+    insert into course_teacher (courseID,teacherID)
+    values (#{courseid,jdbcType=CHAR}, #{teacherid,jdbcType=CHAR})
   </insert>
   <insert id="insertSelective" keyColumn="courseID" keyProperty="courseid" parameterType="com.fzutopic.model.CourseTeacherKey" useGeneratedKeys="true">
     insert into course_teacher

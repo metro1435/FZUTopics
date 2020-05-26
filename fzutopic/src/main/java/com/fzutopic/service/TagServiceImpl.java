@@ -101,7 +101,7 @@ public class TagServiceImpl implements TagService{
         long maxx=tagDao.selectnum();
         long maxxx=tagDao.selectmaxid();
         //tag.setTagid("1234");
-        tag.setTagid(String.valueOf(maxx+1));
+        tag.setTagid(String.valueOf(maxxx+1));
         //tag.setTagid(String.valueOf(Integer.parseInt(maxx)+Integer.valueOf(0)));
         tagDao.insert1(tag);
         return tag;

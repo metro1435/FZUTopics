@@ -121,4 +121,28 @@ public class CourseControllerTest {
                 .andExpect(MockMvcResultMatchers.jsonPath("$.code").value(200))
                 .andDo(MockMvcResultHandlers.print());
     }
+
+
+    /**
+     * 新增标签
+     *  221701416负责
+     * @throws Exception
+     */
+    @Test
+    public void insertcourseTest() throws Exception {
+        String json = "{\n" +
+                "\t\"credits\":2.5,\n" +
+                "\t\"courseid\":\"c010103\",\n" +
+                "\t\"coursename\":\"天文学\",\n" +
+                "\t\"teacherid\":\"h010103\"\n" +
+                "}";
+        mvc.perform(MockMvcRequestBuilders.post("/admin/addcourse")
+                .accept(MediaType.APPLICATION_JSON_UTF8)
+                .contentType(MediaType.APPLICATION_JSON_UTF8)
+                .content(json.getBytes())
+                .header("token", token)
+        )
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andDo(MockMvcResultHandlers.print());
+    }
 }

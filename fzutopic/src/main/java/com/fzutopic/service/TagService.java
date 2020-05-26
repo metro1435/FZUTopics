@@ -26,6 +26,7 @@ public interface TagService {
 
     //管理员新增标签，221701309负责
     Tag createTag(Tag tag);
+
     //管理员通过标签名新增标签，221701416新增
     Tag createTagByname(String name);
 

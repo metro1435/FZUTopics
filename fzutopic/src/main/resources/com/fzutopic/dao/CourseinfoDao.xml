@@ -109,6 +109,10 @@
     insert into courseinfo (courseName, credits)
     values (#{coursename,jdbcType=VARCHAR}, #{credits,jdbcType=DOUBLE})
   </insert>
+  <insert id="insert1" parameterType="com.fzutopic.model.Courseinfo" >
+    insert into courseinfo (courseID, courseName, credits)
+    values (#{courseid,jdbcType=CHAR}, #{coursename,jdbcType=VARCHAR}, #{credits,jdbcType=DOUBLE})
+  </insert>
   <insert id="insertSelective" keyColumn="courseID" keyProperty="courseid" parameterType="com.fzutopic.model.Courseinfo" useGeneratedKeys="true">
     insert into courseinfo
     <trim prefix="(" suffix=")" suffixOverrides=",">
@@ -183,5 +187,11 @@
     select courseinfo.* , course_teacher.teacherID
             from courseinfo , course_teacher
             where courseinfo.courseID=course_teacher.courseID
+  </select>
+
+  <!--  221701416新增-->
+  <select id="selectmaxid" resultType="java.lang.Long">
+    select max(CAST(substring(courseID,2) as SIGNED))
+    from courseinfo
   </select>
 </mapper>

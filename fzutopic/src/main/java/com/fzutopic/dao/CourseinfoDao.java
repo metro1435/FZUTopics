@@ -34,7 +34,12 @@ public interface CourseinfoDao {
 
     List<CourseTeacherid> selectAllCourseAndTeacherid();
 
-    int insert(Courseinfo record);
+    Courseinfo insert(Courseinfo record);
+
+    //管理员新增标签，221701416负责
+    int insert1(Courseinfo record);
+
+    long selectmaxid();
 
     int insertSelective(Courseinfo record);
 
