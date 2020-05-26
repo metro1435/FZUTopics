@@ -2,6 +2,7 @@ package com.fzutopic.service;
 
 
 import com.fzutopic.view.CourseTeacherInfo;
+import com.fzutopic.view.CourseTeacherid;
 import com.github.pagehelper.PageInfo;
 
 import java.util.List;
@@ -18,4 +19,7 @@ public interface CourseService {
      * @author 呼叫哆啦A梦
      */
     CourseTeacherInfo selectInfoByID(String courseID,String teacherID);
+
+    //221701416增
+    List<CourseTeacherid> selectAllCourseAndTeacherid();
 }

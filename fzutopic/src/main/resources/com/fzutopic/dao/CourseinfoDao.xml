@@ -178,4 +178,10 @@
       credits = #{credits,jdbcType=DOUBLE}
     where courseID = #{courseid,jdbcType=CHAR}
   </update>
+  <select id="selectAllCourseAndTeacherid" resultType="com.fzutopic.view.CourseTeacherid">
+
+    select courseinfo.* , course_teacher.teacherID
+            from courseinfo , course_teacher
+            where courseinfo.courseID=course_teacher.courseID
+  </select>
 </mapper>

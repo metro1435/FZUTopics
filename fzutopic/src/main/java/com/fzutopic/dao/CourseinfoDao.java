@@ -5,6 +5,7 @@ import com.fzutopic.model.CourseinfoExample;
 import java.util.List;
 
 import com.fzutopic.view.CourseTeacherInfo;
+import com.fzutopic.view.CourseTeacherid;
 import org.apache.ibatis.annotations.*;
 
 public interface CourseinfoDao {
@@ -31,7 +32,7 @@ public interface CourseinfoDao {
             "where teacherinfo.teacherID=#{teacherID} and courseinfo.courseID=#{courseID}")
     CourseTeacherInfo selectInfoByID(String courseID,String teacherID);
 
-
+    List<CourseTeacherid> selectAllCourseAndTeacherid();
 
     int insert(Courseinfo record);
 

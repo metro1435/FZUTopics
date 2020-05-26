@@ -29,7 +29,7 @@ public class CourseControllerTest {
     public void setupMockMvc() throws Exception {
         mvc = MockMvcBuilders.webAppContextSetup(wac).build(); //初始化MockMvc对象
         String json = "{\n" +
-                "\t\"userid\":\"123456789\",\n" +
+                "\t\"userid\":\"admin0001\",\n" +
                 "\t\"password\":\"123456\"\n" +
                 "}";
         String result= mvc.perform(MockMvcRequestBuilders.post("/login")
@@ -111,5 +111,14 @@ public class CourseControllerTest {
                 .andExpect(MockMvcResultMatchers.jsonPath("$.code").value(500))
                 .andDo(MockMvcResultHandlers.print());
     }
-
+    @Test
+    public void getAllCourseTest() throws Exception{
+        mvc.perform(MockMvcRequestBuilders.get("/admin/getcourse")
+                .accept(MediaType.APPLICATION_JSON_UTF8)
+                .contentType(MediaType.APPLICATION_JSON_UTF8)
+                .header("token", token)
+        )
+                .andExpect(MockMvcResultMatchers.jsonPath("$.code").value(200))
+                .andDo(MockMvcResultHandlers.print());
+    }
 }

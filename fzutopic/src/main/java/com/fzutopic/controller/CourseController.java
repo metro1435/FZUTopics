@@ -12,6 +12,7 @@ import com.fzutopic.model.Teacherinfo;
 import com.fzutopic.service.CourseService;
 import com.fzutopic.service.TeacherService;
 import com.fzutopic.view.CourseTeacherInfo;
+import com.fzutopic.view.CourseTeacherid;
 import com.github.pagehelper.PageInfo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
@@ -88,4 +89,11 @@ public class CourseController {
         courseTeacherInfo = courseService.selectInfoByID(courseid, teacherid);
         return AjaxResponse.success(courseTeacherInfo);
     }
+    @AdminLoginToken
+    @CrossOrigin
+    @GetMapping("/admin/getcourse")
+    public AjaxResponse getAllCourse(){
+        return AjaxResponse.success(courseService.selectAllCourseAndTeacherid());
+    }
+
 }

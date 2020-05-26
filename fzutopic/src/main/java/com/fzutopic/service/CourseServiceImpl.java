@@ -2,6 +2,7 @@ package com.fzutopic.service;
 
 import com.fzutopic.dao.CourseinfoDao;
 import com.fzutopic.view.CourseTeacherInfo;
+import com.fzutopic.view.CourseTeacherid;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import lombok.extern.slf4j.Slf4j;
@@ -28,5 +29,10 @@ public class CourseServiceImpl implements CourseService{
     @Override
     public CourseTeacherInfo selectInfoByID(String courseID, String teacherID) {
         return courseinfoDao.selectInfoByID(courseID,teacherID);
+    }
+    //221701416，管理员列出所有课程和教师id
+    @Override
+    public List<CourseTeacherid> selectAllCourseAndTeacherid() {
+        return courseinfoDao.selectAllCourseAndTeacherid();
     }
 }
