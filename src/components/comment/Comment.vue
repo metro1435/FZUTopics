@@ -79,6 +79,7 @@
 </style>
 
 <script>
+import { request } from "../../network/request";
   export default {
     name: "Comment",
     data() {
@@ -97,11 +98,13 @@
     methods: {
       handlePass(index, row) {
         console.log(index, row);
-        this.$http.get("http://localhost:8686/admin/comment/unaudited/1/"+row.commentid,{
-          headers: {
+        request({
+        url: "/admin/comment/unaudited?commentid="+row.commentid+"&auditstatus=1",
+        method: "put",
+        headers: {
           token: this.$store.state.token
-          }
-        }).then(res=>{
+        }
+      }).then(res=>{
           this.$message({
           showClose: true,
           message: '该评论已成功通过'
@@ -111,11 +114,13 @@
       },
       handleFail(index, row) {
         console.log(index, row);
-        this.$http.get("http://localhost:8686/admin/comment/unaudited/0/"+row.commentid,{
-          headers: {
+        request({
+        url: "/admin/comment/unaudited?commentid="+row.commentid+"&auditstatus=0",
+        method: "put",
+        headers: {
           token: this.$store.state.token
-          }
-        }).then(res=>{
+        }
+      }).then(res=>{
           this.$message({
           showClose: true,
           message: '该评论已删除'

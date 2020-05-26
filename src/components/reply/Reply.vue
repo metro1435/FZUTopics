@@ -15,7 +15,7 @@
             <span>{{ props.row.commentid }}</span>
           </el-form-item>
           <el-form-item label="发布者">
-            <span>{{ props.row.posterid }}</span>
+            <span>{{ props.row.userid }}</span>
           </el-form-item>
           <el-form-item label="回复时间">
             <span>{{ props.row.time }}</span>
@@ -34,7 +34,7 @@
     </el-table-column>
     <el-table-column
       label="发布者"
-      prop="posterid">
+      prop="userid">
     </el-table-column>
     <el-table-column
       label="回复时间"
@@ -56,7 +56,7 @@
     background
     @current-change="handleCurrentChange"
     :current-page="currentPage"
-    :page-size="16"
+    :page-size="10"
     layout="total, prev, pager, next, jumper"
     :total="replysNum">
   </el-pagination>
@@ -79,6 +79,7 @@
 </style>
 
 <script>
+import { request } from "../../network/request";
   export default {
     name: "Reply",
     data() {
@@ -90,13 +91,43 @@
       }
     },
 
+     mounted: function() {
+      this.findAllTableData();
+    },
+
     methods: {
       handlePass(index, row) {
         console.log(index, row);
+        request({
+        url: "/admin/reply/unaudited?replyid="+row.replyid+"&auditstatus=1",
+        method: "put",
+        headers: {
+          token: this.$store.state.token
+        }
+      }).then(res=>{
+          this.$message({
+          showClose: true,
+          message: '该回复已成功通过'
+          });
+          this.findAllTableData();
+        })
       },
       handleFail(index, row) {
         console.log(index, row);
-      }
+        request({
+        url: "/admin/reply/unaudited?replyid="+row.replyid+"&auditstatus=1",
+        method: "put",
+        headers: {
+          token: this.$store.state.token
+        }
+      }).then(res=>{
+          this.$message({
+          showClose: true,
+          message: '该回复已删除'
+          });
+          this.findAllTableData();
+        })
+      },
 
       findAllTableData(){
         this.$http.get("http://localhost:8686/admin/reply/unaudited/page/"+ this.currentPage,{
@@ -111,6 +142,21 @@
         res => console.log(res)
         );
       },
+
+      handleCurrentChange: function(val) {
+        this.currentPage = val;
+        this.$http.get("http://localhost:8686/admin/reply/unaudited/page/"+ this.currentPage,{
+          headers: {
+          token: this.$store.state.token
+        }
+        }).then(res=>{
+          this.tableData=res.data.data.list;
+          this.replysNum=res.data.data.total;
+          console.log(res.data.data);
+        },
+        res => console.log(res)
+        );
+      }
     }
   }
 </script>
