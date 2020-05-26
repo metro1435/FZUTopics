@@ -53,15 +53,7 @@ public class TagController {
         return AjaxResponse.success(tag);
     }
 
-    //管理员获取标签列表（一次40个），221701309负责
-    @AdminLoginToken
-    @CrossOrigin
-    @GetMapping("/admin/tag")
-    public AjaxResponse getTagList() {
-        List<Tag> tag = tagService.getTagList();
-        if (tag.isEmpty()) return AjaxResponse.error(404,"没有找到tag");
-        return AjaxResponse.success(tag);
-    }
+
 
     //管理员只通过name新增标签，221701416负责
     @AdminLoginToken

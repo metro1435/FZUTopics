@@ -88,15 +88,4 @@ public class CourseController {
         courseTeacherInfo = courseService.selectInfoByID(courseid, teacherid);
         return AjaxResponse.success(courseTeacherInfo);
     }
-    /**
-     * 管理员获取课程列表
-     * @return AjaxResponse
-     * @author 221701416
-     */
-    @AdminLoginToken
-    @CrossOrigin
-    @GetMapping("admin/course/get")
-    public AjaxResponse admingetcourse(){
-        return AjaxResponse.success();
-    }
 }
