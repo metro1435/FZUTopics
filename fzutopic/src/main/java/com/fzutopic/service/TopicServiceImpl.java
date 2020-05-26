@@ -212,7 +212,7 @@ public class TopicServiceImpl implements TopicService {
     public Topic updateTopicstatus(String topicid){
         Topic topic=topicDao.selectByPrimaryKey(topicid);
         topic.setAuditstatus(1);
-        topicDao.updateByPrimaryKey(topic);
+        topicDao.updateByPrimaryKeyWithBLOBs(topic);
         return topic;
     }
 

@@ -48,9 +48,9 @@ public class CommentController {
     //审核评论（通过/不通过），221701401负责
     @AdminLoginToken
     @CrossOrigin
-    @GetMapping("/admin/comment/unaudited/{auditstatus}/{commentid}")
-    public @ResponseBody AjaxResponse CommentAudit(@PathVariable String commentid,
-                                                   @PathVariable int auditstatus) {
+    @PutMapping("/admin/comment/unaudited")
+    public @ResponseBody AjaxResponse CommentAudit(@RequestParam String commentid,
+                                                   @RequestParam int auditstatus) {
         if (auditstatus==1) {
             boolean success=commentService.updateComment(commentid);
             if (success) return AjaxResponse.success("操作成功");

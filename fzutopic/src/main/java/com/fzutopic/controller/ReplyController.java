@@ -1,8 +1,10 @@
 package com.fzutopic.controller;
 
 
+import com.fzutopic.annotation.AdminLoginToken;
 import com.fzutopic.annotation.UserLoginToken;
 import com.fzutopic.model.AjaxResponse;
+import com.fzutopic.model.Comment;
 import com.fzutopic.model.Reply;
 import com.fzutopic.service.ReplyServiceImpl;
 import com.fzutopic.utils.TokenUtil;
@@ -45,4 +47,33 @@ public class ReplyController {
         else return AjaxResponse.error(400,"插入失败");
     }
 
+    //获取待审核回复列表，1416负责
+    //@AdminLoginToken
+    @CrossOrigin
+    @GetMapping("/admin/reply/unaudited/page/{page}")
+    public  @ResponseBody AjaxResponse getUnauditedReplys(@PathVariable(name="page") int page) {
+        PageInfo<Reply> replys =replyService.getunauditedReplys(page);
+        if (replys.getList().isEmpty()) return AjaxResponse.error(404,"没有待审核回复");
+        return AjaxResponse.success(replys);
+    }
+
+    /**
+     * 审核回复（选择通过或不通过）
+     * 221701416改
+     * @param replyid     回复的id
+     * @param auditstatus 0：审核不通过 1：审核通过
+     * @return
+     */
+    //@AdminLoginToken
+    @CrossOrigin
+    @PutMapping("/admin/reply/unaudited")
+    public AjaxResponse ReplyAudit(@RequestParam String replyid,
+                                   @RequestParam int auditstatus) {
+        if (auditstatus == 1)
+            return AjaxResponse.success(replyService.updateReplystatus(replyid));
+        else if (auditstatus==0)
+            return AjaxResponse.success(replyService.deleteunauditedReply(replyid));
+        else
+            return AjaxResponse.error(400,"审核状态异常");
+    }
 }

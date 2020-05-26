@@ -8,6 +8,8 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
@@ -143,6 +145,41 @@ public class ReplyServiceImpl implements ReplyService {
 
         message += "  新的likes  unlikes分别为：" + likes + "   " + unlikes;
         return AjaxResponse.success(message);
+    }
 
+    //管理员获取待审核回复列表，1416负责
+    public PageInfo<Reply> getunauditedReplys(int page){
+        ReplyExample example=new ReplyExample();
+        ReplyExample.Criteria criteria=example.createCriteria();
+        criteria.andAuditstatusEqualTo(0);
+        example.setOrderByClause("replyid desc");
+        PageHelper.startPage(page,10);
+        List<Reply> replies=replyDao.selectByExampleWithBLOBs(example);
+        return new PageInfo<>(replies);
+    }
+
+    //管理员审核回复通过，1416负责
+    public Reply updateReplystatus(String replyid){
+        Reply reply=replyDao.selectByPrimaryKey(replyid);
+        reply.setAuditstatus(1);
+        replyDao.updateByPrimaryKeyWithBLOBs(reply);
+        String commentid = reply.getCommentid();
+        Comment comment = commentDao.selectByPrimaryKey(commentid);
+        comment.setIsreply(1);
+        //设置被回复的评论中isreply=1
+        commentDao.updateByPrimaryKeyWithBLOBs(comment);
+        String topicid = comment.getTopicid();
+        Topic topic = topicDao.selectByPrimaryKey(topicid);
+        int commentCount = topic.getCommentcount();
+        topic.setCommentcount(commentCount + 1);
+
+        //更新话题评论数+1
+        topicDao.updateByPrimaryKey(topic);
+        return reply;
+    }
+
+    //管理员审核回复不通过直接删除，1416负责
+    public int deleteunauditedReply(String replyid){
+        return replyDao.deleteByPrimaryKey(replyid);
     }
 }
