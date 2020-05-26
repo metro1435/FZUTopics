@@ -121,4 +121,14 @@ public class CourseController {
         return AjaxResponse.success("新增课程成功");
     }
 
+    //221701416删除课程
+    @AdminLoginToken
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
+    @CrossOrigin
+    @DeleteMapping("/admin/deletecourse")
+    public AjaxResponse deletecourse(@RequestBody CourseTeacherKey courseTeacherKey){
+        courseTeacherService.deletecourse(courseTeacherKey);
+        courseService.deletecourse(courseTeacherKey);
+        return AjaxResponse.success("删除课程成功");
+    }
 }

@@ -1,6 +1,7 @@
 package com.fzutopic.service;
 
 import com.fzutopic.dao.CourseinfoDao;
+import com.fzutopic.model.CourseTeacherKey;
 import com.fzutopic.model.Courseinfo;
 import com.fzutopic.view.CourseTeacherInfo;
 import com.fzutopic.view.CourseTeacherid;
@@ -45,5 +46,11 @@ public class CourseServiceImpl implements CourseService{
         courseinfo.setCourseid(courseid);
         courseinfoDao.insert1(courseinfo);
         return courseid;
+    }
+
+    @Override
+    public boolean deletecourse(CourseTeacherKey courseTeacherKey) {
+        courseinfoDao.deleteByPrimaryKey(courseTeacherKey.getCourseid());
+        return true;
     }
 }

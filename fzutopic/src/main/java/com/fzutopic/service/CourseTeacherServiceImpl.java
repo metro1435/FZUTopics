@@ -26,4 +26,10 @@ class CourseTeacherServiceImpl implements CourseTeacherService{
         courseTeacherDao.insert(courseTeacherKey);
         return true;
     }
+
+    @Override
+    public boolean deletecourse(CourseTeacherKey courseTeacherKey) {
+        courseTeacherDao.deleteByPrimaryKey(courseTeacherKey);
+        return true;
+    }
 }

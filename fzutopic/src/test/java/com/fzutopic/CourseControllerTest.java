@@ -145,4 +145,25 @@ public class CourseControllerTest {
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andDo(MockMvcResultHandlers.print());
     }
+
+    /**
+     * 新增标签
+     *  221701416负责
+     * @throws Exception
+     */
+    @Test
+    public void deletecourseTest() throws Exception {
+        String json = "{\n" +
+                "\t\"courseid\":\"c010103\",\n" +
+                "\t\"teacherid\":\"h010103\"\n" +
+                "}";
+        mvc.perform(MockMvcRequestBuilders.delete("/admin/deletecourse")
+                .accept(MediaType.APPLICATION_JSON_UTF8)
+                .contentType(MediaType.APPLICATION_JSON_UTF8)
+                .content(json.getBytes())
+                .header("token", token)
+        )
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andDo(MockMvcResultHandlers.print());
+    }
 }
