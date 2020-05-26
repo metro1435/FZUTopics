@@ -2,6 +2,7 @@ package com.fzutopic.service;
 
 import com.fzutopic.dao.TeacherinfoDao;
 import com.fzutopic.view.CourseTeacherInfo;
+import com.fzutopic.view.TeacherName;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import lombok.extern.slf4j.Slf4j;
@@ -24,5 +25,10 @@ public class TeacherServiceImpl implements TeacherService{
         PageHelper.startPage(page, 10);
         List<CourseTeacherInfo> infos=teacherinfoDao.selectTeacherNameByLike(name);
         return PageInfo.of(infos);
+    }
+
+    @Override
+    public List<TeacherName> selectAllTeacher() {
+        return teacherinfoDao.selectAllTeacher();
     }
 }

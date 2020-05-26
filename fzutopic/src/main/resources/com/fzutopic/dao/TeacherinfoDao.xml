@@ -275,4 +275,10 @@
       college = #{college,jdbcType=VARCHAR}
     where teacherID = #{teacherid,jdbcType=CHAR}
   </update>
+<!--  221701416增-->
+  <select id="selectAllTeacher" resultType="com.fzutopic.view.TeacherName">
+    select teacherID, teacherName
+    from teacherinfo
+    where 1=1
+  </select>
 </mapper>

@@ -6,6 +6,7 @@ import com.fzutopic.model.TeacherinfoExample;
 import java.util.List;
 
 import com.fzutopic.view.CourseTeacherInfo;
+import com.fzutopic.view.TeacherName;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 
@@ -26,6 +27,8 @@ public interface TeacherinfoDao {
     int insert(Teacherinfo record);
 
     int insertSelective(Teacherinfo record);
+
+    List<TeacherName> selectAllTeacher();
 
     List<Teacherinfo> selectByExampleWithBLOBs(TeacherinfoExample example);
 
