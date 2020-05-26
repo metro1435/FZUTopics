@@ -131,4 +131,24 @@ public class CourseController {
         courseService.deletecourse(courseTeacherKey);
         return AjaxResponse.success("删除课程成功");
     }
+
+    //221701416编辑更新课程
+    @AdminLoginToken
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
+    @CrossOrigin
+    @PutMapping("/admin/updatecourse")
+    public AjaxResponse updatecourse(@RequestParam(name = "courseid") String courseid,
+                                     @RequestParam(name = "credit") double credit,
+                                     @RequestParam(name = "teacherid") String teacherid
+                                     ){
+        CourseTeacherKey courseTeacherKey=new CourseTeacherKey();
+        courseTeacherKey.setCourseid(courseid);
+        courseTeacherKey.setTeacherid(teacherid);
+        courseTeacherService.updatecourse(courseTeacherKey);
+        Courseinfo courseinfo=new Courseinfo();
+        courseinfo.setCourseid(courseid);
+        courseinfo.setCredits(credit);
+        courseService.updatecourse(courseinfo);
+        return AjaxResponse.success("更新课程成功");
+    }
 }

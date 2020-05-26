@@ -124,7 +124,7 @@ public class CourseControllerTest {
 
 
     /**
-     * 新增标签
+     * 新增课程
      *  221701416负责
      * @throws Exception
      */
@@ -147,7 +147,7 @@ public class CourseControllerTest {
     }
 
     /**
-     * 新增标签
+     * 删除课程
      *  221701416负责
      * @throws Exception
      */
@@ -164,6 +164,24 @@ public class CourseControllerTest {
                 .header("token", token)
         )
                 .andExpect(MockMvcResultMatchers.status().isOk())
+                .andDo(MockMvcResultHandlers.print());
+    }
+
+
+    /**
+     * 更新课程
+     *  221701416负责
+     * @throws Exception
+     */
+    @Test
+    public void updatecourseTest() throws Exception {
+        mvc.perform(MockMvcRequestBuilders.put("/admin/updatecourse?courseid=c010103" +
+                "&credit=3.0&teacherid=h010103")
+                .accept(MediaType.APPLICATION_JSON_UTF8)
+                .contentType(MediaType.APPLICATION_JSON_UTF8)
+                .header("token", token)
+        )
+                .andExpect(MockMvcResultMatchers.jsonPath("$.code").value(200))
                 .andDo(MockMvcResultHandlers.print());
     }
 }

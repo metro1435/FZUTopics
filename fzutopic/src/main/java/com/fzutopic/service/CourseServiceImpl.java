@@ -53,4 +53,12 @@ public class CourseServiceImpl implements CourseService{
         courseinfoDao.deleteByPrimaryKey(courseTeacherKey.getCourseid());
         return true;
     }
+
+    @Override
+    public boolean updatecourse(Courseinfo courseinfo) {
+        Courseinfo ready = courseinfoDao.selectByPrimaryKey(courseinfo.getCourseid());
+        ready.setCredits(courseinfo.getCredits());
+        courseinfoDao.updateByPrimaryKey(ready);
+        return true;
+    }
 }

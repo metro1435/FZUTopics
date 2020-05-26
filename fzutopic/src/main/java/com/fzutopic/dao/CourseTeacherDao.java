@@ -21,6 +21,8 @@ public interface CourseTeacherDao {
 
     int insertSelective(CourseTeacherKey record);
 
+    int updatecourse(CourseTeacherKey record);
+
     List<CourseTeacherKey> selectByExample(CourseTeacherExample example);
 
     int updateByExampleSelective(@Param("record") CourseTeacherKey record, @Param("example") CourseTeacherExample example);

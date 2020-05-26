@@ -3,6 +3,7 @@ package com.fzutopic.service;
 import com.fzutopic.dao.CourseTeacherDao;
 import com.fzutopic.dao.CourseinfoDao;
 import com.fzutopic.model.CourseTeacherKey;
+import com.fzutopic.model.Courseinfo;
 import com.fzutopic.view.CourseTeacherInfo;
 import com.fzutopic.view.CourseTeacherid;
 import com.github.pagehelper.PageHelper;
@@ -32,4 +33,11 @@ class CourseTeacherServiceImpl implements CourseTeacherService{
         courseTeacherDao.deleteByPrimaryKey(courseTeacherKey);
         return true;
     }
+
+    @Override
+    public boolean updatecourse(CourseTeacherKey courseTeacherKey) {
+        courseTeacherDao.updatecourse(courseTeacherKey);
+        return true;
+    }
+
 }

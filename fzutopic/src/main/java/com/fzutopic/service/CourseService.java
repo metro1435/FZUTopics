@@ -30,4 +30,7 @@ public interface CourseService {
 
     //221701416增
     boolean deletecourse(CourseTeacherKey courseTeacherKey);
+
+    //221701416增
+    boolean updatecourse(Courseinfo courseinfo);
 }
