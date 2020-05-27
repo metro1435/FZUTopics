@@ -3,8 +3,7 @@ package com.fzutopic.controller;
 import com.fzutopic.annotation.UserLoginToken;
 import com.fzutopic.model.AjaxResponse;
 import com.fzutopic.model.Ctcomment;
-import com.fzutopic.service.CtcommentServiceImpl;
-import com.github.pagehelper.PageInfo;
+import com.fzutopic.service.CourseTeacherCommentServiceImpl;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
@@ -15,8 +14,8 @@ import java.util.List;
 @RestController
 @RequestMapping("/user")
 public class CtcommentController {
-    @Resource(name="ctcommentServiceImpl")
-    CtcommentServiceImpl ctcommentService;
+    @Resource(name="courseTeacherCommentServiceImpl")
+    CourseTeacherCommentServiceImpl ctcommentService;
 
     //通过课程（教师）id获取课程（教师）评论列表,1403
     @UserLoginToken

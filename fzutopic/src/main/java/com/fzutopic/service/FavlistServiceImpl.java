@@ -85,4 +85,17 @@ public class FavlistServiceImpl {
         favlistItemDao.deleteByPrimaryKey(favlistItemKey);
         return string;
     }
+
+    //1309
+    public boolean getfavstatus(String collectedid, String userid) {
+        FavlistItemExample example = new FavlistItemExample();
+        FavlistItemExample.Criteria criteria = example.createCriteria();
+        criteria.andCollectedidEqualTo(collectedid);
+        List<FavlistItemKey> favlistItemKeys = favlistItemDao.selectByExample(example);
+        for (FavlistItemKey favlistItemKey : favlistItemKeys) {
+            if(favlistItemKey.getFavlistid().substring(0, 9).equals(userid))
+                return true;
+        }
+        return false;
+    }
 }

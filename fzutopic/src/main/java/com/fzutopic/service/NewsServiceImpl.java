@@ -54,6 +54,17 @@ public class NewsServiceImpl implements NewsService {
         //List<Topic> topics=topicDao.selectByExampleWithBLOBs(topicExample);
         //return PageInfo.of(topics);
     }
+
+    //管理员添加新闻，1403负责
+    public News createNews(News news){
+        newsDao.insertByNews(news);
+        news.setNewsid(news.getNewsid());
+        news.setAdminid(news.getAdminid());
+        news.setTitle(news.getTitle());
+        news.setText(news.getText());
+        news.setTime(news.getTime());
+        return news;
+    }
 }
 
 

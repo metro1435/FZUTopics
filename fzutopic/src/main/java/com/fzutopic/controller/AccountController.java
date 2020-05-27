@@ -5,15 +5,12 @@ import com.fzutopic.annotation.PassToken;
 import com.fzutopic.annotation.UserLoginToken;
 import com.fzutopic.model.Adminuser;
 import com.fzutopic.model.AjaxResponse;
-import com.fzutopic.model.FavlistItemKey;
 import com.fzutopic.model.User;
 import com.fzutopic.service.AdminuserService;
-import com.fzutopic.service.FavlistItemService;
 import com.fzutopic.service.TokenService;
 import com.fzutopic.service.UserService;
 import com.fzutopic.utils.TokenUtil;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.boot.autoconfigure.kafka.KafkaProperties;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;

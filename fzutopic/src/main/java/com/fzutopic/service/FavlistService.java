@@ -30,4 +30,7 @@ public interface FavlistService {
 
     //取消收藏某个内容,1403
     void pushFavlistItem(FavlistItemKey favlistItemKey);
+
+    //1309
+    boolean getfavstatus(String collectedid, String userid);
 }

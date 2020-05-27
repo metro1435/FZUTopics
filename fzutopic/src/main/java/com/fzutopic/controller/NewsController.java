@@ -1,9 +1,10 @@
 package com.fzutopic.controller;
 
+import com.fzutopic.annotation.AdminLoginToken;
 import com.fzutopic.annotation.UserLoginToken;
 import com.fzutopic.model.AjaxResponse;
 import com.fzutopic.model.News;
-import com.fzutopic.service.FavlistItemService;
+import com.fzutopic.service.FavlistServiceImpl;
 import com.fzutopic.service.NewsServiceImpl;
 import com.fzutopic.service.TokenService;
 import com.fzutopic.utils.TokenUtil;
@@ -13,7 +14,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
-import java.util.List;
 
 
 /**
@@ -26,8 +26,9 @@ public class NewsController {
     NewsServiceImpl newsService;
     @Resource
     private TokenService tokenService;
-    @Resource
-    private FavlistItemService favlistItemService;
+
+    @Resource(name="favlistServiceImpl")
+    FavlistServiceImpl favlistService;
 
     //获取已发布新闻（限制8个）
     @GetMapping("/news/page/{page}")
@@ -69,10 +70,16 @@ public class NewsController {
     @GetMapping(value = "/user/news/favstatus/{newsid}")
     public AjaxResponse gettopicfavstatus(HttpServletRequest httpServletRequest, @PathVariable String newsid) {
         String userid = TokenUtil.getUserIdByRequest(httpServletRequest);
-        boolean favstatus  = favlistItemService.getfavstatus(newsid, userid);
+        boolean favstatus  = favlistService.getfavstatus(newsid, userid);
         return AjaxResponse.success(favstatus);
     }
 
-
+    //管理员添加新闻，1403负责
+    @AdminLoginToken
+    @CrossOrigin
+    @PostMapping("/admin/news")
+    public AjaxResponse createNews(@RequestBody News news){
+        return AjaxResponse.success(newsService.createNews(news));
+    }
 }
 

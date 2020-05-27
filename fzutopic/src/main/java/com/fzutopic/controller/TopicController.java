@@ -5,7 +5,7 @@ import com.fzutopic.annotation.AdminLoginToken;
 import com.fzutopic.annotation.UserLoginToken;
 import com.fzutopic.model.AjaxResponse;
 import com.fzutopic.model.Topic;
-import com.fzutopic.service.FavlistItemService;
+import com.fzutopic.service.FavlistServiceImpl;
 import com.fzutopic.service.TopicServiceImpl;
 import com.fzutopic.utils.TokenUtil;
 import com.github.pagehelper.PageInfo;
@@ -21,8 +21,9 @@ import java.util.List;
 public class TopicController {
     @Resource(name = "topicServiceImpl")
     TopicServiceImpl topicService;
-    @Resource
-    private FavlistItemService favlistItemService;
+    @Resource(name="favlistServiceImpl")
+    FavlistServiceImpl favlistService;
+
 
     //获取所有话题，1组16个，热度倒序，使用pagehelper分页，221701401负责
     //前端操作可参考 https://blog.csdn.net/ftlnnl/article/details/104972751
@@ -91,7 +92,7 @@ public class TopicController {
     public AjaxResponse gettopicfavstatus(HttpServletRequest httpServletRequest,
                                           @PathVariable String topicid) {
         String userid = TokenUtil.getUserIdByRequest(httpServletRequest);
-        boolean favstatus  = favlistItemService.getfavstatus(topicid, userid);
+        boolean favstatus  = favlistService.getfavstatus(topicid, userid);
         return AjaxResponse.success(favstatus);
     }
     /*//测试用的接口
