@@ -39,12 +39,14 @@ public class FavlistServiceImpl {
 
     //实现根据favlistid获取收藏内容列表,1403
     //1页显示15个收藏内容
-    public PageInfo<FavlistItemKey> getFavlistItems(String favlistid){
+    //实现根据favlistid获取收藏内容列表,1403
+    //1页显示15个收藏内容
+    public PageInfo<FavlistItemKey> getFavlistItems(String favlistid,int page){
         FavlistItemExample example1=new FavlistItemExample();
         FavlistItemExample.Criteria criteria=example1.createCriteria();
         criteria.andFavlistidEqualTo(favlistid);
         example1.setOrderByClause("collectedid desc");
-        PageHelper.startPage(1,15);
+        PageHelper.startPage(page,15);
         List<FavlistItemKey> favlistItemKeys=favlistItemDao.selectByExample(example1);
         return new PageInfo<>(favlistItemKeys);
     }

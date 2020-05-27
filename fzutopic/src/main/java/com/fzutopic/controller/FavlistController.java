@@ -34,11 +34,12 @@ public class FavlistController {
     }
 
     //根据favlistid获取收藏内容列表,1403
+    //根据favlistid获取收藏内容列表,1403
     @UserLoginToken
     @CrossOrigin
-    @GetMapping("/favlist/item/{favlistid}")
-    public @ResponseBody AjaxResponse getFavlistItems(@PathVariable String favlistid){
-        PageInfo<FavlistItemKey> favlistItemKeys=favlistService.getFavlistItems(favlistid);
+    @GetMapping("/favlist/item/{favlistid}/page/{page}")
+    public @ResponseBody AjaxResponse getFavlistItems(@PathVariable String favlistid,@PathVariable int page){
+        PageInfo<FavlistItemKey> favlistItemKeys=favlistService.getFavlistItems(favlistid,page);
         return AjaxResponse.success(favlistItemKeys);
     }
 
