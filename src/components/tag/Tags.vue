@@ -28,16 +28,16 @@ export default {
   data() {
     return {
       dynamicTags: [
-        {
-          tagid: "10000",
-          name: "傻逼",
-          times: 7
-        },
-        {
-          tagid: "100",
-          name: "艺迷术",
-          times: 1
-        }
+        // {
+        //   tagid: "10000",
+        //   name: "傻逼",
+        //   times: 7
+        // },
+        // {
+        //   tagid: "100",
+        //   name: "艺迷术",
+        //   times: 1
+        // }
       ],
       inputVisible: false,
       inputValue: ""

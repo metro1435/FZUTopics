@@ -65,23 +65,25 @@ export default {
       topicNum: 1, //总条数
       pre: false,
       back: false,
+      topicid: "",
+      type: 0, //1是审核通过，0是不通过
       tableData: [
-        {
-          topicid: "t12345678020200501121742",
-          title: "有哪些关于福建的冷知识？",
-          text:
-            "我是福建人，感觉对自己的家乡也不是特别了解，闽东闽南闽北还是有很大差距的，想听听对于福建的冷知识，勿地域黑，谢谢",
-          userid: "123456780",
-          time: "2020-05-01"
-        },
-        {
-          topicid: "t12345678120200501134819",
-          title: "有肖战道歉",
-          text:
-            "肖战视频专访道歉，就这两个月的事件和曾经的网络言论道歉了，你们接受吗？",
-          userid: "123456781",
-          time: "2020-05-01"
-        }
+        // {
+        //   topicid: "t12345678020200501121742",
+        //   title: "有哪些关于福建的冷知识？",
+        //   text:
+        //     "我是福建人，感觉对自己的家乡也不是特别了解，闽东闽南闽北还是有很大差距的，想听听对于福建的冷知识，勿地域黑，谢谢",
+        //   userid: "123456780",
+        //   time: "2020-05-01"
+        // },
+        // {
+        //   topicid: "t12345678120200501134819",
+        //   title: "有肖战道歉",
+        //   text:
+        //     "肖战视频专访道歉，就这两个月的事件和曾经的网络言论道歉了，你们接受吗？",
+        //   userid: "123456781",
+        //   time: "2020-05-01"
+        // }
       ]
     };
   },
@@ -109,16 +111,49 @@ export default {
           console.log(err);
         });
     },
-    handleCurrentChange(val){
+    auditTopic() {
+      request({
+        url: "/admin/topic/unaudited?topicid="+this.topicid+"&auditstatus="+this.type,
+        method: "put",
+        headers: {
+          token: this.$store.state.token
+        }
+      })
+        .then(res => {
+          console.log(res);
+        })
+        .catch(err => {
+          console.log(err);
+        });
+    },
+    handleCurrentChange(val) {
       this.currentPage = val;
       this.getTopics();
       console.log(`当前页: ${val}`);
     },
     handlePass(index, row) {
-      console.log(row.topicid);
+      this.type = 1;
+      this.topicid = row.topicid;
+      this.auditTopic();
+      // console.log(row.topicid);
+      this.$message({
+        showClose: true,
+        message: "该评论已成功通过"
+      });
+      this.tableData.splice(index, 1);
+      this.topicNum--;
     },
     handleFail(index, row) {
-      console.log(index, row);
+      this.type = 0;
+      this.topicid = row.topicid;
+      this.auditTopic();
+      // console.log(row.topicid);
+      this.$message({
+        showClose: true,
+        message: "该评论已删除"
+      });
+      this.tableData.splice(index, 1);
+      this.topicNum--;
     }
   },
   created() {
