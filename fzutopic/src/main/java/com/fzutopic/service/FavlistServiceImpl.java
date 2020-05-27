@@ -27,12 +27,12 @@ public class FavlistServiceImpl {
 
     //实现根据userid获取收藏夹列表,1403
     //1页显示10个收藏夹
-    public PageInfo<Favlist> getFavlists(String userid){
+    public PageInfo<Favlist> getFavlists(String userid,int page){
         FavlistExample example=new FavlistExample();
         FavlistExample.Criteria criteria=example.createCriteria();
         criteria.andUseridEqualTo(userid);
         example.setOrderByClause("favlistid desc");
-        PageHelper.startPage(1,10);
+        PageHelper.startPage(page,10);
         List<Favlist> favlists=favlistDao.selectByExample(example);
         return new PageInfo<>(favlists);
     }

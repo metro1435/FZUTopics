@@ -25,9 +25,11 @@ public class FavlistController {
     //根据userid获取收藏夹列表,1403
     @UserLoginToken
     @CrossOrigin
-    @GetMapping("/favlist/{userid}")
-    public @ResponseBody AjaxResponse getFavlists(@PathVariable String userid){
-        PageInfo<Favlist> favlists=favlistService.getFavlists(userid);
+    @GetMapping("/favlist/page/{page}")
+    public @ResponseBody AjaxResponse getFavlists(@PathVariable int page,
+                                                  HttpServletRequest httpServletRequest){
+        String userid = TokenUtil.getUserIdByRequest(httpServletRequest);
+        PageInfo<Favlist> favlists=favlistService.getFavlists(userid,page);
         return AjaxResponse.success(favlists);
     }
 
