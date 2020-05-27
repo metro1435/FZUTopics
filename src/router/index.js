@@ -4,6 +4,7 @@ import List from "../components/topic/List"
 import Tags from "../components/tag/Tags"
 import Comment from '../components/comment/Comment'
 import Reply from '../components/reply/Reply'
+import News from '../components/news/News'
 
 Vue.use(Router)
 
@@ -24,6 +25,10 @@ export default new Router({
     {
       path: '/replys',
       component: Reply
+    },
+    {
+      path: '/news',
+      component: News
     },
     {
       path: '/tags',
