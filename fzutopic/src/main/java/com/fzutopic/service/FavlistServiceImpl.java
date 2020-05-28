@@ -59,7 +59,7 @@ public class FavlistServiceImpl implements FavlistService {
         FavlistItemExample.Criteria criteria = example1.createCriteria();
         criteria.andFavlistidEqualTo(favlistid);
         example1.setOrderByClause("collectedid desc");
-        PageHelper.startPage(page, 15);
+        PageHelper.startPage(page, 10);
         List<FavlistItemKey> favlistItemKeys = favlistItemDao.selectByExample(example1);
         return new PageInfo<>(favlistItemKeys);
     }
