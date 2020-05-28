@@ -1,0 +1,198 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.fzutopic.dao.FavlistDao">
+  <resultMap id="BaseResultMap" type="com.fzutopic.model.Favlist">
+    <id column="favlistID" jdbcType="CHAR" property="favlistid" />
+    <result column="userID" jdbcType="CHAR" property="userid" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="time" jdbcType="TIMESTAMP" property="time" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    favlistID, userID, `name`, `time`
+  </sql>
+  <select id="selectByExample" parameterType="com.fzutopic.model.FavlistExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from favlist
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+    <if test="limit != null">
+      <if test="offset != null">
+        limit ${offset}, ${limit}
+      </if>
+      <if test="offset == null">
+        limit ${limit}
+      </if>
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from favlist
+    where favlistID = #{favlistid,jdbcType=CHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from favlist
+    where favlistID = #{favlistid,jdbcType=CHAR}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.fzutopic.model.FavlistExample">
+    delete from favlist
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" keyColumn="favlistID" keyProperty="favlistid" parameterType="com.fzutopic.model.Favlist" useGeneratedKeys="true">
+    insert into favlist (userID, `name`, `time`
+      )
+    values (#{userid,jdbcType=CHAR}, #{name,jdbcType=VARCHAR}, #{time,jdbcType=TIMESTAMP}
+      )
+  </insert>
+  <insert id="insertSelective" keyColumn="favlistID" keyProperty="favlistid" parameterType="com.fzutopic.model.Favlist" useGeneratedKeys="true">
+    insert into favlist
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="userid != null">
+        userID,
+      </if>
+      <if test="name != null">
+        `name`,
+      </if>
+      <if test="time != null">
+        `time`,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="userid != null">
+        #{userid,jdbcType=CHAR},
+      </if>
+      <if test="name != null">
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="time != null">
+        #{time,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.fzutopic.model.FavlistExample" resultType="java.lang.Long">
+    select count(*) from favlist
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update favlist
+    <set>
+      <if test="record.favlistid != null">
+        favlistID = #{record.favlistid,jdbcType=CHAR},
+      </if>
+      <if test="record.userid != null">
+        userID = #{record.userid,jdbcType=CHAR},
+      </if>
+      <if test="record.name != null">
+        `name` = #{record.name,jdbcType=VARCHAR},
+      </if>
+      <if test="record.time != null">
+        `time` = #{record.time,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update favlist
+    set favlistID = #{record.favlistid,jdbcType=CHAR},
+      userID = #{record.userid,jdbcType=CHAR},
+      `name` = #{record.name,jdbcType=VARCHAR},
+      `time` = #{record.time,jdbcType=TIMESTAMP}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.fzutopic.model.Favlist">
+    update favlist
+    <set>
+      <if test="userid != null">
+        userID = #{userid,jdbcType=CHAR},
+      </if>
+      <if test="name != null">
+        `name` = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="time != null">
+        `time` = #{time,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where favlistID = #{favlistid,jdbcType=CHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.fzutopic.model.Favlist">
+    update favlist
+    set userID = #{userid,jdbcType=CHAR},
+      `name` = #{name,jdbcType=VARCHAR},
+      `time` = #{time,jdbcType=TIMESTAMP}
+    where favlistID = #{favlistid,jdbcType=CHAR}
+  </update>
+</mapper>
