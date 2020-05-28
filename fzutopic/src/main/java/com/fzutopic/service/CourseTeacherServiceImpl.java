@@ -23,7 +23,7 @@ class CourseTeacherServiceImpl implements CourseTeacherService{
     CourseTeacherDao courseTeacherDao;
 
     @Override
-    public boolean insertcourseTearche(CourseTeacherKey courseTeacherKey) {
+    public boolean insertcourseTeacher(CourseTeacherKey courseTeacherKey) {
         courseTeacherDao.insert(courseTeacherKey);
         return true;
     }

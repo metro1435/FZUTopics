@@ -117,7 +117,7 @@ public class CourseController {
         CourseTeacherKey courseTeacherKey=new CourseTeacherKey();
         courseTeacherKey.setCourseid(courseid);
         courseTeacherKey.setTeacherid(courseTeacherid.getTeacherid());
-        courseTeacherService.insertcourseTearche(courseTeacherKey);
+        courseTeacherService.insertcourseTeacher(courseTeacherKey);
         return AjaxResponse.success("新增课程成功");
     }
 

@@ -1,10 +1,12 @@
 package com.fzutopic.dao;
 
+import com.fzutopic.model.Favlist;
 import com.fzutopic.model.News;
 import com.fzutopic.model.NewsExample;
 import java.util.List;
 
 import com.fzutopic.model.Topic;
+import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 
@@ -40,4 +42,7 @@ public interface NewsDao {
     int updateByPrimaryKeyWithBLOBs(News record);
 
     int updateByPrimaryKey(News record);
+
+    @Insert("insert into news(newsID,adminID,title,text,time) values (#{newsid},#{adminid},#{title},#{text},#{time})")
+    int insertByNews(News news);
 }
