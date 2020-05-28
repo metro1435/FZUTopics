@@ -1,9 +1,12 @@
 package com.fzutopic.service;
 
 import com.fzutopic.model.AjaxResponse;
+import com.fzutopic.model.Ctcomment;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
 
 public interface CourseTeacherCommentService {
     /**
@@ -36,5 +39,9 @@ public interface CourseTeacherCommentService {
      */
     AjaxResponse deleteLikesById(String commentid, int status);
 
+    //通过课程（教师）id获取课程（教师）评论列表,1403
+    List<Ctcomment> getctcomments(String commentitemid);
 
+    //新增课程（教师）评论,1403
+    Ctcomment createctcomment(Ctcomment ctcomment);
 }

@@ -48,7 +48,7 @@ public class ReplyController {
     }
 
     //获取待审核回复列表，1416负责
-    //@AdminLoginToken
+    @AdminLoginToken
     @CrossOrigin
     @GetMapping("/admin/reply/unaudited/page/{page}")
     public  @ResponseBody AjaxResponse getUnauditedReplys(@PathVariable(name="page") int page) {
@@ -64,7 +64,7 @@ public class ReplyController {
      * @param auditstatus 0：审核不通过 1：审核通过
      * @return
      */
-    //@AdminLoginToken
+    @AdminLoginToken
     @CrossOrigin
     @PutMapping("/admin/reply/unaudited")
     public AjaxResponse ReplyAudit(@RequestParam String replyid,

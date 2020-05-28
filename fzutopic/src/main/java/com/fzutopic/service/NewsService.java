@@ -16,6 +16,9 @@ public interface NewsService {
     PageInfo<News> getNewsByName(String name,int page);
 
     //News insertTag(News news);
+
+    //管理员添加新闻，1403负责
+    News createNews(News news);
 }
 
 

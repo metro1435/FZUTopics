@@ -6,7 +6,7 @@ import com.fzutopic.view.CourseTeacherid;
 
 public interface CourseTeacherService {
     //221701416增
-    boolean insertcourseTearche(CourseTeacherKey courseTeacherKey);
+    boolean insertcourseTeacher(CourseTeacherKey courseTeacherKey);
 
     //221701416增
     boolean deletecourse(CourseTeacherKey courseTeacherKey);
