@@ -111,6 +111,11 @@ public class CourseControllerTest {
                 .andExpect(MockMvcResultMatchers.jsonPath("$.code").value(500))
                 .andDo(MockMvcResultHandlers.print());
     }
+    /**
+     * 管理员查询所有课程
+     *  221701416负责
+     * @throws Exception
+     */
     @Test
     public void getAllCourseTest() throws Exception{
         mvc.perform(MockMvcRequestBuilders.get("/admin/getcourse")
@@ -132,7 +137,6 @@ public class CourseControllerTest {
     public void insertcourseTest() throws Exception {
         String json = "{\n" +
                 "\t\"credits\":2.5,\n" +
-                "\t\"courseid\":\"c010103\",\n" +
                 "\t\"coursename\":\"天文学\",\n" +
                 "\t\"teacherid\":\"h010103\"\n" +
                 "}";

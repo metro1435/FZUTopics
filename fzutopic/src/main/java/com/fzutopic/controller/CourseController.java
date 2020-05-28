@@ -110,7 +110,6 @@ public class CourseController {
     @PostMapping("/admin/addcourse")
     public AjaxResponse insertcourse(@RequestBody CourseTeacherid courseTeacherid){
         Courseinfo courseinfo=new Courseinfo();
-        courseinfo.setCourseid(courseTeacherid.getCourseid());
         courseinfo.setCoursename(courseTeacherid.getCoursename());
         courseinfo.setCredits(courseTeacherid.getCredits());
         String courseid=courseService.insertcourse(courseinfo);
