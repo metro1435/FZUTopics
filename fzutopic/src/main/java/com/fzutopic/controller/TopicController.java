@@ -3,7 +3,10 @@ package com.fzutopic.controller;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fzutopic.annotation.AdminLoginToken;
 import com.fzutopic.annotation.UserLoginToken;
+import com.fzutopic.dao.FavlistItemDao;
 import com.fzutopic.model.AjaxResponse;
+import com.fzutopic.model.Favlist;
+import com.fzutopic.model.FavlistItemExample;
 import com.fzutopic.model.Topic;
 import com.fzutopic.service.FavlistServiceImpl;
 import com.fzutopic.service.TopicServiceImpl;
@@ -23,6 +26,8 @@ public class TopicController {
     TopicServiceImpl topicService;
     @Resource(name="favlistServiceImpl")
     FavlistServiceImpl favlistService;
+    @Resource
+    FavlistItemDao favlistItemDao;
 
 
     //获取所有话题，1组16个，热度倒序，使用pagehelper分页，221701401负责
@@ -136,5 +141,36 @@ public class TopicController {
         else
             return AjaxResponse.error(400,"审核状态异常");
     }
+    /**
+     * 根据话题（新闻）id来判断当前用户是否收藏了该话题（新闻）
+     *
+     * @param id                 话题（新闻）id
+     * @param httpServletRequest
+     * @return status: 0未收藏  1收藏
+     * @author 呼叫哆啦A梦
+     */
+    @UserLoginToken
+    @CrossOrigin
+    @GetMapping(value = "/user/collectedstatus/{id}")
+    public AjaxResponse getTopicCollectedStatus(@PathVariable(name = "id") String id,
+                                                HttpServletRequest httpServletRequest) {
+        String userid = TokenUtil.getUserIdByRequest(httpServletRequest);
+        List<Favlist> favlists = favlistService.getAllFavlist(userid);
+        int status = 0;
+        for (Favlist favlist : favlists
+        ) {
+            String favlistid = favlist.getFavlistid();
+            FavlistItemExample favlistItemExample = new FavlistItemExample();
+            favlistItemExample.createCriteria().andCollectedidEqualTo(id).andFavlistidEqualTo(favlistid);
+
+            if (!favlistItemDao.selectByExample(favlistItemExample).isEmpty()) {
+                status = 1;
+                break;
+            }
+        }
+        return AjaxResponse.success(status);
+
+    }
+
 
 }
