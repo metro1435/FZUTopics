@@ -37,6 +37,18 @@ public class FavlistServiceImpl {
         return new PageInfo<>(favlists);
     }
 
+    /**
+     * 根据用户id获取全部收藏夹列表
+     * @param userid
+     * @return 收藏夹列表
+     * @Author 呼叫哆啦A梦
+     */
+    public List<Favlist> getAllFavlist(String userid){
+        FavlistExample example=new FavlistExample();
+        example.createCriteria().andUseridEqualTo(userid);
+        return favlistDao.selectByExample(example);
+    }
+
     //实现根据favlistid获取收藏内容列表,1403
     //1页显示15个收藏内容
     //实现根据favlistid获取收藏内容列表,1403

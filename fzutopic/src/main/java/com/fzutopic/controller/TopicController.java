@@ -3,9 +3,10 @@ package com.fzutopic.controller;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fzutopic.annotation.AdminLoginToken;
 import com.fzutopic.annotation.UserLoginToken;
-import com.fzutopic.model.AjaxResponse;
-import com.fzutopic.model.Topic;
+import com.fzutopic.dao.FavlistItemDao;
+import com.fzutopic.model.*;
 import com.fzutopic.service.FavlistItemService;
+import com.fzutopic.service.FavlistServiceImpl;
 import com.fzutopic.service.TopicServiceImpl;
 import com.fzutopic.utils.TokenUtil;
 import com.github.pagehelper.PageInfo;
@@ -21,17 +22,24 @@ import java.util.List;
 public class TopicController {
     @Resource(name = "topicServiceImpl")
     TopicServiceImpl topicService;
+
     @Resource
     private FavlistItemService favlistItemService;
+
+    @Resource(name = "favlistServiceImpl")
+    FavlistServiceImpl favlistService;
+
+    @Resource
+    FavlistItemDao favlistItemDao;
 
     //获取所有话题，1组16个，热度倒序，使用pagehelper分页，221701401负责
     //前端操作可参考 https://blog.csdn.net/ftlnnl/article/details/104972751
     @UserLoginToken
     @CrossOrigin
     @GetMapping("/topic/page/{page}")
-    public AjaxResponse getTopic(@PathVariable(name="page") int page) {
+    public AjaxResponse getTopic(@PathVariable(name = "page") int page) {
         PageInfo<Topic> topics = topicService.getTopics(page);
-        if (topics.getList().isEmpty()) return AjaxResponse.error(404,"话题库没有话题");
+        if (topics.getList().isEmpty()) return AjaxResponse.error(404, "话题库没有话题");
         return AjaxResponse.success(topics);
     }
 
@@ -39,12 +47,13 @@ public class TopicController {
     @UserLoginToken
     @CrossOrigin
     @GetMapping("/topic/topicid/{topicid}")
-    public  @ResponseBody AjaxResponse getTopicById(@PathVariable(name="topicid") String topicid) {
-        if (topicid.isEmpty() || topicid.length()!=24) return AjaxResponse.error(400,"id为空或不合规");
+    public @ResponseBody
+    AjaxResponse getTopicById(@PathVariable(name = "topicid") String topicid) {
+        if (topicid.isEmpty() || topicid.length() != 24) return AjaxResponse.error(400, "id为空或不合规");
         List<Topic> topic = topicService.getTopicByID(topicid);
-        if (topic.size()==0) return AjaxResponse.error(404,"没有找到该id对应话题");
-        //else这一行是浏览量加1.不需要的话注释掉即可
-        else topic=topicService.updateViews(topic);
+        if (topic.size() == 0) return AjaxResponse.error(404, "没有找到该id对应话题");
+            //else这一行是浏览量加1.不需要的话注释掉即可
+        else topic = topicService.updateViews(topic);
         return AjaxResponse.success(topic);
     }
 
@@ -52,11 +61,12 @@ public class TopicController {
     @UserLoginToken
     @CrossOrigin
     @GetMapping("/topic/{tagid}/page/{page}")
-    public  @ResponseBody AjaxResponse getTopicByTag(@PathVariable(name="tagid") String tagid,
-                                                     @PathVariable(name="page") int page) {
-        if (tagid.isEmpty() || tagid.length()>5) return AjaxResponse.error(400,"tagid为空或不合规定");
-        PageInfo<Topic> topics = topicService.getTopicsByTag(tagid,page);
-        if (topics.getList().isEmpty()) return AjaxResponse.error(404,"找不到tag对应的话题");
+    public @ResponseBody
+    AjaxResponse getTopicByTag(@PathVariable(name = "tagid") String tagid,
+                               @PathVariable(name = "page") int page) {
+        if (tagid.isEmpty() || tagid.length() > 5) return AjaxResponse.error(400, "tagid为空或不合规定");
+        PageInfo<Topic> topics = topicService.getTopicsByTag(tagid, page);
+        if (topics.getList().isEmpty()) return AjaxResponse.error(404, "找不到tag对应的话题");
         return AjaxResponse.success(topics);
     }
 
@@ -64,21 +74,23 @@ public class TopicController {
     @UserLoginToken
     @CrossOrigin
     @GetMapping("/topic/title/{title}/page/{page}")
-    public  @ResponseBody AjaxResponse getTopicByTitle(@PathVariable(name="title") String title,
-                                                       @PathVariable(name="page") int page) {
-        if (title.isEmpty()) return AjaxResponse.error(400,"输入搜索的值为空");
-        PageInfo<Topic> topic = topicService.getTopicsByTitle(title,page);
-        if (topic.getList().isEmpty()) return AjaxResponse.error(404,"没有找到该title对应话题");
+    public @ResponseBody
+    AjaxResponse getTopicByTitle(@PathVariable(name = "title") String title,
+                                 @PathVariable(name = "page") int page) {
+        if (title.isEmpty()) return AjaxResponse.error(400, "输入搜索的值为空");
+        PageInfo<Topic> topic = topicService.getTopicsByTitle(title, page);
+        if (topic.getList().isEmpty()) return AjaxResponse.error(404, "没有找到该title对应话题");
         return AjaxResponse.success(topic);
     }
 
     //新增话题，221701309负责
     @UserLoginToken
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     @CrossOrigin
     @PostMapping("/user/topic")
-    public @ResponseBody AjaxResponse createTopic(@RequestBody Topic topic,
-                                                  HttpServletRequest httpServletRequest){
+    public @ResponseBody
+    AjaxResponse createTopic(@RequestBody Topic topic,
+                             HttpServletRequest httpServletRequest) {
         String userid = TokenUtil.getUserIdByRequest(httpServletRequest);
         topic.setUserid(userid);
         return AjaxResponse.success(topicService.createTopic(topic));
@@ -91,7 +103,7 @@ public class TopicController {
     public AjaxResponse gettopicfavstatus(HttpServletRequest httpServletRequest,
                                           @PathVariable String topicid) {
         String userid = TokenUtil.getUserIdByRequest(httpServletRequest);
-        boolean favstatus  = favlistItemService.getfavstatus(topicid, userid);
+        boolean favstatus = favlistItemService.getfavstatus(topicid, userid);
         return AjaxResponse.success(favstatus);
     }
     /*//测试用的接口
@@ -106,8 +118,8 @@ public class TopicController {
     @AdminLoginToken
     @CrossOrigin
     @GetMapping("/admin/topic/unaudited/page/{page}")
-    public AjaxResponse getunauditedTopics(@PathVariable(name="page") int page){
-        PageInfo<Topic> unauditedtopics=topicService.getunauditedTopics(page);
+    public AjaxResponse getunauditedTopics(@PathVariable(name = "page") int page) {
+        PageInfo<Topic> unauditedtopics = topicService.getunauditedTopics(page);
         return AjaxResponse.success(unauditedtopics);
     }
 
@@ -115,9 +127,9 @@ public class TopicController {
     @AdminLoginToken
     @CrossOrigin
     @GetMapping("/admin/topic/unaudited/{topicid}")
-    public AjaxResponse checkunauditedTopic(@PathVariable String topicid){
-        if(topicService.checkunauditedTopic(topicid)==null)
-            return AjaxResponse.error(400,"该话题不在待审核列表");
+    public AjaxResponse checkunauditedTopic(@PathVariable String topicid) {
+        if (topicService.checkunauditedTopic(topicid) == null)
+            return AjaxResponse.error(400, "该话题不在待审核列表");
         else
             return AjaxResponse.success(topicService.checkunauditedTopic(topicid));
     }
@@ -127,13 +139,44 @@ public class TopicController {
     @CrossOrigin
     @PutMapping("/admin/topic/unaudited")
     public AjaxResponse TopicAudit(@RequestParam String topicid,
-                                          @RequestParam int auditstatus) {
+                                   @RequestParam int auditstatus) {
         if (auditstatus == 1)
             return AjaxResponse.success(topicService.updateTopicstatus(topicid));
-        else if (auditstatus==0)
+        else if (auditstatus == 0)
             return AjaxResponse.success(topicService.deleteunauditedTopic(topicid));
         else
-            return AjaxResponse.error(400,"审核状态异常");
+            return AjaxResponse.error(400, "审核状态异常");
+    }
+
+    /**
+     * 根据话题（新闻）id来判断当前用户是否收藏了该话题（新闻）
+     *
+     * @param id                 话题（新闻）id
+     * @param httpServletRequest
+     * @return status: 0未收藏  1收藏
+     * @author 呼叫哆啦A梦
+     */
+    @UserLoginToken
+    @CrossOrigin
+    @GetMapping(value = "/user/collectedstatus/{id}")
+    public AjaxResponse getTopicCollectedStatus(@PathVariable(name = "id") String id,
+                                                HttpServletRequest httpServletRequest) {
+        String userid = TokenUtil.getUserIdByRequest(httpServletRequest);
+        List<Favlist> favlists = favlistService.getAllFavlist(userid);
+        int status = 0;
+        for (Favlist favlist : favlists
+        ) {
+            String favlistid = favlist.getFavlistid();
+            FavlistItemExample favlistItemExample = new FavlistItemExample();
+            favlistItemExample.createCriteria().andCollectedidEqualTo(id).andFavlistidEqualTo(favlistid);
+
+            if (!favlistItemDao.selectByExample(favlistItemExample).isEmpty()) {
+                status = 1;
+                break;
+            }
+        }
+        return AjaxResponse.success(status);
+
     }
 
 }

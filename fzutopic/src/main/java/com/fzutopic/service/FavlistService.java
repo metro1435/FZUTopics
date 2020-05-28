@@ -12,6 +12,8 @@ public interface FavlistService {
     //1页显示10个收藏夹
     PageInfo<Favlist> getFavlists(String userid);
 
+    List<Favlist> getAllFavlist(String userid);
+
     //根据favlistid获取收藏内容列表,1403
     //1页显示15个收藏内容
     PageInfo<FavlistItemKey> getFavlistItems(String favlistid);
