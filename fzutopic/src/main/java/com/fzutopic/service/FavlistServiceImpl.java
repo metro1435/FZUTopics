@@ -18,7 +18,7 @@ import java.util.List;
 @Slf4j
 @Service
 @RestController
-public class FavlistServiceImpl {
+public class FavlistServiceImpl implements FavlistService {
 
     @Resource
     private FavlistDao favlistDao;
@@ -27,24 +27,25 @@ public class FavlistServiceImpl {
 
     //实现根据userid获取收藏夹列表,1403
     //1页显示10个收藏夹
-    public PageInfo<Favlist> getFavlists(String userid,int page){
-        FavlistExample example=new FavlistExample();
-        FavlistExample.Criteria criteria=example.createCriteria();
+    public PageInfo<Favlist> getFavlists(String userid, int page) {
+        FavlistExample example = new FavlistExample();
+        FavlistExample.Criteria criteria = example.createCriteria();
         criteria.andUseridEqualTo(userid);
         example.setOrderByClause("favlistid desc");
-        PageHelper.startPage(page,10);
-        List<Favlist> favlists=favlistDao.selectByExample(example);
+        PageHelper.startPage(page, 10);
+        List<Favlist> favlists = favlistDao.selectByExample(example);
         return new PageInfo<>(favlists);
     }
 
     /**
      * 根据用户id获取全部收藏夹列表
+     *
      * @param userid
      * @return 收藏夹列表
      * @Author 呼叫哆啦A梦
      */
-    public List<Favlist> getAllFavlist(String userid){
-        FavlistExample example=new FavlistExample();
+    public List<Favlist> getAllFavlist(String userid) {
+        FavlistExample example = new FavlistExample();
         example.createCriteria().andUseridEqualTo(userid);
         return favlistDao.selectByExample(example);
     }
@@ -53,18 +54,18 @@ public class FavlistServiceImpl {
     //1页显示15个收藏内容
     //实现根据favlistid获取收藏内容列表,1403
     //1页显示15个收藏内容
-    public PageInfo<FavlistItemKey> getFavlistItems(String favlistid,int page){
-        FavlistItemExample example1=new FavlistItemExample();
-        FavlistItemExample.Criteria criteria=example1.createCriteria();
+    public PageInfo<FavlistItemKey> getFavlistItems(String favlistid, int page) {
+        FavlistItemExample example1 = new FavlistItemExample();
+        FavlistItemExample.Criteria criteria = example1.createCriteria();
         criteria.andFavlistidEqualTo(favlistid);
         example1.setOrderByClause("collectedid desc");
-        PageHelper.startPage(page,15);
-        List<FavlistItemKey> favlistItemKeys=favlistItemDao.selectByExample(example1);
+        PageHelper.startPage(page, 15);
+        List<FavlistItemKey> favlistItemKeys = favlistItemDao.selectByExample(example1);
         return new PageInfo<>(favlistItemKeys);
     }
 
     //实现新建收藏夹,1403
-    public Favlist createFavlist(Favlist favlist){
+    public Favlist createFavlist(Favlist favlist) {
         favlistDao.insertByFavlist(favlist);
         favlist.setFavlistid(favlist.getFavlistid());
         favlist.setUserid(favlist.getUserid());
@@ -74,7 +75,7 @@ public class FavlistServiceImpl {
     }
 
     //实现添加某个收藏内容,1403
-    public FavlistItemKey createFavlistItem(FavlistItemKey favlistItemKey){
+    public FavlistItemKey createFavlistItem(FavlistItemKey favlistItemKey) {
         favlistItemDao.insertByFavlistItemKey(favlistItemKey);
         favlistItemKey.setFavlistid(favlistItemKey.getFavlistid());
         favlistItemKey.setCollectedid(favlistItemKey.getCollectedid());
@@ -82,20 +83,19 @@ public class FavlistServiceImpl {
     }
 
     //实现删除某个收藏夹,1403
-    public void deleteFavlist(String favlistid){
+    public void deleteFavlist(String favlistid) {
         favlistDao.deleteByPrimaryKey(favlistid);
     }
 
     //实现根据collectedid获取某项收藏内容,1403
-    public FavlistItemKey getFavlistItem(String collectedid){
+    public FavlistItemKey getFavlistItem(String collectedid) {
         return favlistItemDao.getFavlistItemKeyBycollectedid(collectedid);
     }
 
     //实现取消收藏某个内容,1403
-    public String pushFavlistItem(FavlistItemKey favlistItemKey){
-        String string=favlistItemKey.getCollectedid();
-        favlistItemDao.deleteByPrimaryKey(favlistItemKey);
-        return string;
+    public int deleteFavlistItem(FavlistItemKey favlistItemKey) {
+        int sum = favlistItemDao.deleteByPrimaryKey(favlistItemKey);
+        return sum;
     }
 
     //1309
@@ -105,7 +105,7 @@ public class FavlistServiceImpl {
         criteria.andCollectedidEqualTo(collectedid);
         List<FavlistItemKey> favlistItemKeys = favlistItemDao.selectByExample(example);
         for (FavlistItemKey favlistItemKey : favlistItemKeys) {
-            if(favlistItemKey.getFavlistid().substring(0, 9).equals(userid))
+            if (favlistItemKey.getFavlistid().substring(0, 9).equals(userid))
                 return true;
         }
         return false;
