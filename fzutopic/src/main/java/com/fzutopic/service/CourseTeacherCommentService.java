@@ -2,9 +2,7 @@ package com.fzutopic.service;
 
 import com.fzutopic.model.AjaxResponse;
 import com.fzutopic.model.Ctcomment;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RestController;
+import com.github.pagehelper.PageInfo;
 
 import java.util.List;
 
@@ -44,4 +42,13 @@ public interface CourseTeacherCommentService {
 
     //新增课程（教师）评论,1403
     Ctcomment createctcomment(Ctcomment ctcomment);
+
+    //获取待审核课程（教师）评论列表，1403负责
+    PageInfo<Ctcomment> getUnauditedCtcomments(int page);
+
+    //管理员审核课程（教师）评论通过，1403负责
+    Ctcomment updateCtcommentstatus(String ctcommentid);
+
+    //管理员审核课程（教师）评论不通过直接删除，1403负责
+    int deleteunauditedCtcomment(String ctcommentid);
 }

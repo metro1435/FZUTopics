@@ -4,6 +4,8 @@ import com.fzutopic.dao.CtcommentDao;
 import com.fzutopic.model.AjaxResponse;
 import com.fzutopic.model.Ctcomment;
 import com.fzutopic.model.CtcommentExample;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RestController;
@@ -100,5 +102,28 @@ public class CourseTeacherCommentServiceImpl implements CourseTeacherCommentServ
         ctcomment.setCommentitemid(ctcomment.getCommentid());
         ctcomment.setAuditstatus(ctcomment.getAuditstatus());
         return ctcomment;
+    }
+
+    //获取待审核课程（教师）评论列表，1403负责
+   public PageInfo<Ctcomment> getUnauditedCtcomments(int page){
+        CtcommentExample example=new CtcommentExample();
+        CtcommentExample.Criteria criteria=example.createCriteria();
+        criteria.andAuditstatusEqualTo(0);
+        PageHelper.startPage(page,16);
+        List<Ctcomment> ctcomments=ctcommentDao.selectByExampleWithBLOBs(example);
+        return new PageInfo<>(ctcomments);
+   }
+
+    //管理员审核课程（教师）评论通过，1403负责
+    public Ctcomment updateCtcommentstatus(String ctcommentid){
+        Ctcomment ctcomment=ctcommentDao.selectByPrimaryKey(ctcommentid);
+        ctcomment.setAuditstatus(1);
+        ctcommentDao.updateByPrimaryKeyWithBLOBs(ctcomment);
+        return ctcomment;
+    }
+
+    //管理员审核课程（教师）评论不通过直接删除，1403负责
+    public int deleteunauditedCtcomment(String ctcommentid){
+        return ctcommentDao.deleteByPrimaryKey(ctcommentid);
     }
 }
