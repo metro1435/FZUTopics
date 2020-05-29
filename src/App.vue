@@ -19,14 +19,18 @@
               </el-menu-item>
              <el-menu-item index="/comments">
                 <i class="el-icon-menu"></i>
-                <span slot="title">评论管理</span>
+                <span slot="title">话题评论管理</span>
+              </el-menu-item>
+              <el-menu-item index="/ctcomments">
+                <i class="el-icon-chat-dot-square"></i>
+                <span slot="title">课程（教师）评论管理</span>
               </el-menu-item>
               <el-menu-item index="/replys">
                 <i class="el-icon-chat-line-round"></i>
                 <span slot="title">回复管理</span>
               </el-menu-item>
               <el-menu-item index="/news">
-                <i class="el-icon-chat-line-round"></i>
+                <i class="el-icon-reading"></i>
                 <span slot="title">新闻管理</span>
               </el-menu-item>
               <el-menu-item index="4">

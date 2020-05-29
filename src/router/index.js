@@ -5,6 +5,7 @@ import Tags from "../components/tag/Tags"
 import Comment from '../components/comment/Comment'
 import Reply from '../components/reply/Reply'
 import News from '../components/news/News'
+import Ctcomment from '../components/ctcomment/Ctcomment'
 
 Vue.use(Router)
 
@@ -21,6 +22,10 @@ export default new Router({
     {
       path: '/comments',
       component: Comment
+    },
+    {
+      path: '/ctcomments',
+      component: Ctcomment
     },
     {
       path: '/replys',
