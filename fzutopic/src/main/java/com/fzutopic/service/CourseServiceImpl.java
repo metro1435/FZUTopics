@@ -54,11 +54,11 @@ public class CourseServiceImpl implements CourseService{
         return true;
     }
 
-    @Override
-    public boolean updatecourse(Courseinfo courseinfo) {
-        Courseinfo ready = courseinfoDao.selectByPrimaryKey(courseinfo.getCourseid());
-        ready.setCredits(courseinfo.getCredits());
-        courseinfoDao.updateByPrimaryKey(ready);
-        return true;
-    }
+//    @Override
+//    public boolean updatecourse(Courseinfo courseinfo) {
+//        Courseinfo ready = courseinfoDao.selectByPrimaryKey(courseinfo.getCourseid());
+//        ready.setCredits(courseinfo.getCredits());
+//        courseinfoDao.updateByPrimaryKey(ready);
+//        return true;
+//    }
 }

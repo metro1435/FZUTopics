@@ -137,17 +137,15 @@ public class CourseController {
     @CrossOrigin
     @PutMapping("/admin/updatecourse")
     public AjaxResponse updatecourse(@RequestParam(name = "courseid") String courseid,
-                                     @RequestParam(name = "credit") double credit,
                                      @RequestParam(name = "teacherid") String teacherid
                                      ){
         CourseTeacherKey courseTeacherKey=new CourseTeacherKey();
         courseTeacherKey.setCourseid(courseid);
         courseTeacherKey.setTeacherid(teacherid);
-        courseTeacherService.updatecourse(courseTeacherKey);
-        Courseinfo courseinfo=new Courseinfo();
-        courseinfo.setCourseid(courseid);
-        courseinfo.setCredits(credit);
-        courseService.updatecourse(courseinfo);
-        return AjaxResponse.success("更新课程成功");
+        //courseTeacherService.updatecourse(courseTeacherKey);
+        //Courseinfo courseinfo=new Courseinfo();
+        //courseinfo.setCourseid(courseid);
+        //courseService.updatecourse(courseinfo);
+        return AjaxResponse.success("修改课程信息成功");
     }
 }

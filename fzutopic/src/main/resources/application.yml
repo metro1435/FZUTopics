@@ -8,7 +8,7 @@ spring:
   datasource:
     url: jdbc:mysql://localhost:3306/fzutopic?serverTimezone=Asia/Shanghai&useUnicode=true&characterEncoding=utf8&useSSL=false
     username: root
-    password: 123456 #自己的数据库密码
+    password: Sjwan630 #自己的数据库密码
     driver-class-name: com.mysql.cj.jdbc.Driver #非mysql8的把cj去掉
 
 

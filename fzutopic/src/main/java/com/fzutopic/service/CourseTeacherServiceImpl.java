@@ -35,9 +35,9 @@ class CourseTeacherServiceImpl implements CourseTeacherService{
     }
 
     @Override
-    public boolean updatecourse(CourseTeacherKey courseTeacherKey) {
+    public CourseTeacherKey updatecourse(CourseTeacherKey courseTeacherKey) {
         courseTeacherDao.updatecourse(courseTeacherKey);
-        return true;
+        return courseTeacherKey;
     }
 
 }

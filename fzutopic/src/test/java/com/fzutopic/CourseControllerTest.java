@@ -180,7 +180,7 @@ public class CourseControllerTest {
     @Test
     public void updatecourseTest() throws Exception {
         mvc.perform(MockMvcRequestBuilders.put("/admin/updatecourse?courseid=c010103" +
-                "&credit=3.0&teacherid=h010103")
+                "&teacherid=h010103")
                 .accept(MediaType.APPLICATION_JSON_UTF8)
                 .contentType(MediaType.APPLICATION_JSON_UTF8)
                 .header("token", token)
