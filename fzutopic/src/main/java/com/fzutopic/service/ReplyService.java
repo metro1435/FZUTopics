@@ -25,12 +25,12 @@ public interface ReplyService {
     //删除，对应赞、踩-1的情况,status：0为踩，1为赞，，221701401负责
     AjaxResponse deleteLikesById(String replyid, int status);
 
-    //管理员获取待审核回复列表，1403负责
+    //管理员获取待审核回复列表，1416负责
     PageInfo<Reply> getunauditedReplys(int page);
 
-    //管理员审核回复通过，1403负责
+    //管理员审核回复通过，1416负责
     Reply updateReplystatus(String replyid);
 
-    //管理员审核回复不通过直接删除，1403负责
+    //管理员审核回复不通过直接删除，1416负责
     int deleteunauditedReply(String replyid);
 }
