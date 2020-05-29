@@ -142,7 +142,7 @@ public class CourseController {
         CourseTeacherKey courseTeacherKey=new CourseTeacherKey();
         courseTeacherKey.setCourseid(courseid);
         courseTeacherKey.setTeacherid(teacherid);
-        //courseTeacherService.updatecourse(courseTeacherKey);
+        courseTeacherService.updatecourse(courseTeacherKey);
         //Courseinfo courseinfo=new Courseinfo();
         //courseinfo.setCourseid(courseid);
         //courseService.updatecourse(courseinfo);
