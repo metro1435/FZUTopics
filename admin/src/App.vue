@@ -1,77 +1,22 @@
 <template>
   <div id="app">
-    <el-container>
-      <el-aside width="200px">
-            <el-menu
-              default-active="2"
-              class="el-menu-vertical-demo"
-              @select="handleSelect"
-              background-color="#545c64"
-              text-color="#fff"
-              active-text-color="#ffd04b"
-            >
-              <el-menu-item index="/"  class="menu-title">          
-                <span slot="title" class="menu-title">福大热话</span>
-              </el-menu-item>
-              <el-menu-item index="/topics">
-                <i class="el-icon-location"></i>
-                <span slot="title">话题管理</span>
-              </el-menu-item>
-              <el-menu-item index="3">
-                <i class="el-icon-menu"></i>
-                <span slot="title">评论管理</span>
-              </el-menu-item>
-              <el-menu-item index="/course">
-                <i class="el-icon-document"></i>
-                <span slot="title">课程管理</span>
-              </el-menu-item>
-              <el-menu-item index="5">
-                <i class="el-icon-setting"></i>
-                <span slot="title">标签管理</span>
-              </el-menu-item>
-              <el-menu-item index="6">
-                <i class="el-icon-s-promotion"></i>
-                <span slot="title">退出</span>
-              </el-menu-item>
-            </el-menu>
-      </el-aside>
-      <el-container>
-        <el-main>
-          <router-view/>
-        </el-main>
-        <!-- <el-footer>Footer</el-footer> -->
-      </el-container>
-    </el-container>
+    <!--这里的话我是想要把导航栏先放在上首页那么这里应该用一个component-->
+    <router-view></router-view>
   </div>
 </template>
 
 <script>
-export default {
-  name: 'App',
-  methods: {
-      handleSelect(key, keyPath) {
-        console.log(key, keyPath);
-        this.$router.push(key);
-      }
+  export default {
+    name: 'App',
+     provide () {    //父组件中通过provide来提供变量，在子组件中通过inject来注入变量。                                             
+            return {
+                reload: this.reload                                              
+            }
+        },
+    components:{
     }
-}
+  }
 </script>
 
 <style>
-body{
-  margin: 0;
-  padding: 0;
-}
-.el-menu-vertical-demo{
-  height: 100%;
-  margin: auto;
-  
-}
-.menu-title{
-  color: #ffd04b;
-  font-size: 22px;
-  font-family: Helvetica, sans-serif;
-  text-align: center;
-  margin: 20px 0px;
-}
 </style>
