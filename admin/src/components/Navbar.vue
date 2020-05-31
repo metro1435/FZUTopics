@@ -17,19 +17,23 @@
                 <i class="el-icon-location"></i>
                 <span slot="title">话题管理</span>
               </el-menu-item>
-              <el-menu-item index="3">
-                <i class="el-icon-menu"></i>
+              <el-menu-item index="/comments">
+                <i class="el-icon-s-comment"></i>
                 <span slot="title">评论管理</span>
               </el-menu-item>
               <el-menu-item index="/course">
                 <i class="el-icon-document"></i>
                 <span slot="title">课程管理</span>
               </el-menu-item>
-              <el-menu-item index="5">
-                <i class="el-icon-setting"></i>
+              <el-menu-item index="/tags">
+                <i class="el-icon-collection-tag"></i>
                 <span slot="title">标签管理</span>
               </el-menu-item>
-              <el-menu-item index="6">
+              <el-menu-item index="/news">
+                <i class="el-icon-news"></i>
+                <span slot="title">新闻发布</span>
+              </el-menu-item>
+              <el-menu-item index="/adminlogin" @click="logout()">
                 <i class="el-icon-s-promotion"></i>
                 <span slot="title">退出</span>
               </el-menu-item>
@@ -52,6 +56,10 @@ export default {
       handleSelect(key, keyPath) {
         console.log(key, keyPath);
         this.$router.push(key);
+      },
+      logout(){
+        this.$store.state.token = "";
+         
       }
     }
 }

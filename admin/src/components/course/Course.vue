@@ -81,7 +81,7 @@
              </el-form-item>
               </el-form>
            </div>
-      <el-button type="primary" >test</el-button>
+      <!-- <el-button type="primary"  >test</el-button> -->
 
      </div>
 </div>
@@ -91,7 +91,6 @@
 import { request } from "../../network/request";
 import Navbar from "../Navbar"
 export default {
-   inject:['reload'],
   name: "Course",
   components:{
     Navbar
@@ -133,8 +132,9 @@ export default {
           },
       }).then(res =>{
           console.log(res);
-          var tableLen=this.tableData.length;
-          for(let i=0; i<tableLen; i++) {this.tableData.pop();}//前清除本地表内容
+          //前清除本地表内容
+          this.tableData=[];
+          
            for (let i = 0; i < res.data.data.length; i++) {
            this.tableData.push({
                courseID: res.data.data[i].courseid,
@@ -285,7 +285,7 @@ export default {
 .course-main{
   position: absolute;
   top: 2px;
-  left: 20%;
+  left: 250px;
   margin: auto;
  
 }
