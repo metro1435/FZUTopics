@@ -33,7 +33,7 @@
                 <i class="el-icon-reading"></i>
                 <span slot="title">新闻管理</span>
               </el-menu-item>
-              <el-menu-item index="4">
+              <el-menu-item index="/courses">
                 <i class="el-icon-document"></i>
                 <span slot="title">课程管理</span>
               </el-menu-item>
@@ -61,14 +61,14 @@
 export default {
   name: 'App',
   methods: {
-      handleSelect(key, keyPath) {
-        console.log(key, keyPath);
-        this.$router.push(key);
-      }
+    handleSelect(key, keyPath) {
+      console.log(key, keyPath);
+      this.$router.push(key);
     },
     created(){
       console.log(this.$store.state.token)
     }
+  }
 }
 </script>
 

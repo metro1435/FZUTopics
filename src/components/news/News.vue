@@ -57,7 +57,7 @@ export default {
           }
         }).then(res=>{
           console.log(res);
-            if(res.data.status=200){
+            if(res.status==200){
               this.$message({
               showClose: true,
               message: '已成功添加该新闻'
@@ -98,13 +98,14 @@ export default {
       },
       getAdminId() {
       request({
-        url: "/token",
+        url: "/admin/token",
         method: "get",
         headers: {
           token: this.$store.state.token
         }
       })
         .then(res => {
+          //console.log(res);
           this.adminid = res.data.message;
         })
         .catch(err => {

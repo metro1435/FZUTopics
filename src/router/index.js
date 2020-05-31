@@ -6,6 +6,8 @@ import Comment from '../components/comment/Comment'
 import Reply from '../components/reply/Reply'
 import News from '../components/news/News'
 import Ctcomment from '../components/ctcomment/Ctcomment'
+import Course from '../components/course/Course'
+import AdminLogin from "../components/adminlogin/AdminLogin"
 
 Vue.use(Router)
 
@@ -13,7 +15,11 @@ export default new Router({
   routes: [
     {
       path: '/',
-      redirect: '/topics'
+      redirect: '/adminlogin'
+    },
+    {
+      path: '/adminlogin',
+      component: AdminLogin
     },
     {
       path: '/topics',
@@ -34,6 +40,10 @@ export default new Router({
     {
       path: '/news',
       component: News
+    },
+    {
+      path: '/courses',
+      component: Course
     },
     {
       path: '/tags',

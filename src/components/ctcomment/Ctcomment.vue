@@ -52,14 +52,17 @@
 
   <br />
   <br />
-  <el-pagination
-    background
-    @current-change="handleCurrentChange"
-    :current-page="currentPage"
-    :page-size="16"
-    layout="total, prev, pager, next, jumper"
-    :total="ctcommentsNum">
-  </el-pagination>
+  <div class="page">
+    <el-pagination
+      background
+      @current-change="handleCurrentChange"
+      :current-page="currentPage"
+      :page-size="16"
+      layout="total, prev, pager, next, jumper"
+      :total="ctcommentsNum">
+    </el-pagination>
+  </div>
+
 </div>
 </template>
 
@@ -76,12 +79,15 @@
     margin-bottom: 0;
     width: 50%;
   }
+  .page{
+    text-align: center;
+  }
 </style>
 
 <script>
 import { request } from "../../network/request";
   export default {
-    name: "Comment",
+    name: "Ctcomment",
     data() {
       return {
         tableData: [],

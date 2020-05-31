@@ -52,14 +52,16 @@
 
   <br />
   <br />
-  <el-pagination
-    background
-    @current-change="handleCurrentChange"
-    :current-page="currentPage"
-    :page-size="16"
-    layout="total, prev, pager, next, jumper"
-    :total="commentsNum">
-  </el-pagination>
+  <div class="page">
+    <el-pagination
+      background
+      @current-change="handleCurrentChange"
+      :current-page="currentPage"
+      :page-size="16"
+      layout="total, prev, pager, next, jumper"
+      :total="commentsNum">
+    </el-pagination>
+  </div>
 </div>
 </template>
 
@@ -75,6 +77,9 @@
     margin-right: 0;
     margin-bottom: 0;
     width: 50%;
+  }
+  .page{
+    text-align: center;
   }
 </style>
 
