@@ -3,7 +3,7 @@
 
 <template>
 <div>
-  <Navbar></Navbar>
+  <!--<Navbar></Navbar>-->
   <div class="course-main">
   <h1 class="page-title">课程管理</h1>
   <el-table
@@ -91,7 +91,7 @@
 import { request } from "../../network/request";
 //import Navbar from "../Navbar"
 export default {
-   inject:['reload'],
+  //inject:['reload'],
   name: "Course",
   //components:{
    // Navbar

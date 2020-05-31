@@ -135,10 +135,12 @@ import { request } from "../../network/request";
       },
 
       findAllTableData(){
-        this.$http.get("http://localhost:8686/admin/reply/unaudited/page/"+ this.currentPage,{
+        request({
+          url: "/admin/reply/unaudited/page/"+ this.currentPage,
+          method: "get",
           headers: {
-          token: this.$store.state.token
-        }
+            token: this.$store.state.token
+          }
         }).then(res=>{
           this.tableData=res.data.data.list;
           this.replysNum=res.data.data.total;
@@ -150,10 +152,12 @@ import { request } from "../../network/request";
 
       handleCurrentChange: function(val) {
         this.currentPage = val;
-        this.$http.get("http://localhost:8686/admin/reply/unaudited/page/"+ this.currentPage,{
+        request({
+          url: "/admin/reply/unaudited/page/"+ this.currentPage,
+          method: "get",
           headers: {
-          token: this.$store.state.token
-        }
+            token: this.$store.state.token
+          }
         }).then(res=>{
           this.tableData=res.data.data.list;
           this.replysNum=res.data.data.total;
