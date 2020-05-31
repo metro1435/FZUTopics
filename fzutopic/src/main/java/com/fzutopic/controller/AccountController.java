@@ -81,6 +81,15 @@ public class AccountController {
         return AjaxResponse.success(userid);
     }
 
+    //通过token获取adminid402
+    @AdminLoginToken
+    @CrossOrigin
+    @GetMapping(value = "/admin/token")
+    public AjaxResponse getAdminidByToken(HttpServletRequest httpServletRequest) {
+        String adminid = TokenUtil.getAdminIdByRequest(httpServletRequest);
+        return AjaxResponse.success(adminid);
+    }
+
     //通过token获取nickname402
     @UserLoginToken
     @CrossOrigin
