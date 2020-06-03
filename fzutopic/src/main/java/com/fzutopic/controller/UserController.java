@@ -8,9 +8,12 @@ import com.fzutopic.utils.TokenUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import java.io.File;
+import java.util.Date;
 
 @Slf4j
 @RestController
@@ -25,7 +28,7 @@ public class UserController {
     @CrossOrigin
     @GetMapping("/user/setting")
     @UserLoginToken
-    public User getInfo(HttpServletRequest httpServletRequest){
+    public User getInfo(HttpServletRequest httpServletRequest) {
         String userid = TokenUtil.getUserIdByRequest(httpServletRequest);
         return userService.getUser(userid);
     }
@@ -36,7 +39,7 @@ public class UserController {
     @CrossOrigin
     @PutMapping("/user/setting")
     @UserLoginToken
-    public AjaxResponse updateNicknameIcon(@RequestBody User user,HttpServletRequest httpServletRequest){
+    public AjaxResponse updateNicknameIcon(@RequestBody User user, HttpServletRequest httpServletRequest) {
         String userid = TokenUtil.getUserIdByRequest(httpServletRequest);
         user.setUserid(userid);
         userService.updateNicknameIcon(user);
@@ -51,4 +54,36 @@ public class UserController {
         User user = userService.getUser(userid);
         return AjaxResponse.success(user.getNickname());
     }
+
+    /**
+     * 用户传图片
+     *
+     * @param file
+     * @return
+     */
+    @UserLoginToken
+    @CrossOrigin
+    @PostMapping(value = "upload/file")
+    public AjaxResponse uploadFile(@RequestParam("file") MultipartFile file,HttpServletRequest httpServletRequest) {
+        String userid = TokenUtil.getUserIdByRequest(httpServletRequest);
+        String fileName = file.getOriginalFilename();
+        String suffix = fileName.substring(fileName.lastIndexOf('.'));
+        String newFileName = new Date().getTime() + suffix;
+        String path = "E:/pages/";
+        File newFile = new File(path + newFileName);
+        String message="";
+        try {
+            file.transferTo(newFile);
+            message=path+newFileName;
+            User user=new User();
+            user.setIcon(message);
+            user.setUserid(userid);
+            userService.updateNicknameIcon(user);
+        } catch (Exception e) {
+            e.printStackTrace();
+            message="文件上传失败";
+        }
+        return AjaxResponse.success(message);
+    }
+
 }

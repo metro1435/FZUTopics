@@ -1,12 +1,15 @@
 package com.fzutopic.config;
 
 import com.fzutopic.interceptor.AuthenticationInterceptor;
+import org.springframework.boot.web.servlet.MultipartConfigFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.web.servlet.config.annotation.CorsRegistry;
+import org.springframework.util.unit.DataSize;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
-import static org.springframework.web.cors.CorsConfiguration.ALL;
+
+import javax.servlet.MultipartConfigElement;
+
 @Configuration
 public class InterceptorConfig  implements WebMvcConfigurer {
 
@@ -24,5 +27,15 @@ public class InterceptorConfig  implements WebMvcConfigurer {
     public AuthenticationInterceptor authenticationInterceptor() {
         return new AuthenticationInterceptor();
     }
+
+    @Bean
+    public MultipartConfigElement multipartConfigElement(){
+        MultipartConfigFactory factory = new MultipartConfigFactory();
+        DataSize dataSize=DataSize.ofMegabytes(10);
+        factory.setMaxFileSize(dataSize);
+        factory.setMaxRequestSize(dataSize);
+        return factory.createMultipartConfig();
+    }
+
 
     }
